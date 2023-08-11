@@ -7,12 +7,8 @@ export default function UnLoginActions() {
 
   return (
     <>
-      <PowderButton $height="33px" onClick={() => nav("/login")}>
-        Log in
-      </PowderButton>
-      <BlueButton $height="33px" onClick={() => nav("/login")}>
-        Sign up
-      </BlueButton>
+      <PowderButton onClick={() => nav("/login")}>Log in</PowderButton>
+      <BlueButton onClick={() => nav("/signup")}>Sign up</BlueButton>
     </>
   );
 }
