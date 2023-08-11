@@ -13,16 +13,18 @@ import { styled } from "styled-components";
 import Sidebar from "./components/sidebar/Sidebar";
 import Footer from "./components/footer/Footer";
 import Header from "./components/header/Header";
+
 const StyleApp = styled.div`
-  width: var(--inner);
   min-height: 100vh;
-  margin: 0 auto;
   .center {
+    width: var(--inner);
+    margin: 0 auto;
     margin-top: 56px;
     display: flex;
     min-height: 100vh;
   }
 `;
+
 const sidebarPaths = ["profile", "users", "search", "questions", ""];
 const footerPaths = ["profile", "users", "search", "questions", "ask", ""];
 

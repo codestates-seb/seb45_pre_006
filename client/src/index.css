@@ -1,6 +1,6 @@
 html {
   --gray-hover: #e4e5e7;
-  --border: #d5d9db;
+  --border: #c9cbcd;
   --blue-500: #0a95ff;
   --blue-500-hover: #0074cc;
   --powder-100: #e1ecf4;
@@ -34,4 +34,17 @@ body {
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+button,
+input {
+  background-color: white;
+  border: none;
+  outline: none;
+}
+
+.hidden {
+  position: absolute;
+  top: -999999px;
+  left: -999999px;
 }
