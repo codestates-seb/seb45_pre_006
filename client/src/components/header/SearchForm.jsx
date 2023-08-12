@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { styled } from "styled-components";
 import useForm from "../../hooks/useForm";
 import Input from "../common/Input";
 import { GrSearch } from "react-icons/gr";
+import { useNavigate } from "react-router-dom";
+import { useKeywordContext } from "../../context/SearchKeywordContext";
 
 const StyleSearchForm = styled.form`
   flex: 1;
@@ -21,11 +23,20 @@ const StyleSearchForm = styled.form`
 `;
 
 export default function SearchForm() {
+  const { keyword, keywordHandler } = useKeywordContext();
   const [searchForm, setSearchForm] = useForm({ search: "" });
+  const nav = useNavigate();
+
+  useEffect(() => {
+    // 키워드를 주소창으로부터 받아와서 설정
+    setSearchForm(null, "search", keyword);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [keyword]);
 
   const onSearchSubmitHandler = (e) => {
     e.preventDefault();
-    // 검색 기능 구현
+    keywordHandler(searchForm.search);
+    nav(`/search/${searchForm.search}`); // 검색시 검색 페이지로 이동
   };
 
   return (

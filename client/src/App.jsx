@@ -13,9 +13,11 @@ import { styled } from "styled-components";
 import Sidebar from "./components/sidebar/Sidebar";
 import Footer from "./components/footer/Footer";
 import Header from "./components/header/Header";
+import { SearchKeywordProvider } from "./context/SearchKeywordContext";
 
 const StyleApp = styled.div`
   min-height: 100vh;
+  background-color: ${(props) => (props.$background ? "var(--app-back-color)" : "")};
   .center {
     width: var(--inner);
     margin: 0 auto;
@@ -34,23 +36,25 @@ function App() {
   const isFooter = footerPaths.includes(path);
 
   return (
-    <StyleApp>
-      <Header />
-      <section className="center">
-        {isSidebar && <Sidebar />}
-        <Routes>
-          <Route path={"/"} element={<Question />} />
-          <Route path={"/users"} element={<Users />} />
-          <Route path={"/search/:keyword"} element={<Search />} />
-          <Route path={"/users/:userId"} element={<Profile />} />
-          <Route path={"/login"} element={<Login />} />
-          <Route path={"/signup"} element={<Signup />} />
-          <Route path={"/ask"} element={<QuestionWrite />} />
-          <Route path={"/questions/:questionId"} element={<QuestionDetail />} />
-          <Route path={"/reset-password"} element={<ResetPassword />} />
-          <Route path={"*"} element={<NotFound />} />
-        </Routes>
-      </section>
+    <StyleApp $background={!isSidebar}>
+      <SearchKeywordProvider>
+        <Header />
+        <section className="center">
+          {isSidebar && <Sidebar />}
+          <Routes>
+            <Route path={"/"} element={<Question />} />
+            <Route path={"/users"} element={<Users />} />
+            <Route path={"/search/:keyword"} element={<Search />} />
+            <Route path={"/users/:userId"} element={<Profile />} />
+            <Route path={"/questions/:questionId"} element={<QuestionDetail />} />
+            <Route path={"/ask"} element={<QuestionWrite />} />
+            <Route path={"/login"} element={<Login />} />
+            <Route path={"/signup"} element={<Signup />} />
+            <Route path={"/reset-password"} element={<ResetPassword />} />
+            <Route path={"*"} element={<NotFound />} />
+          </Routes>
+        </section>
+      </SearchKeywordProvider>
       {isFooter && <Footer />}
     </StyleApp>
   );
