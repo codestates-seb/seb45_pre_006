@@ -1,5 +1,5 @@
 import React from "react";
 
-export default function QuentionWrite() {
+export default function Home() {
   return <div></div>;
 }
