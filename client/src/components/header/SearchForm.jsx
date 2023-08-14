@@ -46,11 +46,12 @@ export default function SearchForm() {
         게시글 검색
       </label>
       <Input
+        placeholder="Search..."
         id="search-input"
         $width="100%"
         $height="33px"
-        $padding="8px 8px 8px 32px"
-        $size="15px"
+        $padding="10px 8px 8px 32px"
+        $size="13px"
         $active={true}
         value={searchForm.search}
         name="search"
