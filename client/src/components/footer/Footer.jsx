@@ -3,7 +3,7 @@ import { styled } from "styled-components";
 import FooterContent from "./FooterContent";
 import Copyright from "./Copyright";
 
-const StyleFooter = styled.div`
+const StyleFooter = styled.footer`
   width: 100%;
   height: 258px;
   background-color: #232629;
