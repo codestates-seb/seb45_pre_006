@@ -5,7 +5,7 @@ import SignupBox from "../components/signup/SignupBox";
 const StyleSignup = styled.section`
   display: flex;
   width: 785px;
-  height: 493px;
+  height: 520px;
   top: 0;
   right: 0;
   left: 0;

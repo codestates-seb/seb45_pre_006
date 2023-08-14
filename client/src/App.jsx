@@ -23,7 +23,7 @@ const StyleApp = styled.div`
     margin-top: 56px;
     display: flex;
     min-height: calc(100vh - 56px);
-  position: relative;
+    position: relative;
   }
 `;
 

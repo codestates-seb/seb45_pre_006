@@ -6,22 +6,25 @@ import useError from "../../hooks/useError";
 import useForm from "../../hooks/useForm";
 const StyleSiteSignup = styled.form`
   background: var(--white);
-  height: 430px;
+  height: 425px;
+  box-shadow: 0 0 5px 2px #00000015;
   padding: 24px;
   border-radius: 5px;
   box-shadow: 0 0 5px 2px #00000015;
+  flex: 1;
   input {
-    margin-bottom: 5px;
     font-size: 13px;
-    height: 32px;
+    height: 33px;
     padding: 6px 8px;
   }
   #password {
     letter-spacing: 3px;
   }
   p {
-    font-size: 13px;
+    font-weight: bold;
+    font-size: 12.5px;
     color: var(--black-400);
+    line-height: 1.1;
     &:last-child {
       margin-top: 20px;
     }
@@ -40,7 +43,7 @@ export default function SiteSignup() {
   });
   const [error, setError] = useError({ displayName: "", email: "", password: "" });
 
-  const validation = () => {
+  const signupValidation = () => {
     const errors = {
       displayName: "",
       email: "",
@@ -70,7 +73,7 @@ export default function SiteSignup() {
 
   const siteSignupHandler = (e) => {
     e.preventDefault();
-    if (validation()) {
+    if (signupValidation()) {
       clearSignupForm();
       // 회원가입 진행
     }
@@ -101,8 +104,8 @@ export default function SiteSignup() {
         value={signupForm.password}
         onChange={setSignupForm}
         error={error.password}
+        autocomplete="current-password"
       />
-
       <p>
         Passwords must contain at least eight characters, including at least 1 letter and 1 number.
       </p>

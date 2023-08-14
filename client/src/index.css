@@ -47,3 +47,11 @@ input {
   top: -999999px;
   left: -999999px;
 }
+
+a {
+  color: var(--link);
+  text-decoration: none;
+}
+a:hover {
+  color: var(--link-hover);
+}
