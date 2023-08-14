@@ -14,14 +14,12 @@ const StyleFooter = styled.section`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    height: 258px;
     color: #9199a1;
     padding: 32px 0;
     font-size: 13px;
 
     img {
       width: 50px;
-      height: 50px;
       margin-top: -18px;
     }
 
@@ -65,8 +63,8 @@ export default function Footer() {
         </div>
         <div className="copyright">
           <div>
-            Site design / logo © 2023 Stack Exchange Inc; user contributions
-            licensed under CC BY-SA. rev 2023.8.7.43566
+            Site design / logo © 2023 Stack Exchange Inc; user contributions licensed under CC
+            BY-SA. rev 2023.8.7.43566
           </div>
         </div>
       </div>

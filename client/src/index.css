@@ -24,7 +24,6 @@ html {
   --inner: 1264px;
 }
 body {
-  height: 1500px;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
     "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
