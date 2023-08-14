@@ -16,14 +16,14 @@ import Header from "./components/header/Header";
 import { SearchKeywordProvider } from "./context/SearchKeywordContext";
 
 const StyleApp = styled.div`
-  min-height: 100vh;
   background-color: ${(props) => (props.$background ? "var(--app-back-color)" : "")};
   .center {
     width: var(--inner);
     margin: 0 auto;
     margin-top: 56px;
     display: flex;
-    min-height: 100vh;
+    min-height: calc(100vh - 56px);
+  position: relative;
   }
 `;
 
@@ -39,7 +39,7 @@ function App() {
     <StyleApp $background={!isSidebar}>
       <SearchKeywordProvider>
         <Header />
-        <section className="center">
+        <div className="center">
           {isSidebar && <Sidebar />}
           <Routes>
             <Route path={"/"} element={<Question />} />
@@ -53,7 +53,7 @@ function App() {
             <Route path={"/reset-password"} element={<ResetPassword />} />
             <Route path={"*"} element={<NotFound />} />
           </Routes>
-        </section>
+        </div>
       </SearchKeywordProvider>
       {isFooter && <Footer />}
     </StyleApp>

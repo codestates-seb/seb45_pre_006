@@ -14,6 +14,7 @@ const StyleFooter = styled.footer`
     width: var(--inner);
     display: flex;
     justify-content: space-between;
+    height: 258px;
     color: #9199a1;
     padding: 32px 0;
     font-size: 13px;
