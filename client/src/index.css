@@ -22,6 +22,7 @@ html {
   --orange: #f48125;
   --orange-hover: #da690b;
   --inner: 1264px;
+  --shadow: #00000015;
 }
 body {
   margin: 0;

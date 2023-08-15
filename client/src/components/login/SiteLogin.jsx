@@ -10,7 +10,7 @@ const StyleSiteLogin = styled.form`
   height: 234px;
   background-color: var(--white);
   border-radius: 5px;
-  box-shadow: 0 0 5px 2px #00000015;
+  box-shadow: 0 0 5px 2px var(--shadow)
   padding: 24px;
   position: relative;
   input {
@@ -25,7 +25,7 @@ const StyleSiteLogin = styled.form`
     font-weight: bold;
     margin-top: 5px;
   }
-  a {   
+  a {
     position: absolute;
     top: 100px;
     right: 24px;
@@ -63,6 +63,7 @@ export default function SiteLogin() {
   const siteLoginHandler = (e) => {
     e.preventDefault();
     if (loginValidation()) {
+      // accessToken, refreshToken
       clearLoginForm();
     }
   };
@@ -85,6 +86,7 @@ export default function SiteLogin() {
         onChange={setSigninForm}
         error={error.password}
         autoComplete="new-password"
+        maxLength={15}
       />
       <Link to="/reset-password">Forgot password?</Link>
       <BlueButton $width="100%" $padding="10px">
