@@ -22,6 +22,7 @@ html {
   --orange: #f48125;
   --orange-hover: #da690b;
   --inner: 1264px;
+  --shadow: #00000015;
 }
 body {
   margin: 0;
@@ -46,4 +47,12 @@ input {
   position: absolute;
   top: -999999px;
   left: -999999px;
+}
+
+a {
+  color: var(--link);
+  text-decoration: none;
+}
+a:hover {
+  color: var(--link-hover);
 }

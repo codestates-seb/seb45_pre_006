@@ -9,14 +9,7 @@ const Button = styled.button`
   border-color: ${(props) => props.$border || "transparent"};
   cursor: pointer;
 `;
-export const OrangeButton = styled(Button)`
-  background-color: var(--orange);
-  color: var(--white);
-  border-radius: ${(props) => props.$radius || "15px"};
-  &:hover {
-    background-color: var(--orange-hover);
-  }
-`;
+
 export const PowderButton = styled(Button)`
   background-color: var(--powder-100);
   color: var(--powder-700);
@@ -30,7 +23,14 @@ export const WhiteButton = styled(Button)`
   color: var(--black-750);
   border-radius: ${(props) => props.$radius || "15px"};
   &:hover {
-    background-color: var(---black-200);
+    background-color: var(--app-back-color);
+  }
+  &.active {
+    background-color: var(--orange);
+    color: var(--white);
+    &:hover {
+      background-color: var(--orange-hover);
+    }
   }
 `;
 export const BlueButton = styled(Button)`

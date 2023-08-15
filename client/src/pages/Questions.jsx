@@ -1,44 +1,45 @@
 import React from "react";
-import { styled } from "styled-components"
+import { styled } from "styled-components";
 
+const questionsData = {
+  questions: [
+    {
+      question_id: 1,
+      question_title: "Context",
+      question_content:
+        "All consumers that are descendants of a Provider will re-render whenever the Provider’s value prop changes. The propagation from Provider to its descendant consumers (including .contextType and useContext) is not subject to the shouldComponentUpdate method, so the consumer is updated even when an ancestor component skips an update.",
+      question_viewcount: 128,
+      created_at: "2023-08-10T10:00:00",
+      updated_at: "2023-08-10T12:30:00",
+      user_name: "user123",
+      question_answercount: 56,
+    },
+    {
+      question_id: 2,
+      question_title: "Context",
+      question_content:
+        "StrictMode is a tool for highlighting potential problems in an application. Like Fragment,",
+      question_viewcount: 128,
+      created_at: "2023-08-10T10:00:00",
+      updated_at: "2023-08-10T12:30:00",
+      user_name: "user123",
+      question_answercount: 45,
+    },
+    {
+      question_id: 3,
+      question_title: "Context",
+      question_content:
+        "In the above example, strict mode checks will not be run against the Header and Footer components. However, ComponentOne and ComponentTwo, as well as all of their descendants, will have the checks.",
+      question_viewcount: 128,
+      created_at: "2023-08-10T10:00:00",
+      updated_at: "2023-08-10T12:30:00",
+      user_name: "user123",
+      question_answercount: 25,
+    },
+  ],
+};
 
-
-const questionsData = { "questions":[
-  {
-      "question_id": 1,
-      "question_title": "Context",
-      "question_content": "All consumers that are descendants of a Provider will re-render whenever the Provider’s value prop changes. The propagation from Provider to its descendant consumers (including .contextType and useContext) is not subject to the shouldComponentUpdate method, so the consumer is updated even when an ancestor component skips an update.",
-      "question_viewcount": 128,
-      "created_at": "2023-08-10T10:00:00",
-      "updated_at": "2023-08-10T12:30:00",
-      "user_name": "user123",
-      "question_answercount": 56
-  },
-  {
-      "question_id": 2,
-      "question_title": "Context",
-      "question_content": "StrictMode is a tool for highlighting potential problems in an application. Like Fragment,",
-      "question_viewcount": 128,
-      "created_at": "2023-08-10T10:00:00",
-      "updated_at": "2023-08-10T12:30:00",
-      "user_name": "user123",
-      "question_answercount": 45
-  },
-  {
-      "question_id": 3,
-      "question_title": "Context",
-      "question_content": "In the above example, strict mode checks will not be run against the Header and Footer components. However, ComponentOne and ComponentTwo, as well as all of their descendants, will have the checks.",
-      "question_viewcount": 128,
-      "created_at": "2023-08-10T10:00:00",
-      "updated_at": "2023-08-10T12:30:00",
-      "user_name": "user123",
-      "question_answercount": 25
-  }
-]
-}
-
-
-const QuestionStyle = styled.div `
+const QuestionStyle = styled.div`
   width: 1100px;
   background-color: #ffffff;
   margin-top: 26px;
@@ -66,7 +67,7 @@ const QuestionStyle = styled.div `
     font-weight: bold;
     color: var(--white);
     &:hover {
-    background-color: var(--blue-500-hover);
+      background-color: var(--blue-500-hover);
     }
   }
   .questions-container {
@@ -94,16 +95,11 @@ const QuestionStyle = styled.div `
     background-color: gray;
     margin: 10px 2px 10px;
   }
-`
-
-
+`;
 
 export default function Question() {
-
-
-  let testData = JSON.parse(JSON.stringify(questionsData))
+  let testData = JSON.parse(JSON.stringify(questionsData));
   console.log(testData);
-
 
   return (
     <QuestionStyle>
@@ -122,5 +118,5 @@ export default function Question() {
         </div>
       </div>
     </QuestionStyle>
-  )
+  );
 }
