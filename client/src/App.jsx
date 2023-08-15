@@ -14,6 +14,8 @@ import Sidebar from "./components/sidebar/Sidebar";
 import Footer from "./components/footer/Footer";
 import Header from "./components/header/Header";
 import { SearchKeywordProvider } from "./context/SearchKeywordContext";
+import UserProfile from "./components/profile/UserProfile";
+import UserSetting from "./components/profile/UserSetting";
 
 const StyleApp = styled.div`
   background-color: ${(props) => (props.$background ? "var(--app-back-color)" : "")};
@@ -45,7 +47,7 @@ function App() {
             <Route path={"/"} element={<Question />} />
             <Route path={"/users"} element={<Users />} />
             <Route path={"/search/:keyword"} element={<Search />} />
-            <Route path={"/users/:userId"} element={<Profile />} />
+            <Route path="/users/:userId/*" element={<Profile />}></Route>
             <Route path={"/questions/:questionId"} element={<QuestionDetail />} />
             <Route path={"/ask"} element={<QuestionWrite />} />
             <Route path={"/login"} element={<Login />} />

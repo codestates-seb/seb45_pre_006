@@ -7,10 +7,9 @@ import useForm from "../../hooks/useForm";
 const StyleSiteSignup = styled.form`
   background: var(--white);
   height: 425px;
-  box-shadow: 0 0 5px 2px #00000015;
+  box-shadow: 0 0 5px 2px var(--shadow);
   padding: 24px;
   border-radius: 5px;
-  box-shadow: 0 0 5px 2px #00000015;
   flex: 1;
   input {
     font-size: 13px;
@@ -74,8 +73,9 @@ export default function SiteSignup() {
   const siteSignupHandler = (e) => {
     e.preventDefault();
     if (signupValidation()) {
-      clearSignupForm();
       // 회원가입 진행
+      console.log(signupForm);
+      clearSignupForm();
     }
   };
 
