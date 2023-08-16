@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { styled } from "styled-components";
 import { BlueButton } from "../common/Button";
-import useForm from "../../hooks/useForm";
 import TitleGuide from "./TitleGuide";
 
 const Container = styled.div`
@@ -102,6 +101,7 @@ export default function WriteTitle({
           Be specific and imagine you’re asking a question to another person.
         </div>
         <input
+          autoFocus
           type="text"
           name="title"
           value={inputData.title}
@@ -114,7 +114,7 @@ export default function WriteTitle({
         />
         <div className="buttonSection">
           <BlueButton onClick={handleSubmit}>Next</BlueButton>
-          {length < 1 ? null : (
+          {length > 5 || length == 0 ? null : (
             <div className="alert">Minimum 5 characters.</div>
           )}
         </div>
