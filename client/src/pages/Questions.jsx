@@ -1,122 +1,68 @@
 import React from "react";
 import { styled } from "styled-components";
+import { useState, useEffect } from "react";
+import axios from 'axios'
 
-const questionsData = {
-  questions: [
-    {
-      question_id: 1,
-      question_title: "Context",
-      question_content:
-        "All consumers that are descendants of a Provider will re-render whenever the Provider’s value prop changes. The propagation from Provider to its descendant consumers (including .contextType and useContext) is not subject to the shouldComponentUpdate method, so the consumer is updated even when an ancestor component skips an update.",
-      question_viewcount: 128,
-      created_at: "2023-08-10T10:00:00",
-      updated_at: "2023-08-10T12:30:00",
-      user_name: "user123",
-      question_answercount: 56,
-    },
-    {
-      question_id: 2,
-      question_title: "Context",
-      question_content:
-        "StrictMode is a tool for highlighting potential problems in an application. Like Fragment,",
-      question_viewcount: 128,
-      created_at: "2023-08-10T10:00:00",
-      updated_at: "2023-08-10T12:30:00",
-      user_name: "user123",
-      question_answercount: 45,
-    },
-    {
-      question_id: 3,
-      question_title: "Context",
-      question_content:
-        "In the above example, strict mode checks will not be run against the Header and Footer components. However, ComponentOne and ComponentTwo, as well as all of their descendants, will have the checks.",
-      question_viewcount: 128,
-      created_at: "2023-08-10T10:00:00",
-      updated_at: "2023-08-10T12:30:00",
-      user_name: "user123",
-      question_answercount: 25,
-    },
-  ],
-};
+import MainHeadLine from "../components/home/MainHeadLine";
+import QuestionsList from "../components/home/QuestionsList";
 
-const QuestionStyle = styled.div`
-  width: 1100px;
-  background-color: #ffffff;
+
+
+
+const questions = { "questions":[
+  {
+      "question_id": 1,
+      "question_title": "IN THE ABOVE EXAMPLE STRICT MODE CHEC SDAKJHIWHIWUDHW KS WILL NOTE BE RUN AGAIST THE HAEADER CHECKS WILL NOTE BE RUN AGAIST THE HAEADER CHECKS WILL NOTE BE RUN AGAIST THE HAEADER AGAIST SDAKJHIWHIWUDHW KS WILL NOTE BE RUN AGAIST THE HAEADER CHECKS WILL NOTE BE RUN AGAIST THE HAEADER CHECKS WILL NOTE BE RUN AGAIST THE HAEADER AGAIST",
+      "question_content": "i change the version of i change the version of i change the version of i change the version of i change the version of i change the version of mode checks will not be run against strict mode checks mode checks will not be run against strict mode checks",
+      "question_viewcount": 128,
+      "created_at": "2023-08-10T10:00:00",
+      "updated_at": "2023-08-10T12:30:00",
+      "user_name": "user123",
+      "question_answercount": 0
+  },
+  {
+      "question_id": 2,
+      "question_title": "Linux while i change the version of init, selinux shows i change the version of init, selinux shows i change the version of init, selinux shows Linux while i change the version of init, selinux shows i change the version ofm Linux while i change the version of init, selinux shows i change the version of init, selinux shows i change the version of init, selinux shows Linux while i change the version of init, selinux shows i change the version ofm ",
+      "question_content": "the version of , whi  whie i change the version of init, selinux shows i c version of init, selinux shows i chhange the version ofm Linux while i change the version of init, selinux shows i change the version of init, selinux shows i change the version of init, selinux shows Linux while i change the version of init, selinux shows i change the versio i change the version of init, selinux shows i change the version ofm Linux while i change the version of init, selinux shows i change the version of init, selinux shows i change the version of init, selinux shows Linux while i change the version of init, selinux shows i change the version ofn ofm",
+      "question_viewcount": 128,
+      "created_at": "2023-08-10T10:00:00",
+      "updated_at": "2023-08-10T12:30:00",
+      "user_name": "user1asdfa23",
+      "question_answercount": 45
+  },
+  {
+      "question_id": 3,
+      "question_title": "Context",
+      "question_content": "In the above example, strict mode checks will not be run against the Header and Footer components. However, ComponentOne and ComponentTwo, as well as all of their descendants, will have the checks.",
+      "question_viewcount": 128,
+      "created_at": "2023-08-10T10:00:00",
+      "updated_at": "2023-08-10T12:30:00",
+      "user_name": "user1232323",
+      "question_answercount": 25
+  }
+]
+}
+ 
+
+const QuestionStyle = styled.main `
+  width: 100%;
+  max-width: 1100px;
   margin-top: 26px;
-  .all-questions-container {
-    width: 1100px;
-    height: 82px;
-    background-color: var(--white);
-    display: flex;
-    flex-direction: row;
-  }
-  .all-questions-container > span {
-    width: 570px;
-    height: 35px;
-    font-size: 27px;
-    margin-left: 25px;
-  }
-  .all-questions-container > button {
-    padding: 0px;
-    width: 103px;
-    height: 37.8px;
-    background-color: var(--blue-500);
-    border-radius: 5px;
-    margin-left: 378px;
-    font-size: 12px;
-    font-weight: bold;
-    color: var(--white);
-    &:hover {
-      background-color: var(--blue-500-hover);
-    }
-  }
-  .questions-container {
-    height: 106px;
-    background-color: white;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    flex-direction: row;
-  }
-  .question-side-wrap {
-    width: 105px;
-    height: 72px;
-    background-color: red;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    margin: 17px 0px 17px 109px;
-  }
-  .question-side-wrap > span {
-    color: var(--black-700);
-  }
-  .question-content-wrap {
-    width: 834px;
-    height: 85px;
-    background-color: gray;
-    margin: 10px 2px 10px;
-  }
-`;
+`
 
 export default function Question() {
-  let testData = JSON.parse(JSON.stringify(questionsData));
-  console.log(testData);
+  const [togle,setTogle] = useState(false);
+  const testData = JSON.parse(JSON.stringify(questions))
+  const [questionsData, setQuestionsData] = useState(testData);
+  // 데이터를 여기서 받아 props로 넘겨줄려고합니다.
 
+  const filterHandler = () =>{
+    setTogle(!togle)
+  }
   return (
     <QuestionStyle>
-      <div className="all-questions-container">
-        <span>All question</span>
-        <button>Ask Question</button>
-      </div>
-      <div className="questions-container">
-        <div className="question-side-wrap">
-          <span>0 votes</span>
-          <span>0 answers</span>
-          <span>22 views</span>
-        </div>
-        <div className="question-content-wrap">
-          <div className="question-user"></div>
-        </div>
-      </div>
+      <MainHeadLine filterHandler={filterHandler} togle={togle}></MainHeadLine>
+      <QuestionsList questionsData={questionsData.questions} ></QuestionsList>
     </QuestionStyle>
-  );
+  )
 }
