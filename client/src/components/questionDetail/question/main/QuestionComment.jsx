@@ -2,6 +2,7 @@ import React from "react";
 import { styled } from "styled-components";
 import { usePostContext } from "../../../../context/PostContext";
 import useForm from "../../../../hooks/useForm";
+import getWriteDate from "../../../common/getWriteDate";
 
 const StyleQuestionComment = styled.div`
   grid-column: 2;
@@ -57,27 +58,6 @@ export default function QuestionComment() {
   }
   const postData = post.posts[0].comments;
 
-  // 날짜 포맷팅 함수
-  function formatDate(dateString) {
-    const options = {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-      hour12: false, // Set this option to use 24-hour format
-    };
-
-    const formattedDate = new Date(dateString).toLocaleDateString(
-      "en-US",
-      options
-    );
-    const time = new Date(dateString).toLocaleTimeString("en-US", {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: false,
-    });
-
-    return `${formattedDate}, at ${time}`;
-  }
   return (
     <StyleQuestionComment>
       {console.log(postData)}
@@ -85,7 +65,7 @@ export default function QuestionComment() {
         <div key={idx} className="comentlist">
           <span className="commentbody">{data.commentBody} - </span>
           <span className="username"> {data.username}</span>
-          <span className="createdat"> {formatDate(data.createdAt)} </span>
+          <span className="createdat"> {getWriteDate(data.createdAt)} </span>
         </div>
       ))}
       {/* 5개 이상일경우 Show ~ more comments 렌더링 */}

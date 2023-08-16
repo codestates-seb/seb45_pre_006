@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import useForm from "../../../../hooks/useForm";
+import getWriteDate from "../../../common/getWriteDate";
 
 // questionComment 코드 중복 로직이 많음
 
@@ -51,28 +52,6 @@ export default function AnswerComment({ data }) {
     }
   };
 
-  // 날짜 포맷팅 함수
-  function formatDate(dateString) {
-    const options = {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-      hour12: false, // Set this option to use 24-hour format
-    };
-
-    const formattedDate = new Date(dateString).toLocaleDateString(
-      "en-US",
-      options
-    );
-    const time = new Date(dateString).toLocaleTimeString("en-US", {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: false,
-    });
-
-    return `${formattedDate}, at ${time}`;
-  }
-
   return (
     <StyleAnswerComment>
       <div className="comment-list">
@@ -80,7 +59,7 @@ export default function AnswerComment({ data }) {
           <div key={idx} className="comentlist">
             <span className="commentbody">{comment.commentBody} - </span>
             <span className="username"> {comment.username}</span>
-            <span className="createdat">{formatDate(comment.createdAt)}</span>
+            <span className="createdat">{getWriteDate(comment.createdAt)}</span>
           </div>
         ))}
       </div>
