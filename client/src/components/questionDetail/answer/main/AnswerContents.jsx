@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import ShareModal from "../../question/main/ShareModal";
 import { styled } from "styled-components";
 import { usePostContext } from "../../../../context/PostContext";
+import getWriteDate from "../../../common/getWriteDate";
 
 const StyleAnswerContents = styled.div`
   text-align: left;
@@ -17,7 +18,7 @@ const StyleAnswerContents = styled.div`
     justify-content: space-between;
     padding-top: 30px;
     color: var(--black-600);
-    > div {
+    div {
       cursor: pointer;
     }
   }
@@ -46,11 +47,11 @@ const StyleAnswerContents = styled.div`
 `;
 
 export default function AnswerContents({ data }) {
-  // Share상태
-  const [isClickedShare, SetIsClickedShare] = useState(false);
+  // Share 버튼 클릭한 상태
+  const [isClickedShare, setIsClickedShare] = useState(false);
 
-  const toggleShare = (e) => {
-    SetIsClickedShare(!isClickedShare);
+  const toggleShare = () => {
+    setIsClickedShare(!isClickedShare);
   };
 
   // 질문 post 정보 받아오기
@@ -60,37 +61,22 @@ export default function AnswerContents({ data }) {
   }
   const AnswerData = post.posts[0].Answer;
 
-  // 날짜 포맷팅 함수
-  function formatDate(dateString) {
-    const options = {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    };
-    return new Date(dateString).toLocaleDateString("en-US", options);
-  }
-
   return (
     <StyleAnswerContents>
       {data.content}
       <div className="userInfoWrap">
         {isClickedShare ? (
-          <div onClick={(e) => toggleShare()}>
+          <div onClick={toggleShare}>
             Share
-            <ShareModal
-              onClick={(e) => e.stopPropagation()}
-              data={data}
-            ></ShareModal>
+            <ShareModal data={data}></ShareModal>
           </div>
         ) : (
-          <div onClick={(e) => toggleShare()}>Share</div>
+          <div onClick={toggleShare}>Share</div>
         )}
         <div className="userInfo">
-          <div className="date">asked {formatDate(data.created_at)}</div>
+          <div className="date">asked {getWriteDate(data.created_at)}</div>
           <div className="useProfile">
-            <img src="https://mblogthumb-phinf.pstatic.net/MjAyMDExMDFfMjIg/MDAxNjA0MjI4ODc1MDkx.itxFQbHQ_zAuNQJU7PCOlF0mmstYn2v4ZF4WygunqGIg.3jloNowx-eWU-ztCLACtYubVbATNdCFQLjgvYsynV1og.JPEG.gambasg/%EC%9C%A0%ED%8A%9C%EB%B8%8C_%EA%B8%B0%EB%B3%B8%ED%94%84%EB%A1%9C%ED%95%84_%EC%A3%BC%ED%99%A9.jpg?type=w800" />
+            <img src="/images/userImg.png" alt="userImg" />
             <div className="username">{data.username}</div>
           </div>
         </div>

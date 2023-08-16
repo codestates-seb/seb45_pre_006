@@ -43,9 +43,15 @@ const StyleShareModal = styled.div`
     left: 10px;
   }
 
-  .text {
+  .title {
+    display: flex;
+    justify-content: space-between;
     color: var(--black-900);
     font-weight: 800;
+    .sub {
+      font-weight: 500;
+      color: var(--blue-600);
+    }
   }
 
   .link {
@@ -56,11 +62,38 @@ const StyleShareModal = styled.div`
     color: var(--black-900);
   }
 `;
-export default function ShareModal({ onClick, data }) {
+export default function ShareModal({ data }) {
   const currentUrl = window.location.href.split("?")[0];
+
+  // 클립보드에 copy하는 함수
+  const copyToClipboard = (text) => {
+    const textField = document.createElement("textarea");
+    textField.value = text;
+    document.body.appendChild(textField);
+    textField.select();
+    document.execCommand("copy");
+    textField.remove();
+  };
+
+  const handleCopyLink = () => {
+    let linkToCopy = currentUrl;
+    if (data.answer_Id) {
+      linkToCopy += `?section=${data.answer_Id}`;
+    } else {
+      linkToCopy += `?section=`;
+    }
+    copyToClipboard(linkToCopy);
+    alert("Link copied to clipboard.");
+  };
+
   return (
-    <StyleShareModal onClick={onClick}>
-      <div className="text">Share a link to this question </div>
+    <StyleShareModal onClick={(e) => e.stopPropagation()}>
+      <div className="title">
+        <div className="main">Share a link to this question</div>
+        <div className="sub" onClick={handleCopyLink}>
+          Copy link
+        </div>
+      </div>
       <div className="link">
         {currentUrl}?section=
         {data.answer_Id}

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import ShareModal from "./ShareModal";
 import { styled } from "styled-components";
 import { usePostContext } from "../../../../context/PostContext";
+import getWriteDate from "../../../common/getWriteDate";
 
 const StyleContents = styled.div`
   text-align: left;
@@ -46,10 +47,11 @@ const StyleContents = styled.div`
 
 export default function Contents() {
   // Share상태
-  const [isClickedShare, SetIsClickedShare] = useState(false);
+  const [isClickedShare, setIsClickedShare] = useState(false);
+  const [closeShare, setCloseShare] = useState(false);
 
   const toggleShare = (e) => {
-    SetIsClickedShare(!isClickedShare);
+    setIsClickedShare(!isClickedShare);
   };
 
   // 질문 post 정보 받아오기
@@ -59,38 +61,23 @@ export default function Contents() {
   }
   const postData = post.posts[0];
 
-  // 날짜 포맷팅 함수
-  function formatDate(dateString) {
-    const options = {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    };
-    return new Date(dateString).toLocaleDateString("en-US", options);
-  }
-
   return (
-    <StyleContents>
+    <StyleContents onClick={toggleShare}>
       {console.log(postData)}
       {postData.question_content}
       <div className="userInfoWrap">
         {isClickedShare ? (
           <div onClick={(e) => toggleShare()}>
             Share
-            <ShareModal
-              onClick={(e) => e.stopPropagation()}
-              data={postData}
-            ></ShareModal>
+            <ShareModal data={postData}></ShareModal>
           </div>
         ) : (
           <div onClick={(e) => toggleShare()}>Share</div>
         )}
         <div className="userInfo">
-          <div className="date">asked {formatDate(postData.created_at)}</div>
+          <div className="date">asked {getWriteDate(postData.created_at)}</div>
           <div className="useProfile">
-            <img src="https://mblogthumb-phinf.pstatic.net/MjAyMDExMDFfMjIg/MDAxNjA0MjI4ODc1MDkx.itxFQbHQ_zAuNQJU7PCOlF0mmstYn2v4ZF4WygunqGIg.3jloNowx-eWU-ztCLACtYubVbATNdCFQLjgvYsynV1og.JPEG.gambasg/%EC%9C%A0%ED%8A%9C%EB%B8%8C_%EA%B8%B0%EB%B3%B8%ED%94%84%EB%A1%9C%ED%95%84_%EC%A3%BC%ED%99%A9.jpg?type=w800" />
+            <img src="/images/userImg.png" alt="userImg" />
             <div className="username">{postData.user_name}</div>
           </div>
         </div>
