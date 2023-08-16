@@ -15,7 +15,10 @@ const StyleContents = styled.div`
     justify-content: space-between;
     padding-top: 30px;
     color: var(--black-600);
-    cursor: pointer;
+
+    > div {
+      cursor: pointer;
+    }
   }
   .userInfo {
     background-color: var(--powder-100-hover);
@@ -76,7 +79,10 @@ export default function Contents() {
         {isClickedShare ? (
           <div onClick={(e) => toggleShare()}>
             Share
-            <ShareModal onClick={(e) => e.stopPropagation()}></ShareModal>
+            <ShareModal
+              onClick={(e) => e.stopPropagation()}
+              data={postData}
+            ></ShareModal>
           </div>
         ) : (
           <div onClick={(e) => toggleShare()}>Share</div>

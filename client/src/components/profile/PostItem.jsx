@@ -40,7 +40,9 @@ export default function PostItem({ question }) {
   const { question_id, title, created_at, question_answercount } = question;
   return (
     <StylePostItem>
-      <div className={`count ${question_answercount ? "active" : ""}`}>{question_answercount}</div>
+      <div className={`count ${question_answercount ? "active" : ""}`}>
+        {question_answercount}
+      </div>
       <Link className="title" to={`/questions/${question_id}`}>
         {title}
       </Link>

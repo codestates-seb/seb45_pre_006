@@ -17,7 +17,9 @@ const StyleAnswerContents = styled.div`
     justify-content: space-between;
     padding-top: 30px;
     color: var(--black-600);
-    cursor: pointer;
+    > div {
+      cursor: pointer;
+    }
   }
   .userInfo {
     background-color: var(--white);
@@ -79,7 +81,7 @@ export default function AnswerContents({ data }) {
             Share
             <ShareModal
               onClick={(e) => e.stopPropagation()}
-              customTop="820"
+              data={data}
             ></ShareModal>
           </div>
         ) : (

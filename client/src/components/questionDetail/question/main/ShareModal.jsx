@@ -56,12 +56,15 @@ const StyleShareModal = styled.div`
     color: var(--black-900);
   }
 `;
-export default function ShareModal({ onClick }) {
-  const currentUrl = window.location.href;
+export default function ShareModal({ onClick, data }) {
+  const currentUrl = window.location.href.split("?")[0];
   return (
     <StyleShareModal onClick={onClick}>
       <div className="text">Share a link to this question </div>
-      <div className="link">{currentUrl}</div>
+      <div className="link">
+        {currentUrl}?section=
+        {data.answer_Id}
+      </div>
     </StyleShareModal>
   );
 }

@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import { usePostContext } from "../../../../context/PostContext";
+import getTimeAgoText from "../../../common/getTimeAgoText";
 
 const StyleQuestionInfo = styled.div`
   display: flex;
@@ -13,13 +14,17 @@ const StyleQuestionInfo = styled.div`
 `;
 
 export default function QuestionInfo() {
+  // 질문 post 정보 받아오기
   const { post } = usePostContext();
+  if (!post || !post.posts) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <StyleQuestionInfo>
-      <div>Asked: {post ? post.posts[0].created_at : "Loading..."}</div>
-      <div>Modified: {post ? post.posts[0].updated_at : "Loading..."}</div>
-      <div>Viewed:{post ? post.posts[0].question_viewcount : "Loading..."}</div>
+      <div>Asked: {getTimeAgoText(post.posts[0].created_at)}</div>
+      <div>Modified: {getTimeAgoText(post.posts[0].updated_at)}</div>
+      <div>Viewed:{post.posts[0].question_viewcount}</div>
     </StyleQuestionInfo>
   );
 }
