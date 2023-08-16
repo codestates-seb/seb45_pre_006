@@ -18,7 +18,7 @@ const StyleAnswerContents = styled.div`
     justify-content: space-between;
     padding-top: 30px;
     color: var(--black-600);
-    > div {
+    div {
       cursor: pointer;
     }
   }
@@ -47,11 +47,11 @@ const StyleAnswerContents = styled.div`
 `;
 
 export default function AnswerContents({ data }) {
-  // Share상태
-  const [isClickedShare, SetIsClickedShare] = useState(false);
+  // Share 버튼 클릭한 상태
+  const [isClickedShare, setIsClickedShare] = useState(false);
 
-  const toggleShare = (e) => {
-    SetIsClickedShare(!isClickedShare);
+  const toggleShare = () => {
+    setIsClickedShare(!isClickedShare);
   };
 
   // 질문 post 정보 받아오기
@@ -66,20 +66,17 @@ export default function AnswerContents({ data }) {
       {data.content}
       <div className="userInfoWrap">
         {isClickedShare ? (
-          <div onClick={(e) => toggleShare()}>
+          <div onClick={toggleShare}>
             Share
-            <ShareModal
-              onClick={(e) => e.stopPropagation()}
-              data={data}
-            ></ShareModal>
+            <ShareModal data={data}></ShareModal>
           </div>
         ) : (
-          <div onClick={(e) => toggleShare()}>Share</div>
+          <div onClick={toggleShare}>Share</div>
         )}
         <div className="userInfo">
           <div className="date">asked {getWriteDate(data.created_at)}</div>
           <div className="useProfile">
-            <img src="https://mblogthumb-phinf.pstatic.net/MjAyMDExMDFfMjIg/MDAxNjA0MjI4ODc1MDkx.itxFQbHQ_zAuNQJU7PCOlF0mmstYn2v4ZF4WygunqGIg.3jloNowx-eWU-ztCLACtYubVbATNdCFQLjgvYsynV1og.JPEG.gambasg/%EC%9C%A0%ED%8A%9C%EB%B8%8C_%EA%B8%B0%EB%B3%B8%ED%94%84%EB%A1%9C%ED%95%84_%EC%A3%BC%ED%99%A9.jpg?type=w800" />
+            <img src="/images/userImg.png" alt="userImg" />
             <div className="username">{data.username}</div>
           </div>
         </div>

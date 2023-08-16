@@ -62,7 +62,7 @@ const StyleShareModal = styled.div`
     color: var(--black-900);
   }
 `;
-export default function ShareModal({ onClick, data }) {
+export default function ShareModal({ data }) {
   const currentUrl = window.location.href.split("?")[0];
 
   // 클립보드에 copy하는 함수
@@ -87,7 +87,7 @@ export default function ShareModal({ onClick, data }) {
   };
 
   return (
-    <StyleShareModal onClick={onClick}>
+    <StyleShareModal onClick={(e) => e.stopPropagation()}>
       <div className="title">
         <div className="main">Share a link to this question</div>
         <div className="sub" onClick={handleCopyLink}>
