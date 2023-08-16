@@ -14,7 +14,7 @@ export default function AskQuestion() {
   return (
     <StyleAskQuestion>
       {/* 페이지 추가하면 경로 바꿔줘야함 */}
-      <BlueButton onClick={() => nav("/")}>Ask Question</BlueButton>
+      <BlueButton onClick={() => nav("/ask")}>Ask Question</BlueButton>
     </StyleAskQuestion>
   );
 }

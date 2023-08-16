@@ -63,14 +63,14 @@ export default function WriteTitle({
   onInputChangeHandler,
   clearForm,
   handleNextClick,
-  isActive,
+  length,
 }) {
   const handleEnterKeyPress = (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
       // 폼 제출시 로직을 구현해야함
       console.log("Form submitted:", inputData.title);
-      if (isActive) {
+      if (length > 5) {
         handleNextClick(); //포커스 이동핸들러함수
         //5글자 이상일경우 포커스 이동가능
       }
@@ -80,7 +80,7 @@ export default function WriteTitle({
   const handleSubmit = () => {
     // 폼 제출시 로직을 구현해야함
     console.log("Form submitted:", inputData.title);
-    if (isActive) {
+    if (length > 5) {
       handleNextClick(); //포커스 이동핸들러함수
       //5글자 이상일경우 포커스 이동가능
     }
@@ -114,7 +114,9 @@ export default function WriteTitle({
         />
         <div className="buttonSection">
           <BlueButton onClick={handleSubmit}>Next</BlueButton>
-          {isActive ? null : <div className="alert">Minimum 5 characters.</div>}
+          {length < 1 ? null : (
+            <div className="alert">Minimum 5 characters.</div>
+          )}
         </div>
       </StyleWriteTitle>
       {inputFocused && <TitleGuide />}

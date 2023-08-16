@@ -34,7 +34,7 @@ export default function WriteContainer() {
         onInputChangeHandler={onInputChangeHandler}
         clearForm={clearForm}
         handleNextClick={handleNextClick}
-        isActive={inputData.title.length > 5}
+        length={inputData.title.length}
       ></WriteTitle>
       <WriteContent
         isActive={inputData.title.length > 5}
