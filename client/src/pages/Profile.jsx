@@ -4,9 +4,13 @@ import { Routes, Route, useParams } from "react-router-dom";
 import UserCard from "../components/profile/UserCard";
 import UserProfile from "../components/profile/UserProfile";
 import UserSetting from "../components/profile/UserSetting";
-import AdminProtectedRoute from "./AdminProtectedRoute";
+import ProtectedRoute from "./ProtectedRoute";
 import ProfileTabButtons from "../components/profile/profileTab/ProfileTabButtons";
 import NotFound from "./NotFound";
+import { useEffect } from "react";
+import { useState } from "react";
+import axios from "axios";
+import { useAuthContext } from "../context/AuthContext";
 
 const StyleProfile = styled.section`
   width: 100%;
@@ -21,95 +25,50 @@ const StyleProfile = styled.section`
 const profileParams = ["", "edit"];
 
 export default function Profile() {
-  if (!profileParams.includes(useParams()["*"])) return <NotFound />;
+  const [userProfile, setUserProfile] = useState(null);
+  const { profileId } = useParams();
+  const { user } = useAuthContext();
 
-  const user = {
-    email: "hgd@gmail.com",
-    userName: "ㅁㄴㅇㄹ",
-    aboutMe: "hello",
-    img: "",
-    userId: "123123",
-    create_At: new Date(2021, 4, 15),
-    isAdmin: true,
-    questionList: [
-      {
-        question_id: "1",
-        title: "제목1",
-        created_at: new Date(2023, 7, 15),
-        question_answercount: "3",
-      },
-      {
-        question_id: "2",
-        title: "제목2",
-        created_at: new Date(2023, 7, 15),
-        question_answercount: "4",
-      },
-      {
-        question_id: "3",
-        title: "제목1",
-        created_at: new Date(2023, 7, 15),
-        question_answercount: "3",
-      },
-      {
-        question_id: "4",
-        title: "제목2",
-        created_at: new Date(2023, 7, 15),
-        question_answercount: "4",
-      },
-      {
-        question_id: "5",
-        title: "제목1",
-        created_at: new Date(2023, 7, 15),
-        question_answercount: "3",
-      },
-      {
-        question_id: "6",
-        title: "제목2",
-        created_at: new Date(2023, 7, 15),
-        question_answercount: "4",
-      },
-      {
-        question_id: "7",
-        title: "제목1",
-        created_at: new Date(2013, 6, 10),
-        question_answercount: "3",
-      },
-      {
-        question_id: "8",
-        title: "제목",
-        created_at: Date.now(),
-        question_answercount: "4",
-      },
-      {
-        question_id: "9",
-        title: "제목1",
-        created_at: new Date(2023, 7, 15),
-        question_answercount: "3",
-      },
-      {
-        question_id: "10",
-        title: "제목2",
-        created_at: new Date(2023, 7, 15),
-        question_answercount: "4",
-      },
-    ],
-  };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(`/user/profile/${profileId}/${user.userId}`, {
+          headers: {
+            "ngrok-skip-browser-warning": "69420",
+          },
+        });
+        const { aboutMe, createdAt, displayName, email, img, postList, userId } = res.data;
+        setUserProfile({ aboutMe, createdAt, displayName, email, img, postList, userId });
+        // question_id, title, question_answercount,createdAt, isAdmin 필요
+      } catch (error) {
+        console.log("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (!profileParams.includes(useParams()["*"])) return <NotFound />;
+  if (!userProfile) {
+    return <NotFound />;
+  }
 
   return (
     <StyleProfile>
-      <UserCard user={user} />
-      <ProfileTabButtons user={user} />
+      <UserCard userProfile={userProfile} />
+      <ProfileTabButtons userProfile={userProfile} />
       <Routes>
-        <Route path="/" element={<UserProfile user={user} />} />
+        <Route path="/" element={<UserProfile userProfile={userProfile} />} />
         <Route
           path="edit"
           element={
-            <AdminProtectedRoute user={user}>
-              <UserSetting user={user} />
-            </AdminProtectedRoute>
+            <ProtectedRoute requireAdmin isAdmin={userProfile.isAdmin}>
+              <UserSetting userProfile={userProfile} />
+            </ProtectedRoute>
           }
         />
       </Routes>
     </StyleProfile>
   );
 }
+

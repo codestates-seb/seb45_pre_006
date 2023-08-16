@@ -40,9 +40,9 @@ const StyleEditProfile = styled.div`
     }
   }
 `;
-export default function EditProfile({ user }) {
-  const { userName, aboutMe, userId } = user;
-  const [editForm, setEditForm] = useForm({ displayName: userName, aboutMe });
+export default function EditProfile({ userProfile }) {
+  const { displayName, aboutMe, userId } = userProfile;
+  const [editForm, setEditForm] = useForm({ displayName, aboutMe });
   const [error, setError] = useError({ displayName: "" });
   const nav = useNavigate();
 
@@ -51,7 +51,7 @@ export default function EditProfile({ user }) {
     if (editForm.displayName.length < 2) {
       setError({ displayName: "displayName must be at least 2 characters" });
     } else {
-        // 개인정보 수정 요청
+      // 개인정보 수정 요청
     }
   };
 
@@ -59,8 +59,10 @@ export default function EditProfile({ user }) {
     const editor = new Editor({
       el: document.querySelector("#editor"),
       initialEditType: "markdown",
+      initialValue: aboutMe,
       previewStyle: "vertical",
     });
+
     setEditForm(null, "aboutMe", editor.getMarkdown());
     editor.on("change", () => {
       setEditForm(null, "aboutMe", editor.getMarkdown());

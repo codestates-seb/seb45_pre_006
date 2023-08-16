@@ -4,7 +4,9 @@ import ErrorInput from "../common/ErrorInput";
 import useForm from "../../hooks/useForm";
 import useError from "../../hooks/useError";
 import { BlueButton } from "../common/Button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useAuthContext } from "../../context/AuthContext";
 const StyleSiteLogin = styled.form`
   width: 288px;
   height: 234px;
@@ -35,7 +37,8 @@ const StyleSiteLogin = styled.form`
 export default function SiteLogin() {
   const [signinForm, setSigninForm, clearLoginForm] = useForm({ email: "", password: "" });
   const [error, setError] = useError({ email: "", password: "" });
-
+  const nav = useNavigate();
+  const { userHandler } = useAuthContext();
   const loginValidation = () => {
     const errors = {
       email: "",
@@ -60,10 +63,21 @@ export default function SiteLogin() {
     return Object.values(errors).every((error) => error === "");
   };
 
-  const siteLoginHandler = (e) => {
+  const siteLoginHandler = async (e) => {
     e.preventDefault();
     if (loginValidation()) {
-      // accessToken, refreshToken
+      try {
+        const res = await axios.post("/user/login", {
+          email: signinForm.email,
+          password: signinForm.password,
+        });
+        const { userid: userId, img, displayname: displayName } = res.headers;
+        userHandler({ userId, img, displayName });
+        localStorage.setItem("user", { userId, img, displayName });
+        nav("/");
+      } catch (e) {
+        // 로그인 에러처리
+      }
       clearLoginForm();
     }
   };

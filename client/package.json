@@ -2,6 +2,7 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
+  "proxy": "https://03d4-118-33-214-27.ngrok-free.app",
   "dependencies": {
     "@tanstack/react-query": "^4.32.6",
     "@testing-library/jest-dom": "^5.17.0",
