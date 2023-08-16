@@ -1,7 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import { BlueButton } from "../common/Button";
-import { ErrorInput } from "../common/ErrorInput";
+import ErrorInput from "../common/ErrorInput";
 import useError from "../../hooks/useError";
 import useForm from "../../hooks/useForm";
 const StyleSiteSignup = styled.form`

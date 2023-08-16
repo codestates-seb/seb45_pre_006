@@ -1,7 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
-import About from "./About";
-import Posts from "./Posts";
+import About from "./profileTab/About";
+import Posts from "./profileTab/Posts";
 
 const StyleUserProfile = styled.div`
   display: flex;

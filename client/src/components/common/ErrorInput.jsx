@@ -20,16 +20,7 @@ const StyleErrorInput = styled.div`
     margin-bottom: 15px;
   }
 `;
-export const ErrorInput = ({
-  label,
-  type,
-  name,
-  value,
-  onChange,
-  error,
-  maxLength,
-  autoComplete,
-}) => (
+const ErrorInput = ({ label, type, name, value, onChange, error, maxLength, autoComplete }) => (
   <StyleErrorInput>
     <label htmlFor={name}>{label}</label>
     <Input
@@ -45,3 +36,5 @@ export const ErrorInput = ({
     <div className="error-message">{error}</div>
   </StyleErrorInput>
 );
+
+export default ErrorInput;

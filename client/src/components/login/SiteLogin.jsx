@@ -1,6 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
-import { ErrorInput } from "../common/ErrorInput";
+import ErrorInput from "../common/ErrorInput";
 import useForm from "../../hooks/useForm";
 import useError from "../../hooks/useError";
 import { BlueButton } from "../common/Button";
@@ -10,7 +10,7 @@ const StyleSiteLogin = styled.form`
   height: 234px;
   background-color: var(--white);
   border-radius: 5px;
-  box-shadow: 0 0 5px 2px var(--shadow)
+  box-shadow: 0 0 5px 2px var(--shadow);
   padding: 24px;
   position: relative;
   input {

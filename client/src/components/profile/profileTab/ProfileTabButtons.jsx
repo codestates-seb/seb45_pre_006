@@ -1,5 +1,5 @@
 import React from "react";
-import { WhiteButton } from "../common/Button";
+import { WhiteButton } from "../../common/Button";
 import { useNavigate, useLocation } from "react-router-dom";
 
 export default function ProfileTabButtons({ user }) {
