@@ -1,24 +1,29 @@
 import React from "react";
-import { WhiteButton } from "../common/Button";
+import { WhiteButton } from "../../common/Button";
 import { styled } from "styled-components";
-const StyleEditTabButtons = styled.div`
+const StyleSettingTabButtons = styled.div`
   display: flex;
   flex-direction: column;
+  h4 {
+    font-size: 12px;
+    padding: 6px 12px;
+    font-weight: 900;
+  }
   button {
-    width: 175px;
+    width: 185px;
     height: 30px;
     display: flex;
     justify-content: start;
   }
 `;
 
-export default function EditTabButtons({ currentTab, currentTabHandler }) {
+export default function SettingTabButtons({ currentTab, currentTabHandler }) {
   const SettingButtons = [
     { text: "Edit profile", value: "profile" },
     { text: "Your logins", value: "logins" },
   ];
   return (
-    <StyleEditTabButtons>
+    <StyleSettingTabButtons>
       <h4>PERSONAL INFORMATION</h4>
       {SettingButtons.map((button) => (
         <WhiteButton
@@ -29,6 +34,6 @@ export default function EditTabButtons({ currentTab, currentTabHandler }) {
           {button.text}
         </WhiteButton>
       ))}
-    </StyleEditTabButtons>
+    </StyleSettingTabButtons>
   );
 }

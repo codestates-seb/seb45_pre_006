@@ -5,7 +5,7 @@ import UserCard from "../components/profile/UserCard";
 import UserProfile from "../components/profile/UserProfile";
 import UserSetting from "../components/profile/UserSetting";
 import AdminProtectedRoute from "./AdminProtectedRoute";
-import ProfileTabButtons from "../components/profile/ProfileTabButtons";
+import ProfileTabButtons from "../components/profile/profileTab/ProfileTabButtons";
 import NotFound from "./NotFound";
 
 const StyleProfile = styled.section`
