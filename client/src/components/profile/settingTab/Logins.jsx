@@ -3,12 +3,12 @@ import { styled } from "styled-components";
 import PasswordChange from "./PasswordChange";
 const StyleLogins = styled.div``;
 
-export default function Logins({ user }) {
-  const { userId } = user;
+export default function Logins({ userProfile }) {
+  const { userId } = userProfile;
 
   return (
     <StyleLogins>
-      <PasswordChange user={user} />
+      <PasswordChange userProfile={userProfile} />
     </StyleLogins>
   );
 }

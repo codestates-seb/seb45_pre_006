@@ -40,9 +40,9 @@ const StyleEditProfile = styled.div`
     }
   }
 `;
-export default function EditProfile({ user }) {
-  const { userName, aboutMe, userId } = user;
-  const [editForm, setEditForm] = useForm({ displayName: userName, aboutMe });
+export default function EditProfile({ userProfile }) {
+  const { displayName, aboutMe, userId } = userProfile;
+  const [editForm, setEditForm] = useForm({ displayName, aboutMe });
   const [error, setError] = useError({ displayName: "" });
   const nav = useNavigate();
 

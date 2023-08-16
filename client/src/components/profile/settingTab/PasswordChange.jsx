@@ -3,8 +3,8 @@ import useForm from "../../../hooks/useForm";
 import useError from "../../../hooks/useError";
 import ErrorInput from "../../common/ErrorInput";
 
-export default function PasswordChange({ user }) {
-  const { userId } = user;
+export default function PasswordChange({ userProfile }) {
+  const { userId } = userProfile;
   const [loginsForm, setLoginForm] = useForm({
     currentPassword: "",
     newPassword: "",

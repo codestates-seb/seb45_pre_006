@@ -24,14 +24,14 @@ const StyleAbout = styled.div`
   }
 `;
 
-export default function About({ user }) {
-  const { isAdmin, aboutMe, userId } = user;
+export default function About({ userProfile }) {
+  const { isAdmin, aboutMe, userId } = userProfile;
   return (
     <StyleAbout $admin={isAdmin}>
       <h4>About</h4>
       {!isAdmin && !aboutMe ? (
         <></>
-      ) : user.aboutMe ? (
+      ) : aboutMe ? (
         <>{aboutMe}</>
       ) : (
         <div className="write-about">
