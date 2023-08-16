@@ -48,11 +48,12 @@ export default function AnswerEditor() {
     });
 
     return () => {
-      // 언마운트
-      editor.remove();
+      //언마운트
+      editor.destroy();
     };
   }, []); // 한번실행
 
+  // 회원만 작성가능하도록 조건부 렌더링 구현해야함!!
   return (
     <StyleAnswerEditor>
       <div className="title">Your Answer</div>
