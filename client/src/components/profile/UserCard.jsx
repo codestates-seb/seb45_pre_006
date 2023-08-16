@@ -51,17 +51,18 @@ const StyleUserCard = styled.div`
     }
   }
 `;
-export default function UserCard({ user }) {
-  const { userName, userId, img, create_At, isAdmin } = user;
+export default function UserCard({ userProfile }) {
+  const { displayName, userId, img, createdAt, isAdmin } = userProfile;
   const nav = useNavigate();
+  console.log(createdAt);
   return (
     <StyleUserCard>
       <img src={img || "/images/userImg.png"} alt="userImg" />
       <div className="description">
-        <span className="user-name">{userName}</span>
+        <span className="user-name">{displayName}</span>
         <div className="create-at">
           <MdCake size={18} />
-          <span>Member for {calculateDateDifference(create_At)}</span>
+          <span>Member for {calculateDateDifference(createdAt)}</span>
         </div>
       </div>
       {isAdmin && (

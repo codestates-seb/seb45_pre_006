@@ -13,11 +13,11 @@ const StyleUserProfile = styled.div`
   }
 `;
 
-export default function UserProfile({ user }) {
+export default function UserProfile({ userProfile }) {
   return (
     <StyleUserProfile>
-      <About user={user} />
-      <Posts user={user} />
+      <About ProfileUser={userProfile} />
+      <Posts ProfileUser={userProfile} />
     </StyleUserProfile>
   );
 }

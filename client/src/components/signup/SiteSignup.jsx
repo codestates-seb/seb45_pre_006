@@ -4,6 +4,8 @@ import { BlueButton } from "../common/Button";
 import ErrorInput from "../common/ErrorInput";
 import useError from "../../hooks/useError";
 import useForm from "../../hooks/useForm";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 const StyleSiteSignup = styled.form`
   background: var(--white);
   height: 425px;
@@ -41,7 +43,7 @@ export default function SiteSignup() {
     password: "",
   });
   const [error, setError] = useError({ displayName: "", email: "", password: "" });
-
+  const nav = useNavigate();
   const signupValidation = () => {
     const errors = {
       displayName: "",
@@ -73,8 +75,14 @@ export default function SiteSignup() {
   const siteSignupHandler = (e) => {
     e.preventDefault();
     if (signupValidation()) {
-      // 회원가입 진행
-      console.log(signupForm);
+      axios
+        .post("/user/post", {
+          displayName: signupForm.displayName,
+          email: signupForm.email,
+          password: signupForm.password,
+        })
+        .then(() => nav("/login"))
+        .catch(() => setError({ ...error, email: "email already exists" }));
       clearSignupForm();
     }
   };

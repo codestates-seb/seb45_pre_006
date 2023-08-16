@@ -8,7 +8,7 @@ const StyleUserEdit = styled.div`
   display: flex;
   gap: 30px;
 `;
-export default function UserSetting({ user }) {
+export default function UserSetting({ userProfile }) {
   const [currentTab, setCurrentTab] = useState("profile");
   const currentTabHandler = (value) => {
     setCurrentTab(value);
@@ -17,7 +17,11 @@ export default function UserSetting({ user }) {
   return (
     <StyleUserEdit>
       <SettingTabButtons currentTab={currentTab} currentTabHandler={currentTabHandler} />
-      {currentTab === "profile" ? <EditProfile user={user} /> : <Logins user={user} />}
+      {currentTab === "profile" ? (
+        <EditProfile userProfile={userProfile} />
+      ) : (
+        <Logins userProfile={userProfile} />
+      )}
     </StyleUserEdit>
   );
 }
