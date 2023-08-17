@@ -4,23 +4,31 @@ import { styled } from "styled-components";
 const StyleWriteGuide = styled.div`
   background-color: #ebf4fb;
   border: 1px solid #adc5dd;
-  height: 240px;
   padding: 24px;
   border-radius: 5px;
   line-height: 22px;
   width: 800px;
+  height: 235px;
   h2 {
     font-size: 21px;
+    margin-bottom: 15px;
   }
   h3 {
     font-size: 15px;
+    margin-bottom: 15px;
+
+    line-height: 1.2rem;
   }
   ul {
-    font-size: 13px;
+    font-size: 12px;
     list-style: disc;
+    line-height: 1rem;
     .steps {
       font-weight: 600;
       list-style: none;
+    }
+    ol {
+      margin-bottom: 5px;
     }
     li {
       margin-left: 30px;
