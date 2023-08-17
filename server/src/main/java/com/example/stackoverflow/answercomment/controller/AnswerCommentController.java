@@ -34,9 +34,9 @@ public class AnswerCommentController {
         return new ResponseEntity (response,HttpStatus.CREATED);
     }
     @PatchMapping("/{answer-comment-id}")
-    public ResponseEntity patchAnswerComment(@PathVariable("answer-comment-id")@Positive long answerComment_Id,
+    public ResponseEntity patchAnswerComment(@PathVariable("answer-comment-id")@Positive long answerComment_id,
                                              @Valid @RequestBody AnswerCommentPatchDto answerCommentPatchDto){
-        answerCommentPatchDto.setAnswerComment_Id(answerComment_Id);
+        answerCommentPatchDto.setAnswerComment_id(answerComment_id);
         AnswerComment answerComment = answerCommentService.updateAnswerComment(answerCommentMapper.answerCommentPatchDtoToAnswer(answerCommentPatchDto));
         return new ResponseEntity(
                 new SingleResponseDto<>(answerCommentMapper.answerCommentToAnswerCommentResponseDto(answerComment)), HttpStatus.OK
@@ -49,8 +49,8 @@ public class AnswerCommentController {
                 new SingleResponseDto<>(answerCommentMapper.answerCommentToAnswerCommentResponseDtos(answerComments)),HttpStatus.OK);
     }
     @DeleteMapping("/{answer-comment-id}")
-    public ResponseEntity deleteAnswerComment(@PathVariable("answer-comment-id")@Positive long answerComment_Id){
-        answerCommentService.deleteAnswerComment(answerComment_Id);
+    public ResponseEntity deleteAnswerComment(@PathVariable("answer-comment-id")@Positive long answerComment_id){
+        answerCommentService.deleteAnswerComment(answerComment_id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
