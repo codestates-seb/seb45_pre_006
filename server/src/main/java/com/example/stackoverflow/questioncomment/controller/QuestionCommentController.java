@@ -47,7 +47,7 @@ public class QuestionCommentController {
                 new SingleResponseDto<>(questionCommentMapper.questionCommentToResponseDto(questionComment)),HttpStatus.OK
         );
     }
-    @GetMapping
+    @GetMapping()
     public ResponseEntity getQuestionComment(){
         List<QuestionComment> questionComments = questionCommentService.findQuestionComments();
         return new ResponseEntity<>(
