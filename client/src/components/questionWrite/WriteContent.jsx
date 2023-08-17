@@ -48,6 +48,7 @@ export default function WriteContent({ isActive, editorRef }) {
 
   useEffect(() => {
     const editor = new Editor({
+      autofocus: false,
       el: document.querySelector("#editor"),
       initialEditType: "markdown",
       initialValue: content,
@@ -63,8 +64,8 @@ export default function WriteContent({ isActive, editorRef }) {
         },
       },
     });
-    editorRef.current = editor; // ediotr 인스턴스를 ref에 할당
 
+    editorRef.current = editor; // ediotr 인스턴스를 ref에 할당
     return () => {
       editor.destroy();
     };
