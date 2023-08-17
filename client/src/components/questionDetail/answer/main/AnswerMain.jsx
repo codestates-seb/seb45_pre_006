@@ -60,7 +60,7 @@ export default function AnswerMain() {
         currentPage={currentPage}
         onPageChange={setCurrentPage}
       />
-      {AnswerData.slice(startIndex, endIndex).map((answerItem) => (
+      {AnswerData.slice(startIndex, endIndex).map((answerItem, idx) => (
         <div
           key={answerItem.answer_Id}
           id={answerItem.answer_Id}
@@ -68,7 +68,7 @@ export default function AnswerMain() {
         >
           <div className="Contentscontainer">
             <AnswerVote data={answerItem} />
-            <AnswerContents data={answerItem} />
+            <AnswerContents data={answerItem} idx={idx} />
           </div>
           <AnswerComment data={answerItem} />
         </div>

@@ -30,7 +30,7 @@ const StyleApp = styled.div`
   }
 `;
 
-const sidebarPaths = ["profile", "users", "search", "questions", ""];
+const sidebarPaths = ["profile", "users", "search", "questions", "answers", ""];
 const footerPaths = ["profile", "users", "search", "questions", "ask", ""];
 
 function App() {
@@ -53,6 +53,7 @@ function App() {
               element={<QuestionDetail />}
             />
             <Route path={"/questions/:questionId/edit"} element={<Edit />} />
+            <Route path={"/answers/:answerId/edit"} element={<Edit />} />
             <Route path={"/ask"} element={<QuestionWrite />} />
             <Route path={"/login"} element={<Login />} />
             <Route path={"/signup"} element={<Signup />} />
