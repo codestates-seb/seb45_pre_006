@@ -37,6 +37,7 @@ export default function AnswerEditor() {
 
   useEffect(() => {
     const editor = new Editor({
+      autofocus: false,
       el: document.querySelector("#editor"),
       initialEditType: "markdown",
       initialValue: content,
