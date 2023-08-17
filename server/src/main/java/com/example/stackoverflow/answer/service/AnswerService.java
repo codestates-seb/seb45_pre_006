@@ -3,18 +3,18 @@ package com.example.stackoverflow.answer.service;
 import com.example.stackoverflow.answer.entity.Answer;
 import com.example.stackoverflow.answer.repository.AnswerRepository;
 import com.example.stackoverflow.question.entity.Question;
+import com.example.stackoverflow.question.repository.QuestionRepository;
 import com.example.stackoverflow.question.service.QuestionService;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AnswerService {
     private final AnswerRepository answerRepository;
-    private final QuestionService questionService;
+    private final QuestionRepository questionRepository;
 
-
-    public AnswerService(AnswerRepository answerRepository, QuestionService questionService) {
+    public AnswerService(AnswerRepository answerRepository, QuestionRepository questionRepository) {
         this.answerRepository = answerRepository;
-        this.questionService = questionService;
+        this.questionRepository = questionRepository;
     }
 
     /**
@@ -88,7 +88,9 @@ public class AnswerService {
      **/
     public Answer unrecommendAnswer(long answerId) {
         Answer answer = answerRepository.findById(answerId).orElse(null);
-        answer.setAnswer_recommendation(answer.decrementRecommendation());
+        if (answer.getAnswer_recommendation() != 0) {
+            answer.setAnswer_recommendation(answer.decrementRecommendation());
+        }
         return answerRepository.save(answer);
     }
 
@@ -96,7 +98,7 @@ public class AnswerService {
      * 해당 id의 게시글이 있는지 확인하는 메서드
      **/
     private Question findVerifiedQuestion(long questionId) {
-        return questionService.readQuestion(questionId);
+        return questionRepository.findById(questionId).orElse(null);
     }
 
 }

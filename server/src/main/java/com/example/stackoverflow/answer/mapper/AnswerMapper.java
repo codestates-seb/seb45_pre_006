@@ -17,10 +17,12 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface AnswerMapper {
 
+
     Answer answerPostDtoToAnswer(AnswerPostDto answerPostDto);
 
     Answer answerPatchDtoToAnswer(AnswerPatchDto answerPatchDto);
 
     AnswerResponseDto answerToAnswerResponseDto(Answer answer);
+
 
 }

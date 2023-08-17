@@ -35,7 +35,7 @@ public class QuestionController {
     }
 
     /** ✅질문 작성(Create) **/
-    @PostMapping("/ask")
+    @PostMapping
     public ResponseEntity postQuestion(@Valid @RequestBody QuestionPostDto questionPostDto){
         // 글자 수 제한 여부 체크 할지 말지
         Question question = questionService.createQuestion(mapper.questionPostDtoToQuestion(questionPostDto));
@@ -45,7 +45,8 @@ public class QuestionController {
 
     /** ✅전체 질문 조회(Read) - 메인 페이지 **/
     @GetMapping
-    public ResponseEntity getQuestions(int page, int size){
+    public ResponseEntity getQuestions(@RequestParam(name = "page", defaultValue = "0") int page,
+                                       @RequestParam(name = "size", defaultValue = "10") int size){
         Page<Question> pageQuestions = questionService.readQuestions(page,size);
         boolean hasNextPage = pageQuestions.hasNext();
 
@@ -58,7 +59,9 @@ public class QuestionController {
 
     /** ✅전체 질문 조회(Read) - 답변 여부로 필터링 **/
     @GetMapping("/filter")
-    public ResponseEntity getQuestionFilterByAnswer(boolean hasAnswer,int page, int size){
+    public ResponseEntity getQuestionFilterByAnswer(@RequestParam boolean hasAnswer,
+                                                    @RequestParam(name = "page", defaultValue = "0") int page,
+                                                    @RequestParam(name = "size", defaultValue = "10") int size){
         Page<Question> pageQuestions = questionService.readQuestionsFilterByAnswer(hasAnswer,page,size);
         boolean hasNextPage = pageQuestions.hasNext();
 
@@ -69,11 +72,10 @@ public class QuestionController {
         return new ResponseEntity<>(new ScrollResponseDto<>(resultQuestions, hasNextPage), HttpStatus.OK);
     }
 
-    /** ✅선택 질문 조회(Read) **/
+    /** ✅선택 질문 조회(Read) - 질문,질문 댓글,답변,답변 댓글 전부 나와야함 **/
     @GetMapping("/{question-id}")
     public ResponseEntity getQuestion(@PathVariable("question-id")@Positive long question_id){
         Question question = questionService.readQuestion(question_id);
-
         return new ResponseEntity<>(mapper.questionToQuestionResponseAllDto(question),HttpStatus.OK);
     }
 
@@ -91,12 +93,14 @@ public class QuestionController {
     @DeleteMapping("/{question-id}")
     public ResponseEntity deleteQuestion(@PathVariable("question-id") long question_id){
         questionService.deleteQuestion(question_id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    /** ✅질문 검색 **/
+    /** ✅질문 검색 - 키워드로 검색 **/
     @GetMapping("/search")
-    public ResponseEntity searchQuestion(@RequestParam("keyword") String keyword, int page, int size){
+    public ResponseEntity searchQuestion(@RequestParam("keyword") String keyword,
+                                         @RequestParam(name = "page", defaultValue = "0") int page,
+                                         @RequestParam(name = "size", defaultValue = "10") int size){
         Page<Question> pageQuestions = questionService.searchQuestion(keyword, page, size);
 
         boolean hasNextPage = pageQuestions.hasNext();

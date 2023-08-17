@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.Optional;
 
 public interface QuestionCommentRepository extends JpaRepository<QuestionComment,Long> {
-    @Query(value = "SELECT q FROM QuestionComment q WHERE q.questionComment_Id = :questionComment_Id")
-    Optional<QuestionComment> findByQuestionComment(long questionComment_Id);
+    @Query(value = "SELECT q FROM QuestionComment q WHERE q.questionComment_id = :questionComment_id")
+    Optional<QuestionComment> findByQuestionComment(long questionComment_id);
 }

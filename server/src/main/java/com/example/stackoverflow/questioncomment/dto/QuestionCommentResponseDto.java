@@ -8,9 +8,9 @@ import java.time.LocalDateTime;
 @Builder
 @Getter
 public class QuestionCommentResponseDto {
-    private long questionComment_Id;
-    private String questionComment_Content;
+
+    private long questionComment_id;
+    private String questionComment_content;
     private LocalDateTime questionComment_createdAt;
     private LocalDateTime questionComment_modifiedAt;
-
 }
