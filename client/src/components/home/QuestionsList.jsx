@@ -2,10 +2,8 @@ import React from 'react';
 import { styled } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
-import { FiUser } from 'react-icons/fi';
 
-
-const ListStyle = styled.ul `
+export const ListStyle = styled.ul `
   .questions-container {
     height: 100%;
     background-color: white;
@@ -69,13 +67,13 @@ const ListStyle = styled.ul `
   .question-user {
     height: 25px;
     position: absolute;
+    display: flex;
     bottom: 2px;
     right: 30px;
   }
   .user-img {
     width: 16px;
     height: 16px;
-    padding-top: 3px;
   }
   .question-user > span {
     font-size: 12px;
@@ -112,7 +110,7 @@ export default function QuestionsList(props) {
                             {question.question_content}
                           </p>
                         <div className="question-user">
-                          <FiUser className='user-img'></FiUser>
+                          <img src='/images/userImg.png' alt='userIcon' className='user-img'></img>
                           {/* 이미지로 대체해야하나요? 아니면 기본이미지? */}
                           <span onClick={(user_name)=>{currentPath(`/users/${question.user_name}`)}}>
                             {question.user_name}
