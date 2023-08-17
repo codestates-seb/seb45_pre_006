@@ -1,18 +1,18 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { styled } from "styled-components";
 import { Editor } from "@toast-ui/editor";
 import "@toast-ui/editor/dist/toastui-editor.css";
-import ContentGuide from "./ContentGuide";
+import FormatGuide from "./FormatGuide";
 import { BlueButton } from "../common/Button";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   display: flex;
   flex-direction: row;
-  ${({ isActive }) => !isActive && "opacity: 0.5; pointer-events: none;"}
 `;
 
-const StyleWriteContent = styled.div`
+const StyleEditContent = styled.div`
   display: flex;
   flex-direction: column;
   background-color: var(--white);
@@ -20,7 +20,7 @@ const StyleWriteContent = styled.div`
   margin-top: 16px;
   border: 1px solid var(--border);
   border-radius: 5px;
-  width: 800px;
+  width: 736px;
   .title {
     font-size: 15px;
     font-weight: 600;
@@ -35,16 +35,24 @@ const StyleWriteContent = styled.div`
   }
 
   button {
-    margin: 5px 0 0 0;
-    width: 55px;
-    height: 35px;
+    margin: 5px 10px 0 0;
+    width: 90px;
+    height: 40px;
     padding: auto;
+  }
+  .cancel {
+    width: 70px;
+    background-color: white;
+    color: var(--blue-500);
+    &:hover {
+      background-color: #e9f3fe;
+    }
   }
 `;
 
-export default function WriteContent({ isActive, editorRef }) {
-  const [content, setContent] = useState("");
-  const [editorFocused, setEditorFocused] = useState(false);
+export default function EditContent({ editorRef, post }) {
+  const [content, setContent] = useState(post.question_content); //초기값을 질문상세페이지 질문의 content값으로
+  const nav = useNavigate(); // 뒤로가기 기능 구현을 위한 훅
 
   useEffect(() => {
     const editor = new Editor({
@@ -55,12 +63,6 @@ export default function WriteContent({ isActive, editorRef }) {
       events: {
         change: () => {
           setContent(editor.getMarkdown());
-        },
-        focus: () => {
-          setEditorFocused(true);
-        },
-        blur: () => {
-          setEditorFocused(false);
         },
       },
     });
@@ -90,18 +92,30 @@ export default function WriteContent({ isActive, editorRef }) {
     }
   };
 
+  const handleCancel = () => {
+    // 뒤로가기 구현
+    nav(-1);
+  };
+
   return (
-    <Container isActive={isActive}>
-      <StyleWriteContent>
-        <div className="title">What are the details of your problem?</div>
-        <div className="discription">
-          Introduce the problem and expand on what you put in the title. Minimum
-          20 characters.
-        </div>
-        <div id="editor"></div>
-        <BlueButton onClick={handlePostClick}>Post</BlueButton>
-      </StyleWriteContent>
-      {editorFocused && <ContentGuide />}
+    <Container>
+      <div>
+        <StyleEditContent>
+          <div className="title">What are the details of your problem?</div>
+          <div className="discription">
+            Introduce the problem and expand on what you put in the title.
+            Minimum 20 characters.
+          </div>
+          <div id="editor"></div>
+          <div className="buttonContainer">
+            <BlueButton onClick={handlePostClick}>Save edits</BlueButton>
+            <BlueButton className="cancel" onClick={handleCancel}>
+              Cancel
+            </BlueButton>
+          </div>
+        </StyleEditContent>
+      </div>
+      <FormatGuide />
     </Container>
   );
 }

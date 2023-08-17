@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { styled, keyframes } from "styled-components";
 import AnswerVote from "./AnswerVote";
 import AnswerContents from "./AnswerContents";
 import { usePostContext } from "../../../../context/PostContext";
 import AnswerComment from "./AnswerComment";
 import { useLocation } from "react-router-dom";
+import PaginationControls from "./PaginationControls";
 
 const StyleAnswerMain = styled.div`
   .container {
@@ -20,6 +21,10 @@ const StyleAnswerMain = styled.div`
 
 export default function AnswerMain() {
   const location = useLocation(); //
+
+  // 페이지네이션을 위한 useState
+  const itemsPerPage = 5;
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     //  URL로부터 쿼리파라미터를 읽음
@@ -43,9 +48,19 @@ export default function AnswerMain() {
   }
   const AnswerData = post.posts[0].Answer;
 
+  // 페이지네이션 구현
+  const totalPages = Math.ceil(AnswerData.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+
   return (
     <StyleAnswerMain>
-      {AnswerData.map((answerItem) => (
+      <PaginationControls
+        totalPages={totalPages}
+        currentPage={currentPage}
+        onPageChange={setCurrentPage}
+      />
+      {AnswerData.slice(startIndex, endIndex).map((answerItem, idx) => (
         <div
           key={answerItem.answer_Id}
           id={answerItem.answer_Id}
@@ -53,11 +68,16 @@ export default function AnswerMain() {
         >
           <div className="Contentscontainer">
             <AnswerVote data={answerItem} />
-            <AnswerContents data={answerItem} />
+            <AnswerContents data={answerItem} idx={idx} />
           </div>
           <AnswerComment data={answerItem} />
         </div>
       ))}
+      <PaginationControls
+        totalPages={totalPages}
+        currentPage={currentPage}
+        onPageChange={setCurrentPage}
+      />
     </StyleAnswerMain>
   );
 }

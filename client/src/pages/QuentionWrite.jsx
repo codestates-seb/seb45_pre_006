@@ -4,7 +4,6 @@ import WriteContainer from "../components/questionWrite/WriteContainer";
 
 const WriteStyle = styled.div`
   width: var(--inner);
-  height: 2103px;
   background-color: var(--app-back-color);
   padding: 0 24px 24px 24px;
 

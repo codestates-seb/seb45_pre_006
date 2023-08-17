@@ -15,9 +15,11 @@ import Footer from "./components/footer/Footer";
 import Header from "./components/header/Header";
 import { SearchKeywordProvider } from "./context/SearchKeywordContext";
 import { useAuthContext } from "./context/AuthContext";
+import Edit from "./pages/Edit";
 
 const StyleApp = styled.div`
-  background-color: ${(props) => (props.$background ? "var(--app-back-color)" : "")};
+  background-color: ${(props) =>
+    props.$background ? "var(--app-back-color)" : ""};
   .center {
     width: var(--inner);
     margin: 0 auto;
@@ -28,7 +30,7 @@ const StyleApp = styled.div`
   }
 `;
 
-const sidebarPaths = ["profile", "users", "search", "questions", ""];
+const sidebarPaths = ["profile", "users", "search", "questions", "answers", ""];
 const footerPaths = ["profile", "users", "search", "questions", "ask", ""];
 
 function App() {
@@ -46,7 +48,12 @@ function App() {
             <Route path={"/users"} element={<Users />} />
             <Route path={"/search/:keyword"} element={<Search />} />
             <Route path="/users/:profileId/*" element={<Profile />}></Route>
-            <Route path={"/questions/:questionId"} element={<QuestionDetail />} />
+            <Route
+              path={"/questions/:questionId"}
+              element={<QuestionDetail />}
+            />
+            <Route path={"/questions/:questionId/edit"} element={<Edit />} />
+            <Route path={"/answers/:answerId/edit"} element={<Edit />} />
             <Route path={"/ask"} element={<QuestionWrite />} />
             <Route path={"/login"} element={<Login />} />
             <Route path={"/signup"} element={<Signup />} />
