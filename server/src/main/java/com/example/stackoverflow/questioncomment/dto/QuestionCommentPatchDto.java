@@ -8,6 +8,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class QuestionCommentPatchDto {
-    private long questionComment_Id;
-    private String questionComment_Content;
+    private long questionComment_id;
+    private String questionComment_content;
 }
