@@ -43,7 +43,7 @@ public class AnswerCommentController {
         );
     }
     @GetMapping
-    public ResponseEntity getAnswerComments(@PathVariable("answer-id")@Positive long answer_id){
+    public ResponseEntity getAnswerComments(){
         List<AnswerComment> answerComments = answerCommentService.findAnswerComments();
         return new ResponseEntity(
                 new SingleResponseDto<>(answerCommentMapper.answerCommentToAnswerCommentResponseDtos(answerComments)),HttpStatus.OK);
