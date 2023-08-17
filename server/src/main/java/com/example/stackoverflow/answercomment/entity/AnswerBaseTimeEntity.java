@@ -1,4 +1,4 @@
-package com.example.stackoverflow.audit;
+package com.example.stackoverflow.answercomment.entity;
 
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
@@ -13,13 +13,11 @@ import java.time.LocalDateTime;
 @Getter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public abstract class Auditable {
+public class AnswerBaseTimeEntity {
     @CreatedDate
-    @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt;
-
+    @Column(name = "CREATE_AT", updatable = false)
+    private LocalDateTime answerComment_createdAt;
     @LastModifiedDate
     @Column(name = "LAST_MODIFIED_AT")
-    private LocalDateTime modifiedAt;
-
+    private LocalDateTime answerComment_modifiedAt;
 }
