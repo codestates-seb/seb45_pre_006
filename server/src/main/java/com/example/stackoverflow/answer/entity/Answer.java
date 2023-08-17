@@ -43,11 +43,11 @@ public class Answer {
     public void setQuestion(Question question) {
         this.question = question;
     }
-
+    /** 답변 추천하면 추천 수 증가 **/
     public int incrementRecommendation() {
         return ++answer_recommendation;
     }
-
+    /** 답변 추천 취소하면  추천 수 감소 **/
     public int decrementRecommendation(){
         return --answer_recommendation;
     }

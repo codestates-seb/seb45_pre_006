@@ -18,6 +18,8 @@ public class QuestionResponseDto {
 
     private int question_viewCount;
 
+    private int question_answerCount;
+
     private LocalDateTime question_createdAt;
 
     private LocalDateTime question_modifiedAt;

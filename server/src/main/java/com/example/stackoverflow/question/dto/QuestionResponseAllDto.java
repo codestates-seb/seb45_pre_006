@@ -1,6 +1,8 @@
 package com.example.stackoverflow.question.dto;
 
 import com.example.stackoverflow.answer.dto.AnswerResponseDto;
+import com.example.stackoverflow.questioncomment.dto.QuestionCommentResponseDto;
+import com.example.stackoverflow.questioncomment.entity.QuestionComment;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,6 +26,8 @@ public class QuestionResponseAllDto {
     private int question_answerCount;
 
     private Long question_viewCount;
+
+    private List<QuestionCommentResponseDto> questionCommentList;
 
     private List<AnswerResponseDto> answerList;
 
