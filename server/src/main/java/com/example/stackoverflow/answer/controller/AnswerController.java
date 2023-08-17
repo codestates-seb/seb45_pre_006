@@ -27,7 +27,7 @@ public class AnswerController {
         this.mapper = mapper;
     }
 
-    /** 답변 작성(Create) **/
+    /** ✅답변 작성(Create) **/
     @PostMapping
     public ResponseEntity postAnswer(@RequestBody AnswerPostDto answerPostDto){
         Answer answer = answerService.createAnswer(mapper.answerPostDtoToAnswer(answerPostDto));
@@ -35,7 +35,7 @@ public class AnswerController {
         return new ResponseEntity<>(mapper.answerToAnswerResponseDto(answer), HttpStatus.CREATED);
     }
 
-    /** 답변 조회(Read) **/
+    /** ✅답변 조회(Read) **/
     @GetMapping("/{answer-id}")
     public ResponseEntity getAnswer(@PathVariable("answer-id")@Positive long answer_id){
         Answer answer = answerService.readAnswer(answer_id);
@@ -43,7 +43,7 @@ public class AnswerController {
         return new ResponseEntity<>(mapper.answerToAnswerResponseDto(answer),HttpStatus.OK);
     }
 
-    /** 답변 수정(Update) **/
+    /** ✅답변 수정(Update) **/
     @PatchMapping("/{answer-id}")
     public ResponseEntity patchAnswer(@PathVariable("answer-id") @Positive long answer_id,
                                       @RequestBody AnswerPatchDto answerPatchDto){
@@ -54,15 +54,15 @@ public class AnswerController {
 
     }
 
-    /** 답변 삭제(Delete) **/
+    /** ✅답변 삭제(Delete) **/
     @DeleteMapping("/{answer-id}")
     public ResponseEntity deleteAnswer(@PathVariable("answer-id") @Positive long answer_id){
         answerService.deleteAnswer(answer_id);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    /** 답변 채택 **/
+    /** ✅답변 채택 **/
     @PostMapping("/{answer-id}/accept")
     public ResponseEntity acceptAnswer(@PathVariable("answer-id")@Positive long answer_id){
         Answer answer = answerService.acceptAnswer(answer_id);
@@ -70,7 +70,7 @@ public class AnswerController {
         return new ResponseEntity<>(mapper.answerToAnswerResponseDto(answer),HttpStatus.OK);
     }
 
-    /** 답변 채택 취소 **/
+    /** ✅답변 채택 취소 **/
     @PostMapping("/{answer-id}/unaccept")
     public ResponseEntity unAcceptAnswer(@PathVariable("answer-id") @Positive long answer_id){
         Answer answer = answerService.unacceptAnswer(answer_id);
@@ -78,7 +78,7 @@ public class AnswerController {
         return new ResponseEntity<>(mapper.answerToAnswerResponseDto(answer), HttpStatus.OK);
     }
 
-    /** 답변 추천 **/
+    /** ✅답변 추천 **/
     @PostMapping("/{answer-id}/recommend")
     public ResponseEntity recommendAnswer(@PathVariable("answer-id")@Positive long answerId){
         Answer answer = answerService.recommendAnswer(answerId);
@@ -86,7 +86,7 @@ public class AnswerController {
         return new ResponseEntity<>(mapper.answerToAnswerResponseDto(answer), HttpStatus.OK);
     }
 
-    /** 답변 추천 취소 **/
+    /** ✅답변 추천 취소 **/
     @PostMapping("/{answer-id}/unrecommend")
     public ResponseEntity unRecommendAnswer(@PathVariable("answer-id")@Positive long answerId){
         Answer answer = answerService.unrecommendAnswer(answerId);
