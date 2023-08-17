@@ -1,6 +1,7 @@
 package com.example.stackoverflow.question.entity;
 
 import com.example.stackoverflow.answer.entity.Answer;
+import com.example.stackoverflow.questioncomment.entity.QuestionComment;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -41,29 +42,33 @@ public class Question {
     @Column(name = "LAST_MODIFIED_AT")
     private LocalDateTime question_modifiedAt;
 
-    @OneToMany(mappedBy = "question", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Answer> answerList = new ArrayList<>();
 
-    /**
-     * Answer를 작성하면 Question의 answerList에도 반영되어야함
-     **/
+    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<QuestionComment> questionCommentList = new ArrayList<>();
+
+    /** 답변 작성하면 질문의 answerList에도 반영되어야함 **/
     public void setAnswerList(Answer answer) {
         this.answerList.add(answer);
     }
 
-    /**
-     * 질문 작성하면 answerCount 추가
-     *
-     * @return
-     **/
+    /** 질문 댓글 작성하면 질문의 questionCommentList에도 반영되어야 함 **/
+    public void setQuestionCommentList(QuestionComment questionComment){
+        this.questionCommentList.add(questionComment);
+    }
+
+    /** 질문에 답변 작성하면 answerCount 증가 **/
     public int incrementAnswerCount() {
         return ++question_answerCount;
     }
 
+    /** 질문에 답변 삭제하면 answerCount 감소 **/
     public int decrementAnswerCount(){
         return --question_answerCount;
     }
 
+    /** 질문 조회하면 viewCount 증가 **/
     public Long incrementViewCount() { return ++question_viewCount;}
 
 }
