@@ -1,5 +1,6 @@
 package com.example.stackoverflow.answer.entity;
 
+import com.example.stackoverflow.answercomment.entity.AnswerComment;
 import com.example.stackoverflow.question.entity.Question;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,6 +11,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor
 @Getter
@@ -51,7 +54,11 @@ public class Answer {
     public int decrementRecommendation(){
         return --answer_recommendation;
     }
-
+    @OneToMany(mappedBy = "answer", cascade = {CascadeType.ALL})
+    private List<AnswerComment> answerCommentList = new ArrayList<>();
+    public void setAnswerCommentList(AnswerComment answerComment){
+        this.answerCommentList.add(answerComment);
+    }
 }
 
 
