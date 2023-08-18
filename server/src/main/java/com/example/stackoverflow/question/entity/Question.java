@@ -1,6 +1,7 @@
 package com.example.stackoverflow.question.entity;
 
 import com.example.stackoverflow.answer.entity.Answer;
+import com.example.stackoverflow.answercomment.entity.AnswerComment;
 import com.example.stackoverflow.questioncomment.entity.QuestionComment;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -47,6 +48,8 @@ public class Question {
 
     @OneToMany(mappedBy = "question", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<QuestionComment> questionCommentList = new ArrayList<>();
+
+
 
     /** 답변 작성하면 질문의 answerList에도 반영되어야함 **/
     public void setAnswerList(Answer answer) {

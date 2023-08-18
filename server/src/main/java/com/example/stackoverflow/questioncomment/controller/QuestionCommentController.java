@@ -19,6 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/question-comments")
 @Validated
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class QuestionCommentController {
     private QuestionCommentService questionCommentService;
     private QuestionCommentMapper questionCommentMapper;

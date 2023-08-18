@@ -19,6 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/answer-comments")
 @Validated
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class AnswerCommentController {
     private AnswerCommentService answerCommentService;
     private AnswerCommentMapper answerCommentMapper;
@@ -38,15 +39,13 @@ public class AnswerCommentController {
                                              @Valid @RequestBody AnswerCommentPatchDto answerCommentPatchDto){
         answerCommentPatchDto.setAnswerComment_id(answerComment_id);
         AnswerComment answerComment = answerCommentService.updateAnswerComment(answerCommentMapper.answerCommentPatchDtoToAnswer(answerCommentPatchDto));
-        return new ResponseEntity(
-                new SingleResponseDto<>(answerCommentMapper.answerCommentToAnswerCommentResponseDto(answerComment)), HttpStatus.OK
+        return new ResponseEntity(answerCommentMapper.answerCommentToAnswerCommentResponseDto(answerComment), HttpStatus.OK
         );
     }
     @GetMapping
     public ResponseEntity getAnswerComments(){
         List<AnswerComment> answerComments = answerCommentService.findAnswerComments();
-        return new ResponseEntity(
-                new SingleResponseDto<>(answerCommentMapper.answerCommentToAnswerCommentResponseDtos(answerComments)),HttpStatus.OK);
+        return new ResponseEntity(answerCommentMapper.answerCommentToAnswerCommentResponseDtos(answerComments),HttpStatus.OK);
     }
     @DeleteMapping("/{answer-comment-id}")
     public ResponseEntity deleteAnswerComment(@PathVariable("answer-comment-id")@Positive long answerComment_id){
