@@ -14,7 +14,6 @@ export default function AuthContextProvider({ children }) {
       localStorage.removeItem("user");
       return true;
     } catch (e) {
-      console.log(e);
       return false;
     }
   };

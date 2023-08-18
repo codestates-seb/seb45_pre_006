@@ -26,7 +26,7 @@ export default function EditProfile({ userProfile, userProfileHandler }) {
     setError({ displayName: "" });
     return true;
   };
-
+  console.log(JSON.stringify(editForm.aboutMe));
   const onSubmitHandler = async () => {
     if (displayNameValidation()) {
       try {

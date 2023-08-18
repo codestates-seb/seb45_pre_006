@@ -21,6 +21,7 @@ const StylePostItem = styled.li`
     line-height: 30px;
     border-radius: 5px;
     font-size: 14px;
+    font-weight: bold;
     &.active {
       color: var(--white);
       border-color: transparent;
