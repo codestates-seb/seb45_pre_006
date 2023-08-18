@@ -4,8 +4,15 @@ import com.example.stackoverflow.answer.dto.AnswerPatchDto;
 import com.example.stackoverflow.answer.dto.AnswerPostDto;
 import com.example.stackoverflow.answer.dto.AnswerResponseDto;
 import com.example.stackoverflow.answer.entity.Answer;
+import com.example.stackoverflow.answercomment.dto.AnswerCommentResponseDto;
+import com.example.stackoverflow.answercomment.entity.AnswerComment;
+import com.example.stackoverflow.question.dto.QuestionResponseDto;
+import com.example.stackoverflow.question.entity.Question;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface AnswerMapper {
@@ -15,16 +22,7 @@ public interface AnswerMapper {
 
     Answer answerPatchDtoToAnswer(AnswerPatchDto answerPatchDto);
 
-//    default AnswerResponseDto answerToAnswerResponseDto(Answer answer){
-//        AnswerResponseDto answerResponseDto = new AnswerResponseDto();
-//        answerResponseDto.setAnswer_id(answer.getAnswer_id());
-//        answerResponseDto.setQuestion_id(answer.getQuestion().getQuestion_id());
-//        answerResponseDto.setAnswer_content(answer.getAnswer_content());
-//        answerResponseDto.setAnswer_createdAt(answer.getAnswer_createdAt());
-//        answerResponseDto.setAnswer_modifiedAt(answer.getAnswer_modifiedAt());
-//        answerResponseDto.setAnswer_accepted(answer.getAnswer_accepted());
-//        answerResponseDto.setAnswer_recommendation(answer.getAnswer_recommendation());
-//        return answerResponseDto;
-//    }
     AnswerResponseDto answerToAnswerResponseDto(Answer answer);
+
+
 }

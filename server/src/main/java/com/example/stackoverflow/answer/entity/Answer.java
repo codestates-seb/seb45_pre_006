@@ -1,5 +1,6 @@
 package com.example.stackoverflow.answer.entity;
 
+import com.example.stackoverflow.answercomment.entity.AnswerComment;
 import com.example.stackoverflow.question.entity.Question;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,6 +11,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor
 @Getter
@@ -40,13 +43,22 @@ public class Answer {
     @JoinColumn(name = "QUESTION_ID",nullable = false)
     private Question question;
 
+    @OneToMany(mappedBy = "answer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<AnswerComment> answerCommentList = new ArrayList<>();
+
     public void setQuestion(Question question) {
         this.question = question;
     }
+
+    public void setAnswerCommentList(AnswerComment answerComment){
+        this.answerCommentList.add(answerComment);
+    }
+
     /** 답변 추천하면 추천 수 증가 **/
     public int incrementRecommendation() {
         return ++answer_recommendation;
     }
+
     /** 답변 추천 취소하면  추천 수 감소 **/
     public int decrementRecommendation(){
         return --answer_recommendation;
