@@ -18,31 +18,31 @@ const StyleProfile = styled.section`
 `;
 
 const profileParams = ["", "edit"];
-
+const mokUser = {
+  isAdmin: true,
+  aboutMe: "```js\n const a = 1;\n for(let i = 0; i< 10; i++) {\n   console.log(i);\n }\n```",
+  displayName: "myeongin",
+  userId: "1",
+  img: "/images/userImg.png",
+  email: "mungin10@naver.com",
+  postList: [
+    {
+      question_id: "1",
+      question_title: "1",
+      question_createdAt: new Date(),
+      question_answerCount: 1,
+    },
+    {
+      question_id: "2",
+      question_title: "2",
+      question_createdAt: new Date(),
+      question_answerCount: 1,
+    },
+  ],
+  createAt: new Date(),
+};
 export default function Profile() {
-  const [userProfile, setUserProfile] = useState({
-    isAdmin: true,
-    aboutMe: "hello",
-    displayName: "myeongin",
-    userId: "1",
-    img: "/images/userImg.png",
-    email: "mungin10@naver.com",
-    postList: [
-      {
-        question_id: "1",
-        question_title: "1",
-        question_createdAt: new Date(),
-        question_answerCount: 1,
-      },
-      {
-        question_id: "2",
-        question_title: "2",
-        question_createdAt: new Date(),
-        question_answerCount: 1,
-      },
-    ],
-    createAt: new Date(),
-  });
+  const [userProfile, setUserProfile] = useState(mokUser);
 
   const { profileId } = useParams();
   const { user } = useAuthContext();
@@ -61,11 +61,11 @@ export default function Profile() {
             "ngrok-skip-browser-warning": "69420",
           },
         });
-        setUserProfile({
-          isAdmin: res.data.admin,
-          ...res.data.response,
-          img: res.data.response.img || "/images/userImg.png",
-        });
+        // setUserProfile({
+        //   isAdmin: res.data.admin,
+        //   ...res.data.response,
+        //   img: res.data.response.img || "/images/userImg.png",
+        // });
       } catch (error) {
         console.log(error);
       }
