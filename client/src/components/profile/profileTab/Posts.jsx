@@ -32,20 +32,19 @@ const StylePosts = styled.div`
   }
 `;
 
-export default function Posts({ ProfileUser }) {
-  const { isAdmin, postList } = ProfileUser;
+export default function Posts({ userProfile }) {
+  const { isAdmin, postList } = userProfile;
   return (
     <StylePosts $admin={isAdmin}>
       <h4>Posts</h4>
-      {!isAdmin && !postList.length ? (
-        <></>
-      ) : postList.length ? (
+      {!!postList.length && (
         <ul className="question-list">
           {postList.map((question) => (
             <PostItem key={question.question_id} question={question} />
           ))}
         </ul>
-      ) : (
+      )}
+      {isAdmin && !postList.length && (
         <div className="write-post">
           <span>
             Write an article on a topic that interests you

@@ -1,8 +1,10 @@
-import { differenceInDays } from "date-fns";
+import { differenceInDays, parseISO } from "date-fns";
 
 export default function calculateDateDifference(targetDate) {
   const currentDate = new Date();
-  const daysDifference = differenceInDays(currentDate, targetDate);
+  const parsedTargetDate = parseISO(targetDate);
+  const daysDifference = differenceInDays(currentDate, parsedTargetDate);
+
   if (daysDifference === 0) {
     return "Today";
   } else if (daysDifference <= 6) {

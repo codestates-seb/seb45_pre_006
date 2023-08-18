@@ -72,18 +72,25 @@ export default function SiteSignup() {
     return Object.values(errors).every((error) => error === "");
   };
 
-  const siteSignupHandler = (e) => {
+  const sinupSuccess = () => {
+    nav("/login");
+    clearSignupForm();
+  };
+  const existsError = () => {
+    setError({ ...error, email: "email already exists" });
+    setSignupForm(null, "email", "");
+  };
+
+  const siteSignupHandler = async (e) => {
     e.preventDefault();
     if (signupValidation()) {
-      axios
-        .post("/user/post", {
-          displayName: signupForm.displayName,
-          email: signupForm.email,
-          password: signupForm.password,
-        })
-        .then(() => nav("/login"))
-        .catch(() => setError({ ...error, email: "email already exists" }));
-      clearSignupForm();
+      const { displayName, email, password } = signupForm;
+      try {
+        await axios.post("/user/post", { displayName, email, password });
+        sinupSuccess();
+      } catch (e) {
+        existsError();
+      }
     }
   };
 

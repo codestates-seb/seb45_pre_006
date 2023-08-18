@@ -5,7 +5,7 @@ import UserCard from "../components/profile/UserCard";
 import UserProfile from "../components/profile/UserProfile";
 import UserSetting from "../components/profile/UserSetting";
 import ProtectedRoute from "./ProtectedRoute";
-import ProfileTabButtons from "../components/profile/profileTab/ProfileTabButtons";
+import ProfileTabButtons from "../components/profile/ProfileTabButtons";
 import NotFound from "./NotFound";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -14,20 +14,44 @@ import { useAuthContext } from "../context/AuthContext";
 
 const StyleProfile = styled.section`
   width: 100%;
-  padding: 24px 10px 24px 24px;
-  .tab-buttons {
-    margin-top: 18px;
-    display: flex;
-    gap: 5px;
-    margin-bottom: 20px;
-  }
+  padding: 24px;
 `;
+
 const profileParams = ["", "edit"];
 
 export default function Profile() {
-  const [userProfile, setUserProfile] = useState(null);
+  const [userProfile, setUserProfile] = useState({
+    isAdmin: true,
+    aboutMe: "hello",
+    displayName: "myeongin",
+    userId: "1",
+    img: "/images/userImg.png",
+    email: "mungin10@naver.com",
+    postList: [
+      {
+        question_id: "1",
+        question_title: "1",
+        question_createdAt: new Date(),
+        question_answerCount: 1,
+      },
+      {
+        question_id: "2",
+        question_title: "2",
+        question_createdAt: new Date(),
+        question_answerCount: 1,
+      },
+    ],
+    createAt: new Date(),
+  });
+
   const { profileId } = useParams();
   const { user } = useAuthContext();
+
+  const userProfileHandler = (user) => {
+    setUserProfile((preUser) => {
+      return { ...preUser, ...user };
+    });
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,11 +61,13 @@ export default function Profile() {
             "ngrok-skip-browser-warning": "69420",
           },
         });
-        const { aboutMe, createdAt, displayName, email, img, postList, userId } = res.data;
-        setUserProfile({ aboutMe, createdAt, displayName, email, img, postList, userId });
-        // question_id, title, question_answercount,createdAt, isAdmin 필요
+        setUserProfile({
+          isAdmin: res.data.admin,
+          ...res.data.response,
+          img: res.data.response.img || "/images/userImg.png",
+        });
       } catch (error) {
-        console.log("Error fetching data:", error);
+        console.log(error);
       }
     };
 
@@ -49,9 +75,7 @@ export default function Profile() {
   }, []);
 
   if (!profileParams.includes(useParams()["*"])) return <NotFound />;
-  if (!userProfile) {
-    return <NotFound />;
-  }
+  if (!userProfile) return <NotFound />;
 
   return (
     <StyleProfile>
@@ -63,7 +87,7 @@ export default function Profile() {
           path="edit"
           element={
             <ProtectedRoute requireAdmin isAdmin={userProfile.isAdmin}>
-              <UserSetting userProfile={userProfile} />
+              <UserSetting userProfile={userProfile} userProfileHandler={userProfileHandler} />
             </ProtectedRoute>
           }
         />
@@ -71,4 +95,3 @@ export default function Profile() {
     </StyleProfile>
   );
 }
-

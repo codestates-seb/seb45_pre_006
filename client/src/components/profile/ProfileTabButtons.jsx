@@ -1,7 +1,13 @@
 import React from "react";
-import { WhiteButton } from "../../common/Button";
+import { WhiteButton } from "../common/Button";
 import { useNavigate, useLocation } from "react-router-dom";
+import { styled } from "styled-components";
 
+const StyleProfileTabButtons = styled.div`
+  display: flex;
+  gap: 5px;
+  margin: 18px 0;
+`;
 export default function ProfileTabButtons({ userProfile }) {
   const nav = useNavigate();
   const location = useLocation().pathname.split("/")[3];
@@ -12,7 +18,7 @@ export default function ProfileTabButtons({ userProfile }) {
   ];
   if (!isAdmin) tabButtons.splice(1, 2);
   return (
-    <div className="tab-buttons">
+    <StyleProfileTabButtons>
       {tabButtons.map((button) => (
         <WhiteButton
           className={location === button.location ? "active" : ""}
@@ -22,6 +28,6 @@ export default function ProfileTabButtons({ userProfile }) {
           {button.text}
         </WhiteButton>
       ))}
-    </div>
+    </StyleProfileTabButtons>
   );
 }
