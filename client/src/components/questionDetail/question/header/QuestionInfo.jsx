@@ -13,18 +13,16 @@ const StyleQuestionInfo = styled.div`
   }
 `;
 
-export default function QuestionInfo() {
-  // 질문 post 정보 받아오기
-  const { post } = usePostContext();
-  if (!post || !post.posts) {
+export default function QuestionInfo({ postData }) {
+  if (!postData) {
     return <div>Loading...</div>;
   }
 
   return (
     <StyleQuestionInfo>
-      <div>Asked: {getTimeAgoText(post.posts[0].created_at)}</div>
-      <div>Modified: {getTimeAgoText(post.posts[0].updated_at)}</div>
-      <div>Viewed:{post.posts[0].question_viewcount}</div>
+      <div>Asked: {getTimeAgoText(postData.question_createdAt)}</div>
+      <div>Modified: {getTimeAgoText(postData.question_modifiedAt)}</div>
+      <div>Viewed:{postData.question_viewCount}</div>
     </StyleQuestionInfo>
   );
 }

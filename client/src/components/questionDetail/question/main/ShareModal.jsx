@@ -77,8 +77,8 @@ export default function ShareModal({ data }) {
 
   const handleCopyLink = () => {
     let linkToCopy = currentUrl;
-    if (data.answer_Id) {
-      linkToCopy += `?section=${data.answer_Id}`;
+    if (data.answer_id) {
+      linkToCopy += `?section=${data.answer_id}`;
     } else {
       linkToCopy += `?section=`;
     }
@@ -88,6 +88,7 @@ export default function ShareModal({ data }) {
 
   return (
     <StyleShareModal onClick={(e) => e.stopPropagation()}>
+      {console.log(data.answer_id)}
       <div className="title">
         <div className="main">Share a link to this question</div>
         <div className="sub" onClick={handleCopyLink}>
@@ -96,7 +97,7 @@ export default function ShareModal({ data }) {
       </div>
       <div className="link">
         {currentUrl}?section=
-        {data.answer_Id}
+        {data.answer_id}
       </div>
     </StyleShareModal>
   );

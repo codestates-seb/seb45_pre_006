@@ -47,8 +47,8 @@ export default function Vote({ data }) {
     // 주소만 수정해주자!! ##############
     const url =
       voteType === "upvote"
-        ? `/answers/${data.answer_Id}/recommend`
-        : `/answers/${data.answer_Id}/unrecommend`;
+        ? `/answers/${data.answer_id}/recommend`
+        : `/answers/${data.answer_id}/unrecommend`;
 
     try {
       const response = await axios.post(url);
@@ -68,7 +68,7 @@ export default function Vote({ data }) {
         <AiOutlineCaretUp className="icon" />
       </button>
 
-      <div className="voteCount">{data.recommendation}</div>
+      <div className="voteCount">{data.answer_recommendation}</div>
       <button onClick={() => handleVote("downvote")}>
         <AiOutlineCaretDown className="icon" />
       </button>

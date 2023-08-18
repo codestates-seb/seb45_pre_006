@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ShareModal from "../../question/main/ShareModal";
 import { styled } from "styled-components";
 import { usePostContext } from "../../../../context/PostContext";
@@ -63,6 +63,21 @@ export default function AnswerContents({ data, idx }) {
     setIsClickedShare(!isClickedShare);
   };
 
+  // 모달 바깥클릭시 모달꺼지는 로직
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (isClickedShare && !event.target.closest(".shareEdit")) {
+        setIsClickedShare(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleOutsideClick);
+
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, [isClickedShare]);
+
   // 질문 post 정보 받아오기
   const { post } = usePostContext();
   if (!post || !post.posts) {
@@ -86,8 +101,7 @@ export default function AnswerContents({ data, idx }) {
 
   return (
     <StyleAnswerContents>
-      {console.log(AnswerData[1].answer_Id)}
-      {data.content}
+      {data.answer_content}
       <div className="userInfoWrap">
         <div className="shareEdit">
           {isClickedShare ? (
@@ -103,10 +117,12 @@ export default function AnswerContents({ data, idx }) {
           </div>
         </div>
         <div className="userInfo">
-          <div className="date">asked {getWriteDate(data.created_at)}</div>
+          <div className="date">
+            asked {getWriteDate(data.answer_createdAt)}
+          </div>
           <div className="useProfile">
             <img src="/images/userImg.png" alt="userImg" />
-            <div className="username">{data.username}</div>
+            <div className="username">{data.user_id}</div>
           </div>
         </div>
       </div>

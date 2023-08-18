@@ -54,7 +54,7 @@ const StyleContents = styled.div`
   }
 `;
 
-export default function Contents() {
+export default function Contents({ postData }) {
   // Share상태
   const [isClickedShare, setIsClickedShare] = useState(false);
 
@@ -79,19 +79,18 @@ export default function Contents() {
     };
   }, [isClickedShare]);
 
-  // 질문 post 정보 받아오기
-  const { post } = usePostContext();
-  if (!post || !post.posts) {
+  if (!postData) {
     return <div>Loading...</div>;
   }
-  const postData = post.posts[0];
 
   // edit 누를시 페이지전환
   const handleEdit = () => {
-    // 로그인 -> 본인이 쓴글일때 조건을 확인해서 넣어줘야함. !!!!!!!!!!
+    // 로그인 -> 본인이 쓴글일때 조건을 확인해서 넣어줘야함. !!!!!!!!!!********
     if (true) {
       // 데이터도 같이 넘겨줌
-      navigate(`/questions/${postData.question_id}/edit`, { state: post });
+      navigate(`/questions/${postData.question_id}/edit`, {
+        state: postData,
+      });
     } else {
       alert("권한이 없습니다.");
     }
@@ -99,6 +98,7 @@ export default function Contents() {
 
   return (
     <StyleContents>
+      {console.log(postData)}
       {postData.question_content}
       <div className="userInfoWrap">
         <div className="shareEdit">
@@ -117,10 +117,12 @@ export default function Contents() {
           </div>
         </div>
         <div className="userInfo">
-          <div className="date">asked {getWriteDate(postData.created_at)}</div>
+          <div className="date">
+            asked {getWriteDate(postData.question_createdAt)}
+          </div>
           <div className="useProfile">
             <img src="/images/userImg.png" alt="userImg" />
-            <div className="username">{postData.user_name}</div>
+            <div className="username">{postData.user_id}</div> {/******/}
           </div>
         </div>
       </div>

@@ -45,7 +45,7 @@ const StyleQuestionComment = styled.div`
   }
 `;
 
-export default function QuestionComment() {
+export default function QuestionComment({ postData }) {
   // 상태 변수 추가
   const [showAllComments, setShowAllComments] = useState(false);
 
@@ -70,31 +70,32 @@ export default function QuestionComment() {
     }
   };
 
-  // 작성글 데이터 불러오는 부분
-  const { post } = usePostContext();
-
-  if (!post || !post.posts) {
+  if (!postData) {
     return <div>Loading...</div>;
   }
-  const postData = post.posts[0].comments;
 
   return (
     <StyleQuestionComment>
-      {postData.map(
+      {postData.questionCommentList.map(
         (data, idx) =>
           // 5개까지만 표시
           ((!showAllComments && idx < 5) || showAllComments) && (
             <div key={idx} className="comentlist">
-              <span className="commentbody">{data.commentBody} - </span>
-              <span className="username"> {data.username}</span>
-              <span className="createdat">{getWriteDate(data.createdAt)}</span>
+              <span className="commentbody">
+                {data.questionComment_content} -{" "}
+              </span>
+              <span className="username"> {data.user_name}</span>
+              <span className="createdat">
+                {getWriteDate(data.questionComment_createdAt)}
+              </span>
             </div>
           )
       )}
       {/* 5개 이상일경우 Show ~ more comments 렌더링 */}
-      {postData.length > 5 && !showAllComments && (
+      {postData.questionCommentList.length > 5 && !showAllComments && (
         <div className="showMoreButton" onClick={handleShowMoreComments}>
-          Show <span>{postData.length - 5}</span> more comments
+          Show <span>{postData.questionCommentList.length - 5}</span> more
+          comments
         </div>
       )}
       {/* show more comment 누를시에만 댓글입력창 렌더링 */}

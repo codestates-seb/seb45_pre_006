@@ -6,6 +6,7 @@ import "@toast-ui/editor/dist/toastui-editor.css";
 import axios from "axios";
 
 const StyleAnswerEditor = styled.div`
+  margin-bottom: 10px;
   .title {
     font-size: 19px;
     padding-top: 20px;
@@ -17,7 +18,7 @@ const StyleAnswerEditor = styled.div`
   }
 `;
 
-export default function AnswerEditor() {
+export default function AnswerEditor({ postData }) {
   const [content, setContent] = useState("");
 
   const handlePost = async () => {

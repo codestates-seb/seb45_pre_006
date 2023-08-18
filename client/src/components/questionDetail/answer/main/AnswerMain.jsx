@@ -19,7 +19,7 @@ const StyleAnswerMain = styled.div`
   }
 `;
 
-export default function AnswerMain() {
+export default function AnswerMain({ postData }) {
   const location = useLocation(); //
 
   // 페이지네이션을 위한 useState
@@ -41,20 +41,19 @@ export default function AnswerMain() {
     }
   });
 
-  // 질문 post 정보 받아오기
-  const { post } = usePostContext();
-  if (!post || !post.posts) {
+  if (!postData) {
     return <div>Loading...</div>;
   }
-  const AnswerData = post.posts[0].Answer;
+  const AnswerData = postData.answerList;
 
   // 페이지네이션 구현
-  const totalPages = Math.ceil(AnswerData.length / itemsPerPage);
+  const totalPages = Math.ceil(postData.answerList.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
 
   return (
     <StyleAnswerMain>
+      {console.log(AnswerData)}
       <PaginationControls
         totalPages={totalPages}
         currentPage={currentPage}
@@ -62,8 +61,8 @@ export default function AnswerMain() {
       />
       {AnswerData.slice(startIndex, endIndex).map((answerItem, idx) => (
         <div
-          key={answerItem.answer_Id}
-          id={answerItem.answer_Id}
+          key={answerItem.answer_id}
+          id={answerItem.answer_id}
           className="container"
         >
           <div className="Contentscontainer">

@@ -72,19 +72,22 @@ export default function AnswerComment({ data }) {
     }
   };
 
-  const postData = data.comment;
+  const postData = data.answerCommentList;
 
   return (
     <StyleAnswerComment>
-      {console.log(postData)}
       {postData.map(
         (data, idx) =>
           // 5개까지만 표시
           ((!showAllComments && idx < 5) || showAllComments) && (
             <div key={idx} className="comentlist">
-              <span className="commentbody">{data.commentBody} - </span>
-              <span className="username"> {data.username}</span>
-              <span className="createdat">{getWriteDate(data.createdAt)}</span>
+              <span className="commentbody">
+                {data.answerComment_content} -{" "}
+              </span>
+              <span className="username"> {data.user_id}</span>
+              <span className="createdat">
+                {getWriteDate(data.answerComment_createdAt)}
+              </span>
             </div>
           )
       )}

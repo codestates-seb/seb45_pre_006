@@ -7,11 +7,11 @@ const StyleQuestionContainer = styled.div`
   padding: 40px 16px;
 `;
 
-export default function QuestionContainer() {
+export default function QuestionContainer({ postData }) {
   return (
     <StyleQuestionContainer>
-      <QuestionHeader></QuestionHeader>
-      <QuestionMain></QuestionMain>
+      <QuestionHeader postData={postData}></QuestionHeader>
+      <QuestionMain postData={postData}></QuestionMain>
     </StyleQuestionContainer>
   );
 }
