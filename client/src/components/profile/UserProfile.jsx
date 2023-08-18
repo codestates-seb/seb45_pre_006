@@ -16,8 +16,8 @@ const StyleUserProfile = styled.div`
 export default function UserProfile({ userProfile }) {
   return (
     <StyleUserProfile>
-      <About ProfileUser={userProfile} />
-      <Posts ProfileUser={userProfile} />
+      <About userProfile={userProfile} />
+      <Posts userProfile={userProfile} />
     </StyleUserProfile>
   );
 }

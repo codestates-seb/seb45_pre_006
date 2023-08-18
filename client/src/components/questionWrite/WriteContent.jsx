@@ -64,7 +64,6 @@ export default function WriteContent({ isActive, editorRef }) {
         },
       },
     });
-
     editorRef.current = editor; // ediotr 인스턴스를 ref에 할당
     return () => {
       editor.destroy();
@@ -95,8 +94,7 @@ export default function WriteContent({ isActive, editorRef }) {
       <StyleWriteContent>
         <div className="title">What are the details of your problem?</div>
         <div className="discription">
-          Introduce the problem and expand on what you put in the title. Minimum
-          20 characters.
+          Introduce the problem and expand on what you put in the title. Minimum 20 characters.
         </div>
         <div id="editor"></div>
         <BlueButton onClick={handlePostClick}>Post</BlueButton>

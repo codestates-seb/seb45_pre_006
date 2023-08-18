@@ -15,12 +15,12 @@ export default function WriteContainer() {
   const initialInputData = {
     title: "",
   };
-  const [inputData, onInputChangeHandler, clearForm] =
-    useForm(initialInputData);
+  const [inputData, onInputChangeHandler, clearForm] = useForm(initialInputData);
 
   const handleNextClick = () => {
     if (editorRef.current) {
       editorRef.current.focus(); // editor에 포커스
+      console.log("handleNextClick실행");
     }
   };
 
@@ -36,10 +36,7 @@ export default function WriteContainer() {
         handleNextClick={handleNextClick}
         length={inputData.title.length}
       ></WriteTitle>
-      <WriteContent
-        isActive={inputData.title.length > 5}
-        editorRef={editorRef}
-      ></WriteContent>
+      <WriteContent isActive={inputData.title.length > 5} editorRef={editorRef}></WriteContent>
     </StyleWriteContainer>
   );
 }

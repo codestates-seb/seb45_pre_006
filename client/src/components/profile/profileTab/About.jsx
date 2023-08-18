@@ -29,11 +29,8 @@ export default function About({ userProfile }) {
   return (
     <StyleAbout $admin={isAdmin}>
       <h4>About</h4>
-      {!isAdmin && !aboutMe ? (
-        <></>
-      ) : aboutMe ? (
-        <>{aboutMe}</>
-      ) : (
+      {aboutMe && aboutMe}
+      {isAdmin && !aboutMe && (
         <div className="write-about">
           <span>
             Your about me section is currently blank. Would you <br />

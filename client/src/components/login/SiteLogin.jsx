@@ -26,6 +26,8 @@ const StyleSiteLogin = styled.form`
   button {
     font-weight: bold;
     margin-top: 5px;
+    width: 100%;
+    padding: 10px;
   }
   a {
     position: absolute;
@@ -35,10 +37,11 @@ const StyleSiteLogin = styled.form`
   }
 `;
 export default function SiteLogin() {
-  const [signinForm, setSigninForm, clearLoginForm] = useForm({ email: "", password: "" });
+  const [signinForm, setSigninForm, clearSigninForm] = useForm({ email: "", password: "" });
   const [error, setError] = useError({ email: "", password: "" });
   const nav = useNavigate();
   const { userHandler } = useAuthContext();
+
   const loginValidation = () => {
     const errors = {
       email: "",
@@ -63,6 +66,27 @@ export default function SiteLogin() {
     return Object.values(errors).every((error) => error === "");
   };
 
+  const loginSuccess = (res) => {
+    const { userid: userId, img, displayname: displayName } = res.headers;
+    userHandler({ userId, img, displayName });
+    localStorage.setItem(
+      "user",
+      JSON.stringify({ userId, img: img || "/images/userImg.png", displayName })
+    );
+    nav("/");
+    clearSigninForm();
+  };
+
+  const UnauthorizedError = () => {
+    setError({ email: "", password: "Please check your id or password" });
+    setSigninForm(null, "password", "");
+  };
+
+  const NotFoundError = () => {
+    setError({ password: "", email: "This user does not exist" });
+    clearSigninForm();
+  };
+
   const siteLoginHandler = async (e) => {
     e.preventDefault();
     if (loginValidation()) {
@@ -71,14 +95,20 @@ export default function SiteLogin() {
           email: signinForm.email,
           password: signinForm.password,
         });
-        const { userid: userId, img, displayname: displayName } = res.headers;
-        userHandler({ userId, img, displayName });
-        localStorage.setItem("user", { userId, img, displayName });
-        nav("/");
+        loginSuccess(res);
       } catch (e) {
-        // 로그인 에러처리
+        switch (e.response.statusText) {
+          case "Unauthorized": {
+            UnauthorizedError();
+            break;
+          }
+          case "Not Found": {
+            NotFoundError();
+            break;
+          }
+          default:
+        }
       }
-      clearLoginForm();
     }
   };
 
@@ -103,9 +133,7 @@ export default function SiteLogin() {
         maxLength={15}
       />
       <Link to="/reset-password">Forgot password?</Link>
-      <BlueButton $width="100%" $padding="10px">
-        Log In
-      </BlueButton>
+      <BlueButton>Log In</BlueButton>
     </StyleSiteLogin>
   );
 }

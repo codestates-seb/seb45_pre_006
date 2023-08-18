@@ -7,51 +7,38 @@ import Editor from "@toast-ui/editor";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import { BlueButton, PowderButton } from "../../common/Button";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const StyleEditProfile = styled.div`
   flex: 1;
-  h4 {
-    font-weight: bold;
-    font-size: 27px;
-    padding-bottom: 16px;
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 16px;
-    margin-top: 3px;
-  }
-  label,
-  h5 {
-    font-size: 16px;
-    font-weight: bold;
-    margin-bottom: 5px;
-  }
-  input {
-    height: 35px;
-    width: 400px;
-    font-size: 13px;
-    padding: 8px 10px;
-  }
-  .buttons {
-    margin-top: 20px;
-    display: flex;
-    gap: 5px;
-    button {
-      width: 100px;
-      height: 33px;
-    }
-  }
 `;
-export default function EditProfile({ userProfile }) {
+export default function EditProfile({ userProfile, userProfileHandler }) {
   const { displayName, aboutMe, userId } = userProfile;
   const [editForm, setEditForm] = useForm({ displayName, aboutMe });
   const [error, setError] = useError({ displayName: "" });
   const nav = useNavigate();
 
-  const onSubmitHandler = () => {
-    setError({ displayName: "" });
+  const displayNameValidation = () => {
     if (editForm.displayName.length < 2) {
       setError({ displayName: "displayName must be at least 2 characters" });
-    } else {
-      // 개인정보 수정 요청
+      return false;
+    }
+    setError({ displayName: "" });
+    return true;
+  };
+
+  const onSubmitHandler = async () => {
+    if (displayNameValidation()) {
+      try {
+        await axios.patch(`/user/profile/${userId}`, {
+          displayName: editForm.displayName,
+          aboutMe: editForm.aboutMe,
+        });
+        userProfileHandler({ aboutMe: editForm.aboutMe });
+        nav(`/users/${userId}`);
+      } catch (e) {
+        console.log(e);
+      }
     }
   };
 
@@ -59,10 +46,9 @@ export default function EditProfile({ userProfile }) {
     const editor = new Editor({
       el: document.querySelector("#editor"),
       initialEditType: "markdown",
-      initialValue: aboutMe,
-      previewStyle: "vertical",
+      initialValue: aboutMe || "",
+      autofocus: false,
     });
-
     setEditForm(null, "aboutMe", editor.getMarkdown());
     editor.on("change", () => {
       setEditForm(null, "aboutMe", editor.getMarkdown());
@@ -84,10 +70,10 @@ export default function EditProfile({ userProfile }) {
         error={error.displayName}
       />
       <h5>About me</h5>
-      <div id="editor"></div>
+      <div id="editor" />
       <div className="buttons">
         <BlueButton onClick={onSubmitHandler}>Save profile</BlueButton>
-        <PowderButton onClick={() => nav(`/users/${userId}`)}>Cancle</PowderButton>
+        <PowderButton onClick={() => nav(`/users/${userId}`)}>Cancel</PowderButton>
       </div>
     </StyleEditProfile>
   );

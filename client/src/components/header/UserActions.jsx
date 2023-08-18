@@ -28,8 +28,9 @@ const StyleUserActions = styled.div`
     }
   }
 `;
+
+
 export default function UserActions() {
   const { user } = useAuthContext();
-  console.log(user);
   return <StyleUserActions>{user ? <LoginActions /> : <UnLoginActions />}</StyleUserActions>;
 }
