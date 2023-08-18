@@ -114,9 +114,7 @@ export default function WriteTitle({
         />
         <div className="buttonSection">
           <BlueButton onClick={handleSubmit}>Next</BlueButton>
-          {length > 5 || length == 0 ? null : (
-            <div className="alert">Minimum 5 characters.</div>
-          )}
+          {length > 5 || length === 0 ? null : <div className="alert">Minimum 5 characters.</div>}
         </div>
       </StyleWriteTitle>
       {inputFocused && <TitleGuide />}

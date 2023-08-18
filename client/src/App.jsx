@@ -14,12 +14,11 @@ import Sidebar from "./components/sidebar/Sidebar";
 import Footer from "./components/footer/Footer";
 import Header from "./components/header/Header";
 import { SearchKeywordProvider } from "./context/SearchKeywordContext";
-import { useAuthContext } from "./context/AuthContext";
 import Edit from "./pages/Edit";
+import ProtectedRoute from "./pages/ProtectedRoute";
 
 const StyleApp = styled.div`
-  background-color: ${(props) =>
-    props.$background ? "var(--app-back-color)" : ""};
+  background-color: ${(props) => (props.$background ? "var(--app-back-color)" : "")};
   .center {
     width: var(--inner);
     margin: 0 auto;
@@ -47,17 +46,42 @@ function App() {
             <Route path={"/"} element={<Question />} />
             <Route path={"/users"} element={<Users />} />
             <Route path={"/search/:keyword"} element={<Search />} />
-            <Route path="/users/:profileId/*" element={<Profile />}></Route>
-            <Route
-              path={"/questions/:questionId"}
-              element={<QuestionDetail />}
-            />
+            <Route path="/users/:profileId/*" element={<Profile />} />
+            <Route path={"/questions/:questionId"} element={<QuestionDetail />} />
             <Route path={"/questions/:questionId/edit"} element={<Edit />} />
             <Route path={"/answers/:answerId/edit"} element={<Edit />} />
-            <Route path={"/ask"} element={<QuestionWrite />} />
-            <Route path={"/login"} element={<Login />} />
-            <Route path={"/signup"} element={<Signup />} />
-            <Route path={"/reset-password"} element={<ResetPassword />} />
+            <Route
+              path={"/ask"}
+              element={
+                <ProtectedRoute requireLogin>
+                  <QuestionWrite />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path={"/login"}
+              element={
+                <ProtectedRoute requireUnLogin>
+                  <Login />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path={"/signup"}
+              element={
+                <ProtectedRoute requireUnLogin>
+                  <Signup />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path={"/reset-password"}
+              element={
+                <ProtectedRoute requireUnLogin>
+                  <ResetPassword />
+                </ProtectedRoute>
+              }
+            />
             <Route path={"*"} element={<NotFound />} />
           </Routes>
         </div>

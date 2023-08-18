@@ -3,6 +3,7 @@ import { styled } from "styled-components";
 import SiteSignup from "./SiteSignup";
 import GoogleSignup from "./GoogleSignup";
 import { Link } from "react-router-dom";
+
 const StyleSignup = styled.div`
   width: 316px;
   display: flex;
@@ -13,6 +14,7 @@ const StyleSignup = styled.div`
     font-size: 14px;
   }
 `;
+
 export default function SignupBox() {
   return (
     <StyleSignup>

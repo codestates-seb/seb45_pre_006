@@ -4,7 +4,7 @@ import { styled } from "styled-components";
 const StyleSettingTabButtons = styled.div`
   display: flex;
   flex-direction: column;
-  h4 {
+  h3 {
     font-size: 12px;
     padding: 6px 12px;
     font-weight: 900;
@@ -24,7 +24,7 @@ export default function SettingTabButtons({ currentTab, currentTabHandler }) {
   ];
   return (
     <StyleSettingTabButtons>
-      <h4>PERSONAL INFORMATION</h4>
+      <h3>PERSONAL INFORMATION</h3>
       {SettingButtons.map((button) => (
         <WhiteButton
           onClick={() => currentTabHandler(button.value)}

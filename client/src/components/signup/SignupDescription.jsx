@@ -1,6 +1,7 @@
 import React from "react";
 import { signupSvg } from "../common/svg";
 import { styled } from "styled-components";
+
 const StyleSignupDescription = styled.div`
   display: flex;
   flex-direction: column;
@@ -30,6 +31,7 @@ const StyleSignupDescription = styled.div`
     }
   }
 `;
+
 export default function SignupDescription() {
   const signupDescriptions = [
     {
