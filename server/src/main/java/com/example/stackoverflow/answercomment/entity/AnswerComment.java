@@ -18,10 +18,13 @@ public class AnswerComment extends AnswerBaseTimeEntity {
     private Long answerComment_id;
     @Column(columnDefinition = "TEXT")
     private String answerComment_content;
+
     @ManyToOne
     @JoinColumn(name = "ANSWER_ID",nullable = false)
     private Answer answer;
+
     public void setAnswer(Answer answer){
         this.answer = answer;
     }
+
 }

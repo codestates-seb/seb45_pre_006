@@ -16,11 +16,11 @@ import java.util.Optional;
 @Service
 public class AnswerCommentService {
     private final AnswerCommentRepository answerCommentRepository;
-    private final AnswerService answerService;
+    private final AnswerRepository answerRepository;
 
-    public AnswerCommentService(AnswerCommentRepository answerCommentRepository, AnswerService answerService) {
+    public AnswerCommentService(AnswerCommentRepository answerCommentRepository, AnswerRepository answerRepository) {
         this.answerCommentRepository = answerCommentRepository;
-        this.answerService = answerService;
+        this.answerRepository = answerRepository;
     }
 
     public AnswerComment createAnswerComment(AnswerComment answerComment){
@@ -52,6 +52,6 @@ public class AnswerCommentService {
         return findAnswerComment;
     }
     private Answer findVerifiedAnswer(long answer_id){
-        return answerService.readAnswer(answer_id);
+        return answerRepository.findById(answer_id).orElse(null);
     }
 }

@@ -15,7 +15,6 @@ import java.util.List;
 public class AnswerResponseDto {
     private Long answer_id;
     private Long question_id;
-    private List<AnswerCommentResponseDto> answercommentList;
     private String answer_content;
     private LocalDateTime answer_createdAt;
 
@@ -24,6 +23,8 @@ public class AnswerResponseDto {
     private Boolean answer_accepted;
 
     private Integer answer_recommendation;
+
+    private List<AnswerCommentResponseDto> answerCommentList;
 
     public void setQuestion(Question question){
         this.question_id = question.getQuestion_id();
