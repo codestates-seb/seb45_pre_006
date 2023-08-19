@@ -16,20 +16,16 @@ const StyleAnswerFilter = styled.div`
   }
 `;
 
-export default function AnswerFilter({ postData }) {
-  const filterOptions = [
-    { value: "high", label: "Highest score (default)" },
-    { value: "old", label: "Data created (oldest first)" },
-  ];
-  const [selectedOption, setSelectedOption] = useState(filterOptions[0]);
-
-  const handleSelectChange = (selectedOption) => {
-    setSelectedOption(selectedOption);
-  };
-
+export default function AnswerFilter({
+  postData,
+  selectedOption,
+  setSelectedOption,
+  filterOptions,
+  setSort,
+  handleSelectChange,
+}) {
   return (
     <StyleAnswerFilter>
-      {console.log(selectedOption)}
       <label className="sortTitle"> Sorted by: </label>
       <Select
         value={selectedOption}

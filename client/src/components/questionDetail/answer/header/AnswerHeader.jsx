@@ -10,11 +10,25 @@ const StyleAnswerHeader = styled.div`
   padding-bottom: 16px;
 `;
 
-export default function AnswerHeader({ postData }) {
+export default function AnswerHeader({
+  postData,
+  selectedOption,
+  setSelectedOption,
+  filterOptions,
+  setSort,
+  handleSelectChange,
+}) {
   return (
     <StyleAnswerHeader>
       <AnswerCount postData={postData}></AnswerCount>
-      <AnswerFilter postData={postData}></AnswerFilter>
+      <AnswerFilter
+        postData={postData}
+        selectedOption={selectedOption}
+        setSelectedOption={setSelectedOption}
+        filterOptions={filterOptions}
+        setSort={setSort}
+        handleSelectChange={handleSelectChange}
+      ></AnswerFilter>
     </StyleAnswerHeader>
   );
 }

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { styled, keyframes } from "styled-components";
+import { styled } from "styled-components";
 import AnswerVote from "./AnswerVote";
 import AnswerContents from "./AnswerContents";
-import { usePostContext } from "../../../../context/PostContext";
 import AnswerComment from "./AnswerComment";
 import { useLocation } from "react-router-dom";
 import PaginationControls from "./PaginationControls";
+import AnswerAccepted from "./AnswerAccepted";
 
 const StyleAnswerMain = styled.div`
   .container {
@@ -19,7 +19,7 @@ const StyleAnswerMain = styled.div`
   }
 `;
 
-export default function AnswerMain({ postData }) {
+export default function AnswerMain({ postData, sortedData }) {
   const location = useLocation(); //
 
   // 페이지네이션을 위한 useState
@@ -44,28 +44,33 @@ export default function AnswerMain({ postData }) {
   if (!postData) {
     return <div>Loading...</div>;
   }
-  const AnswerData = postData.answerList;
 
   // 페이지네이션 구현
   const totalPages = Math.ceil(postData.answerList.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
 
+  // answer vote 상태 끌어올리고, props로 받아서 useEffect로 vote 카운트가 바뀔때마다 리렌더링해줘야함 *********
+
   return (
     <StyleAnswerMain>
+      {console.log(sortedData)}
       <PaginationControls
         totalPages={totalPages}
         currentPage={currentPage}
         onPageChange={setCurrentPage}
       />
-      {AnswerData.slice(startIndex, endIndex).map((answerItem, idx) => (
+      {sortedData.slice(startIndex, endIndex).map((answerItem, idx) => (
         <div
           key={answerItem.answer_id}
           id={answerItem.answer_id}
           className="container"
         >
           <div className="Contentscontainer">
-            <AnswerVote data={answerItem} />
+            <div>
+              <AnswerVote data={answerItem} />
+              <AnswerAccepted data={answerItem} />
+            </div>
             <AnswerContents data={answerItem} idx={idx} />
           </div>
           <AnswerComment data={answerItem} answer_id={answerItem.answer_id} />

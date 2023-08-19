@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { styled } from "styled-components";
 import { AiOutlineCaretUp, AiOutlineCaretDown } from "react-icons/ai";
 import axios from "axios";
@@ -38,38 +38,52 @@ const StyleAnswerVote = styled.div`
 
 export default function Vote({ data }) {
   const [voted, setVoted] = useState(false);
+  const [voteCount, setVoteCount] = useState(data.answer_recommendation);
 
-  const handleVote = async (voteType) => {
+  // 추천 중복 방지 로직이 필요할것같음*********
+  // 예를들어 서버의 답변 정보에서 추천을 한사람의 user_id 정보를 저장하는등********
+  // or 서버분들이 힘들다고 하시면 로컬스토리지에 저장된 유저정보를 이용하는것도 방법
+
+  // 추천 1번 누른경우 비추는 2번 누를수있음!! << 수정해야함 **********
+  const handleUpvote = async () => {
     if (voted) {
-      return; // 이미 투표한 경우 중복 투표 방지
+      return;
     }
-
-    // 주소만 수정해주자!! ##############
-    const url =
-      voteType === "upvote"
-        ? `/answers/${data.answer_id}/recommend`
-        : `/answers/${data.answer_id}/unrecommend`;
 
     try {
-      const response = await axios.post(url);
-
-      // 여기서 새로운 추천수를 업데이트하거나 필요한 로직 수행 ##############
-      console.log("Vote successful:", response.data);
-
-      // 투표 성공 후 voted 상태 업데이트
-      setVoted(true);
+      await axios.post(
+        `https://03d7-175-125-163-108.ngrok-free.app/answers/${data.answer_id}/recommend`
+      );
+      setVoted(!voted);
+      setVoteCount(voteCount + 1);
     } catch (error) {
-      console.error("Error voting:", error);
+      console.error("Error upvoting:", error);
     }
   };
+
+  const handleDownvote = async () => {
+    if (!voted) {
+      return;
+    }
+    try {
+      await axios.post(
+        `https://03d7-175-125-163-108.ngrok-free.app/answers/${data.answer_id}/unrecommend`
+      );
+      setVoted(!voted);
+      setVoteCount(voteCount - 1);
+    } catch (error) {
+      console.error("Error downvoting:", error);
+    }
+  };
+
   return (
     <StyleAnswerVote>
-      <button onClick={() => handleVote("upvote")}>
+      {console.log(voted)}
+      <button onClick={handleUpvote}>
         <AiOutlineCaretUp className="icon" />
       </button>
-
-      <div className="voteCount">{data.answer_recommendation}</div>
-      <button onClick={() => handleVote("downvote")}>
+      <div className="voteCount">{voteCount}</div>
+      <button onClick={handleDownvote}>
         <AiOutlineCaretDown className="icon" />
       </button>
     </StyleAnswerVote>
