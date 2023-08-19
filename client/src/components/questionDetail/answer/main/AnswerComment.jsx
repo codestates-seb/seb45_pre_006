@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { styled } from "styled-components";
 import useForm from "../../../../hooks/useForm";
-import getWriteDate from "../../../common/getWriteDate";
+import getWriteDate from "../../../utils/getWriteDate";
 
 // questionComment 코드 중복 로직이 많음
 
@@ -60,8 +60,7 @@ export default function AnswerComment({ data }) {
   const initialInputData = {
     comment: "",
   };
-  const [inputData, onInputChangeHandler, clearForm] =
-    useForm(initialInputData);
+  const [inputData, onInputChangeHandler, clearForm] = useForm(initialInputData);
 
   const handleEnterKeyPress = (e) => {
     if (e.key === "Enter") {

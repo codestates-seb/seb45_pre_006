@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import ShareModal from "../../question/main/ShareModal";
 import { styled } from "styled-components";
 import { usePostContext } from "../../../../context/PostContext";
-import getWriteDate from "../../../common/getWriteDate";
+import getWriteDate from "../../../utils/getWriteDate";
 import { useNavigate } from "react-router-dom";
 
 const StyleAnswerContents = styled.div`

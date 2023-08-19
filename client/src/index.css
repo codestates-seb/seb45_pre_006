@@ -52,10 +52,11 @@ a {
 a:hover {
   color: var(--link-hover);
 }
+
+body {
+  line-height: 1;
+}
 * {
-  margin: 0;
-  border: 0;
-  padding: 0;
   box-sizing: border-box;
 }
 pre {
@@ -63,6 +64,7 @@ pre {
   color: rgb(0, 0, 0);
   background-color: #f4f7f8;
 }
-body {
-  line-height: 1;
+ul,
+ol {
+  list-style: none;
 }

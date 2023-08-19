@@ -9,7 +9,7 @@ import ProfileTabButtons from "../components/profile/ProfileTabButtons";
 import NotFound from "./NotFound";
 import { useEffect } from "react";
 import { useState } from "react";
-import axios from "axios";
+import api from "../components/utils/send";
 import { useAuthContext } from "../context/AuthContext";
 
 const StyleProfile = styled.section`
@@ -20,7 +20,8 @@ const StyleProfile = styled.section`
 const profileParams = ["", "edit"];
 const mokUser = {
   isAdmin: true,
-  aboutMe: "```js\n const a = 1;\n for(let i = 0; i< 10; i++) {\n   console.log(i);\n }\n```",
+  aboutMe:
+    "### hello\n- hello\n```js\n const a = 1;\n for(let i = 0; i< 10; i++) {\n   console.log(i);\n }\n```",
   displayName: "myeongin",
   userId: "1",
   img: "/images/userImg.png",
@@ -42,7 +43,7 @@ const mokUser = {
   createAt: new Date(),
 };
 export default function Profile() {
-  const [userProfile, setUserProfile] = useState(mokUser);
+  const [userProfile, setUserProfile] = useState();
 
   const { profileId } = useParams();
   const { user } = useAuthContext();
@@ -56,18 +57,18 @@ export default function Profile() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(`/user/profile/${profileId}/${user.userId}`, {
+        const res = await api.get(`/user/profile/${profileId}/${user?.userId || 0}`, {
           headers: {
             "ngrok-skip-browser-warning": "69420",
           },
         });
-        // setUserProfile({
-        //   isAdmin: res.data.admin,
-        //   ...res.data.response,
-        //   img: res.data.response.img || "/images/userImg.png",
-        // });
-      } catch (error) {
-        console.log(error);
+        setUserProfile({
+          isAdmin: res.data.admin,
+          ...res.data.response,
+          img: res.data.response.img || "/images/userImg.png",
+        });
+      } catch (e) {
+        console.log(e);
       }
     };
 

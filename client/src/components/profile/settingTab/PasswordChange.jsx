@@ -5,7 +5,8 @@ import ErrorInput from "../../common/ErrorInput";
 import { styled } from "styled-components";
 import { BlueButton, PowderButton } from "../../common/Button";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../../utils/send";
+
 const StylePasswordChange = styled.div`
   p {
     padding-bottom: 16px;
@@ -60,10 +61,11 @@ export default function PasswordChange({ userProfile }) {
     if (passChangeValidation()) {
       try {
         const { currentPassword, newPassword } = passwordForm;
-        await axios.patch(`/user/password/${userId}`, {
+        await api.patch(`/user/password/${userId}`, {
           currentPassword,
           newPassword,
         });
+        nav(`/users/${userId}`);
       } catch (e) {
         console.log(e);
       }

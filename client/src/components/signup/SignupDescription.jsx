@@ -1,5 +1,5 @@
 import React from "react";
-import { signupSvg } from "../common/svg";
+import { signupSvg } from "../utils/svg";
 import { styled } from "styled-components";
 
 const StyleSignupDescription = styled.div`
