@@ -5,7 +5,6 @@ import com.example.stackoverflow.answer.repository.AnswerRepository;
 import com.example.stackoverflow.question.entity.Question;
 import com.example.stackoverflow.question.repository.QuestionRepository;
 import com.example.stackoverflow.question.service.QuestionService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -26,6 +25,7 @@ public class AnswerService {
         answer.setQuestion(question);
         question.setAnswerList(answer);
         question.setQuestion_answerCount(answer.getQuestion().incrementAnswerCount());
+
         return answerRepository.save(answer);
     }
 
@@ -100,4 +100,5 @@ public class AnswerService {
     private Question findVerifiedQuestion(long questionId) {
         return questionRepository.findById(questionId).orElse(null);
     }
+
 }

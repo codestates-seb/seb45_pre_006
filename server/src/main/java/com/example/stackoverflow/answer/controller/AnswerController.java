@@ -13,9 +13,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Positive;
 
-@CrossOrigin
+
 @RestController
 @RequestMapping("/answers")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class AnswerController {
 
    private final AnswerService answerService;

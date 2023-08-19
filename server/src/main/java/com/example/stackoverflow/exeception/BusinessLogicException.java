@@ -2,8 +2,6 @@ package com.example.stackoverflow.exeception;
 
 import lombok.Getter;
 
-
-
 public class BusinessLogicException extends RuntimeException {
     @Getter
     private final ExceptionCode exceptionCode;
@@ -13,4 +11,3 @@ public class BusinessLogicException extends RuntimeException {
         this.exceptionCode = exceptionCode;
     }
 }
-
