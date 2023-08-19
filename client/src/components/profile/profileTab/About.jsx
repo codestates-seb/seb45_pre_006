@@ -24,8 +24,12 @@ const StyleAbout = styled.div`
       text-align: center;
     }
   }
-  ul,
+  ul {
+    list-style: disc;
+    padding-left: 20px;
+  }
   ol {
+    list-style: decimal;
     padding-left: 20px;
   }
 `;

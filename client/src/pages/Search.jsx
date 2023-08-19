@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 import { useKeywordContext } from "../context/SearchKeywordContext";
 import { styled } from "styled-components";
 import { useNavigate } from "react-router-dom";
-
 import { BlueButton } from "../components/common/Button";
 import { BiSearchAlt } from 'react-icons/bi';
 import QuestionsList from "../components/home/QuestionsList";

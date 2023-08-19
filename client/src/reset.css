@@ -13,7 +13,6 @@ h5,
 h6,
 p,
 blockquote,
-pre,
 a,
 abbr,
 acronym,
@@ -82,9 +81,6 @@ video {
   margin: 0;
   padding: 0;
   border: 0;
-  font-size: 100%;
-  font: inherit;
-  vertical-align: baseline;
 }
 article,
 aside,
@@ -98,4 +94,7 @@ menu,
 nav,
 section {
   display: block;
+}
+body {
+  line-height: 1;
 }

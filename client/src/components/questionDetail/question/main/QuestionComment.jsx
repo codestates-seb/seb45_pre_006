@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { styled } from "styled-components";
 import { usePostContext } from "../../../../context/PostContext";
 import useForm from "../../../../hooks/useForm";
-import getWriteDate from "../../../common/getWriteDate";
+import getWriteDate from "../../../utils/getWriteDate";
 
 const StyleQuestionComment = styled.div`
   grid-column: 2;
@@ -58,8 +58,7 @@ export default function QuestionComment() {
   const initialInputData = {
     comment: "",
   };
-  const [inputData, onInputChangeHandler, clearForm] =
-    useForm(initialInputData);
+  const [inputData, onInputChangeHandler, clearForm] = useForm(initialInputData);
 
   const handleEnterKeyPress = (e) => {
     if (e.key === "Enter") {

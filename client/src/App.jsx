@@ -1,4 +1,4 @@
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import Question from "./pages/Questions";
 import Login from "./pages/Login";
 import Profile from "./pages/Profile";
@@ -16,6 +16,8 @@ import Header from "./components/header/Header";
 import { SearchKeywordProvider } from "./context/SearchKeywordContext";
 import Edit from "./pages/Edit";
 import ProtectedRoute from "./pages/ProtectedRoute";
+import { useAuthContext } from "./context/AuthContext";
+import { useEffect } from "react";
 
 const StyleApp = styled.div`
   background-color: ${(props) => (props.$background ? "var(--app-back-color)" : "")};
@@ -36,6 +38,21 @@ function App() {
   const path = useLocation().pathname.split("/")[1];
   const isSidebar = sidebarPaths.includes(path);
   const isFooter = footerPaths.includes(path);
+  const { logout } = useAuthContext();
+  const nav = useNavigate();
+
+  useEffect(() => {
+    const handleTriggerLogout = () => {
+      nav("/");
+      alert("토큰이 만료되었습니다 다시 로그인해주세요.");
+      logout();
+    };
+    window.addEventListener("logoutEvent", handleTriggerLogout);
+    return () => {
+      window.removeEventListener("logoutEvent", handleTriggerLogout);
+    };
+  }, [logout, nav]);
+
   return (
     <StyleApp $background={!isSidebar}>
       <SearchKeywordProvider>

@@ -1,7 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import { Link } from "react-router-dom";
-import getTimeAgoText from "../../common/getTimeAgoText";
+import getTimeAgoText from "../../utils/getTimeAgoText";
 
 const StylePostItem = styled.li`
   height: 60px;
@@ -38,6 +38,7 @@ const StylePostItem = styled.li`
     color: var(--black-400);
   }
 `;
+
 export default function PostItem({ question }) {
   const { question_id, question_title, question_createdAt, question_answerCount } = question;
   return (

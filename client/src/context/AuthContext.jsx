@@ -1,32 +1,25 @@
 import React from "react";
 import { createContext, useContext, useState } from "react";
-import axios from "axios";
-
+import api from "../components/utils/send";
 const AuthContext = createContext();
 
 export default function AuthContextProvider({ children }) {
   const localUser = JSON.parse(localStorage.getItem("user"));
   const [user, setUser] = useState(localUser);
   const logout = async () => {
-    try {
-      await axios.post("/user/logout");
-      setUser(null);
-      localStorage.removeItem("user");
-      return true;
-    } catch (e) {
-      return false;
-    }
+    await api.post("/user/logout");
+    setUser(null);
+    localStorage.removeItem("user");
+    localStorage.removeItem("refreshToken");
+    return true;
   };
+
   const removeUser = async () => {
-    try {
-      await axios.delete(`/user/${user.userId}`).then((res) => console.log(res));
-      setUser(null);
-      localStorage.removeItem("user");
-      return true;
-    } catch (e) {
-      console.log(e);
-      return false;
-    }
+    await api.delete(`/user/${user.userId}`);
+    setUser(null);
+    localStorage.removeItem("user");
+    localStorage.removeItem("refreshToken");
+    return true;
   };
 
   const userHandler = (user) => {
