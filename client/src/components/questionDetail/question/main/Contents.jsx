@@ -54,7 +54,7 @@ const StyleContents = styled.div`
   }
 `;
 
-export default function Contents() {
+export default function Contents({ postData }) {
   // Share상태
   const [isClickedShare, setIsClickedShare] = useState(false);
 
@@ -79,26 +79,34 @@ export default function Contents() {
     };
   }, [isClickedShare]);
 
-  // 질문 post 정보 받아오기
-  const { post } = usePostContext();
-  if (!post || !post.posts) {
+  if (!postData) {
     return <div>Loading...</div>;
   }
-  const postData = post.posts[0];
 
   // edit 누를시 페이지전환
   const handleEdit = () => {
-    // 로그인 -> 본인이 쓴글일때 조건을 확인해서 넣어줘야함. !!!!!!!!!!
+    // 로그인 -> 본인이 쓴글일때 조건을 확인해서 넣어줘야함. !!!!!!!!!!********
     if (true) {
       // 데이터도 같이 넘겨줌
-      navigate(`/questions/${postData.question_id}/edit`, { state: post });
+      navigate(`/questions/${postData.question_id}/edit`, {
+        state: postData,
+      });
     } else {
       alert("권한이 없습니다.");
     }
   };
+  // 수정된지 여부를 판단하고 알맞는 날자데이터를 뿌려주는 로직 **** 서버 버그 수정해야함(질문상세들어가면 수정시간이 변경되는버그)
+  const isModified =
+    postData.question_createdAt !== postData.question_modifiedAt;
+  const dateInfo =
+    postData.question_createdAt === postData.question_modifiedAt
+      ? postData.question_createdAt
+      : postData.question_modifiedAt;
 
   return (
     <StyleContents>
+      {console.log(postData.question_createdAt)}
+      {console.log(postData.question_modifiedAt)}
       {postData.question_content}
       <div className="userInfoWrap">
         <div className="shareEdit">
@@ -117,10 +125,15 @@ export default function Contents() {
           </div>
         </div>
         <div className="userInfo">
-          <div className="date">asked {getWriteDate(postData.created_at)}</div>
+          {isModified ? (
+            <div className="date">modified {getWriteDate(dateInfo)}</div>
+          ) : (
+            <div className="date">asked {getWriteDate(dateInfo)}</div>
+          )}
+
           <div className="useProfile">
             <img src="/images/userImg.png" alt="userImg" />
-            <div className="username">{postData.user_name}</div>
+            <div className="username">{postData.user_id}</div> {/******/}
           </div>
         </div>
       </div>

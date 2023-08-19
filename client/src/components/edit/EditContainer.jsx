@@ -3,6 +3,7 @@ import { styled } from "styled-components";
 import EditTitle from "./EditTitle";
 import EditContent from "./EditContent";
 import useForm from "../../hooks/useForm";
+import { useParams } from "react-router-dom";
 
 const StyleEditContainer = styled.div`
   width: 1100px;
@@ -14,6 +15,7 @@ const StyleEditContainer = styled.div`
 
 export default function EditContainer({ post }) {
   const editorRef = useRef(null); // WriteContent ediotr 포커스를 위한 useRef
+  const { question_id, answer_id } = useParams(); // question , answer중 어디서 edit을 눌렀는지 판별하기 위함
 
   // input창 (댓글) 작성 부분
   const initialInputData = {
@@ -31,16 +33,26 @@ export default function EditContainer({ post }) {
   return (
     <StyleEditContainer>
       {console.log(inputData)}
+      {console.log(post)}
       <div className="header">Edit</div>
-      <EditTitle
+      {question_id ? (
+        <EditTitle
+          post={post}
+          inputData={inputData}
+          onInputChangeHandler={onInputChangeHandler}
+          clearForm={clearForm}
+          handleNextClick={handleNextClick}
+          length={inputData.title ? inputData.title.length : 0}
+        />
+      ) : null}
+
+      <EditContent
+        editorRef={editorRef}
         post={post}
+        question_id={question_id}
+        answer_id={answer_id}
         inputData={inputData}
-        onInputChangeHandler={onInputChangeHandler}
-        clearForm={clearForm}
-        handleNextClick={handleNextClick}
-        length={inputData.title.length}
-      ></EditTitle>
-      <EditContent editorRef={editorRef} post={post}></EditContent>
+      />
     </StyleEditContainer>
   );
 }

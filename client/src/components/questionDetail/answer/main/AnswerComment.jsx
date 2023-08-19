@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { styled } from "styled-components";
 import useForm from "../../../../hooks/useForm";
 import getWriteDate from "../../../utils/getWriteDate";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 // questionComment 코드 중복 로직이 많음
 
@@ -47,9 +49,11 @@ const StyleAnswerComment = styled.div`
   }
 `;
 
-export default function AnswerComment({ data }) {
+export default function AnswerComment({ data, answer_id }) {
   // 상태 변수 추가
   const [showAllComments, setShowAllComments] = useState(false);
+
+  const nav = useNavigate();
 
   // 댓글을 더 보여주기 위한 함수
   const handleShowMoreComments = () => {
@@ -60,30 +64,50 @@ export default function AnswerComment({ data }) {
   const initialInputData = {
     comment: "",
   };
-  const [inputData, onInputChangeHandler, clearForm] = useForm(initialInputData);
+  const [inputData, onInputChangeHandler, clearForm] =
+    useForm(initialInputData);
 
-  const handleEnterKeyPress = (e) => {
+  const handleEnterKeyPress = async (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
       // 폼 제출시 로직을 구현해야함
+      try {
+        const url =
+          "https://03d7-175-125-163-108.ngrok-free.app/answer-comments";
+
+        const requestData = {
+          answer_id: answer_id,
+          answerComment_content: inputData.comment,
+        };
+
+        const response = await axios.post(url, requestData);
+
+        console.log("Post successful:", response.data);
+      } catch (error) {
+        console.error("Error posting:", error);
+      }
       console.log("Form submitted:", inputData.comment);
       clearForm(); //  입력값 초기화
+      nav(0);
     }
   };
 
-  const postData = data.comment;
+  const postData = data.answerCommentList;
 
   return (
     <StyleAnswerComment>
-      {console.log(postData)}
       {postData.map(
         (data, idx) =>
           // 5개까지만 표시
           ((!showAllComments && idx < 5) || showAllComments) && (
             <div key={idx} className="comentlist">
-              <span className="commentbody">{data.commentBody} - </span>
-              <span className="username"> {data.username}</span>
-              <span className="createdat">{getWriteDate(data.createdAt)}</span>
+              <span className="commentbody">
+                {data.answerComment_content} -{" "}
+              </span>
+              <span className="username"> {data.user_id}</span>
+              <span className="createdat">
+                {getWriteDate(data.answerComment_createdAt)}
+              </span>
             </div>
           )
       )}

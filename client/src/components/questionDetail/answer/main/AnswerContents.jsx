@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ShareModal from "../../question/main/ShareModal";
 import { styled } from "styled-components";
 import { usePostContext } from "../../../../context/PostContext";
@@ -63,6 +63,21 @@ export default function AnswerContents({ data, idx }) {
     setIsClickedShare(!isClickedShare);
   };
 
+  // 모달 바깥클릭시 모달꺼지는 로직
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (isClickedShare && !event.target.closest(".shareEdit")) {
+        setIsClickedShare(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleOutsideClick);
+
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, [isClickedShare]);
+
   // 질문 post 정보 받아오기
   const { post } = usePostContext();
   if (!post || !post.posts) {
@@ -76,8 +91,8 @@ export default function AnswerContents({ data, idx }) {
     if (true) {
       // 데이터도 같이 넘겨줌
       // answer 배열로 넘어와서 인덱스를 주소값으로 넘겨줘야함
-      navigate(`/answers/${AnswerData[idx].answer_Id}/edit`, {
-        state: post,
+      navigate(`/answers/${data.answer_id}/edit`, {
+        state: data,
       });
     } else {
       alert("권한이 없습니다.");
@@ -86,8 +101,7 @@ export default function AnswerContents({ data, idx }) {
 
   return (
     <StyleAnswerContents>
-      {console.log(AnswerData[1].answer_Id)}
-      {data.content}
+      {data.answer_content}
       <div className="userInfoWrap">
         <div className="shareEdit">
           {isClickedShare ? (
@@ -103,10 +117,12 @@ export default function AnswerContents({ data, idx }) {
           </div>
         </div>
         <div className="userInfo">
-          <div className="date">asked {getWriteDate(data.created_at)}</div>
+          <div className="date">
+            asked {getWriteDate(data.answer_createdAt)}
+          </div>
           <div className="useProfile">
             <img src="/images/userImg.png" alt="userImg" />
-            <div className="username">{data.username}</div>
+            <div className="username">{data.user_id}</div>
           </div>
         </div>
       </div>

@@ -10,11 +10,11 @@ const StyleQuestionMain = styled.div`
   border-bottom: 1px solid var(--border);
 `;
 
-export default function QuestionMain() {
+export default function QuestionMain({ postData }) {
   return (
     <StyleQuestionMain>
-      <Contents> </Contents>
-      <QuestionComment></QuestionComment>
+      <Contents postData={postData}> </Contents>
+      <QuestionComment postData={postData}></QuestionComment>
     </StyleQuestionMain>
   );
 }

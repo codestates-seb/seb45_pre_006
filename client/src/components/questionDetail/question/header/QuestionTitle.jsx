@@ -1,8 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { styled } from "styled-components";
 import AskQuestion from "./AskQuestion";
 import { usePostContext } from "../../../../context/PostContext";
+import useAxiosData from "../../../../hooks/useAxiosData";
+import { useDataContext } from "../../../../context/DataContext";
 
 const StyleQuestionTitle = styled.div`
   display: flex;
@@ -13,18 +15,14 @@ const StyleQuestionTitle = styled.div`
   }
 `;
 
-export default function QuestionTitle() {
-  const { post, setPost } = usePostContext();
-
-  if (!post || !post.posts) {
+export default function QuestionTitle({ postData }) {
+  if (!postData) {
     return <div>Loading...</div>;
   }
 
   return (
     <StyleQuestionTitle>
-      <div className="title">
-        {post ? post.posts[0].question_title : "Loading..."}
-      </div>
+      <div className="title">{postData.question_title}</div>
       <AskQuestion></AskQuestion>
     </StyleQuestionTitle>
   );

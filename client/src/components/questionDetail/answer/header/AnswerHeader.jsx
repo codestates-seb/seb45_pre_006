@@ -10,11 +10,11 @@ const StyleAnswerHeader = styled.div`
   padding-bottom: 16px;
 `;
 
-export default function AnswerHeader() {
+export default function AnswerHeader({ postData }) {
   return (
     <StyleAnswerHeader>
-      <AnswerCount></AnswerCount>
-      <AnswerFilter></AnswerFilter>
+      <AnswerCount postData={postData}></AnswerCount>
+      <AnswerFilter postData={postData}></AnswerFilter>
     </StyleAnswerHeader>
   );
 }

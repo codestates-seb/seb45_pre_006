@@ -16,7 +16,7 @@ const StyleAnswerFilter = styled.div`
   }
 `;
 
-export default function AnswerFilter() {
+export default function AnswerFilter({ postData }) {
   const filterOptions = [
     { value: "high", label: "Highest score (default)" },
     { value: "old", label: "Data created (oldest first)" },

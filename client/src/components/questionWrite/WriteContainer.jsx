@@ -15,7 +15,8 @@ export default function WriteContainer() {
   const initialInputData = {
     title: "",
   };
-  const [inputData, onInputChangeHandler, clearForm] = useForm(initialInputData);
+  const [inputData, onInputChangeHandler, clearForm] =
+    useForm(initialInputData);
 
   const handleNextClick = () => {
     if (editorRef.current) {
@@ -36,7 +37,11 @@ export default function WriteContainer() {
         handleNextClick={handleNextClick}
         length={inputData.title.length}
       ></WriteTitle>
-      <WriteContent isActive={inputData.title.length > 5} editorRef={editorRef}></WriteContent>
+      <WriteContent
+        isActive={inputData.title.length > 5}
+        editorRef={editorRef}
+        inputData={inputData}
+      />
     </StyleWriteContainer>
   );
 }

@@ -6,6 +6,8 @@ import FormatGuide from "./FormatGuide";
 import { BlueButton } from "../common/Button";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import AnswerContents from "../questionDetail/answer/main/AnswerContents";
+import QuestionTitle from "../questionDetail/question/header/QuestionTitle";
 
 const Container = styled.div`
   display: flex;
@@ -50,8 +52,17 @@ const StyleEditContent = styled.div`
   }
 `;
 
-export default function EditContent({ editorRef, post }) {
-  const [content, setContent] = useState(post.question_content); //초기값을 질문상세페이지 질문의 content값으로
+export default function EditContent({
+  editorRef,
+  post,
+  question_id,
+  answer_id,
+  inputData,
+}) {
+  const [qeustionContent, setQeustionContentContent] = useState(
+    post.question_content
+  ); //초기값을 질문상세페이지 질문의 content값으로
+  const [answerContent, setAnswerContent] = useState(post.answer_content); // 초기값 답변 내용
   const nav = useNavigate(); // 뒤로가기 기능 구현을 위한 훅
 
   useEffect(() => {
@@ -59,10 +70,14 @@ export default function EditContent({ editorRef, post }) {
       autofocus: false,
       el: document.querySelector("#editor"),
       initialEditType: "markdown",
-      initialValue: content,
+      initialValue: question_id ? qeustionContent : answerContent,
       events: {
         change: () => {
-          setContent(editor.getMarkdown());
+          if (question_id) {
+            setQeustionContentContent(editor.getMarkdown());
+          } else {
+            setAnswerContent(editor.getMarkdown());
+          }
         },
       },
     });
@@ -73,23 +88,34 @@ export default function EditContent({ editorRef, post }) {
     };
   }, []);
 
-  // post 요청로직 !!
+  // question_id 를 여부로, 앤드포인트, 리퀘스트 바디 내용을 설정
   // post 요청 보내고, 해당 질문으로 다시 redirect해줘야하는거 생각해야함
-  // 리다이렉트시 업데이트된 데이터 get하여 렌더링해야함
   const handlePostClick = async () => {
     const editorInstance = editorRef.current;
     const markdownContent = editorInstance.getMarkdown();
 
     try {
-      // 주소교체하시고,
-      const response = await axios.post("주소적으삼", {
-        content: markdownContent,
-      });
+      const url = `https://03d7-175-125-163-108.ngrok-free.app/${
+        question_id ? "questions" : "answers"
+      }/${question_id ? question_id : answer_id}`;
+
+      const requestData = question_id
+        ? {
+            question_title: inputData.title,
+            question_content: markdownContent,
+          }
+        : {
+            answer_content: markdownContent,
+          };
+
+      const response = await axios.patch(url, requestData);
 
       console.log("Post successful:", response.data);
     } catch (error) {
       console.error("Error posting:", error);
     }
+    // 수정된 내용으로 리다이렉트 & 렌더링
+    nav(-1);
   };
 
   const handleCancel = () => {

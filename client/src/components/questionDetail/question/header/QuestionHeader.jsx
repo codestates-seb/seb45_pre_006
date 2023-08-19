@@ -10,11 +10,11 @@ const StyleQuestionHeader = styled.div`
   margin-bottom: 16px;
 `;
 
-export default function QuestionHeader() {
+export default function QuestionHeader({ postData }) {
   return (
     <StyleQuestionHeader>
-      <QuestionTitle />
-      <QuestionInfo />
+      <QuestionTitle postData={postData} />
+      <QuestionInfo postData={postData} />
     </StyleQuestionHeader>
   );
 }

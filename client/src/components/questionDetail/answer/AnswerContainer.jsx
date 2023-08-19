@@ -8,12 +8,12 @@ const StyleAnswerContainer = styled.div`
   padding: 0px 16px;
 `;
 
-export default function AnswerContainer() {
+export default function AnswerContainer({ postData }) {
   return (
     <StyleAnswerContainer>
-      <AnswerHeader></AnswerHeader>
-      <AnswerMain></AnswerMain>
-      <AnswerEditor></AnswerEditor>
+      <AnswerHeader postData={postData}></AnswerHeader>
+      <AnswerMain postData={postData}></AnswerMain>
+      <AnswerEditor postData={postData}></AnswerEditor>
     </StyleAnswerContainer>
   );
 }
