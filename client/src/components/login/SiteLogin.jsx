@@ -4,7 +4,7 @@ import ErrorInput from "../common/ErrorInput";
 import useForm from "../../hooks/useForm";
 import useError from "../../hooks/useError";
 import { BlueButton } from "../common/Button";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useAuthContext } from "../../context/AuthContext";
 const StyleSiteLogin = styled.form`
@@ -28,12 +28,6 @@ const StyleSiteLogin = styled.form`
     margin-top: 5px;
     width: 100%;
     padding: 10px;
-  }
-  a {
-    position: absolute;
-    top: 100px;
-    right: 24px;
-    font-size: 12px;
   }
 `;
 export default function SiteLogin() {
@@ -91,23 +85,14 @@ export default function SiteLogin() {
     e.preventDefault();
     if (loginValidation()) {
       try {
-        const res = await axios.post("/user/login", {
-          email: signinForm.email,
-          password: signinForm.password,
-        });
+        const { email, password } = signinForm;
+        const res = await axios.post("/user/login", { email, password });
+        localStorage.setItem("refreshToken", JSON.stringify(res.headers.refreshtoken));
         loginSuccess(res);
       } catch (e) {
-        switch (e.response.statusText) {
-          case "Unauthorized": {
-            UnauthorizedError();
-            break;
-          }
-          case "Not Found": {
-            NotFoundError();
-            break;
-          }
-          default:
-        }
+        const statusText = e.response.statusText;
+        if (statusText === "Unauthorized") UnauthorizedError();
+        else if (statusText === "Not Found") NotFoundError();
       }
     }
   };
@@ -132,7 +117,6 @@ export default function SiteLogin() {
         autoComplete="new-password"
         maxLength={15}
       />
-      <Link to="/reset-password">Forgot password?</Link>
       <BlueButton>Log In</BlueButton>
     </StyleSiteLogin>
   );

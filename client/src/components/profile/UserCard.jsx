@@ -1,6 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
-import calculateDateDifference from "../common/calculateDateDifference";
+import calculateDateDifference from "../utils/calculateDateDifference";
 import { MdCake } from "react-icons/md";
 import { BiSolidPencil } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";

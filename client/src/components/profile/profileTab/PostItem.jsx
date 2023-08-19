@@ -1,7 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import { Link } from "react-router-dom";
-import getTimeAgoText from "../../common/getTimeAgoText";
+import getTimeAgoText from "../../utils/getTimeAgoText";
 
 const StylePostItem = styled.li`
   height: 60px;
@@ -21,6 +21,7 @@ const StylePostItem = styled.li`
     line-height: 30px;
     border-radius: 5px;
     font-size: 14px;
+    font-weight: bold;
     &.active {
       color: var(--white);
       border-color: transparent;
@@ -37,6 +38,7 @@ const StylePostItem = styled.li`
     color: var(--black-400);
   }
 `;
+
 export default function PostItem({ question }) {
   const { question_id, question_title, question_createdAt, question_answerCount } = question;
   return (

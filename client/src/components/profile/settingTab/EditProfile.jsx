@@ -7,7 +7,7 @@ import Editor from "@toast-ui/editor";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import { BlueButton, PowderButton } from "../../common/Button";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../../utils/send";
 
 const StyleEditProfile = styled.div`
   flex: 1;
@@ -26,11 +26,11 @@ export default function EditProfile({ userProfile, userProfileHandler }) {
     setError({ displayName: "" });
     return true;
   };
-
+  
   const onSubmitHandler = async () => {
     if (displayNameValidation()) {
       try {
-        await axios.patch(`/user/profile/${userId}`, {
+        await api.patch(`/user/profile/${userId}`, {
           displayName: editForm.displayName,
           aboutMe: editForm.aboutMe,
         });

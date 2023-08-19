@@ -1,5 +1,4 @@
 import { Navigate } from "react-router-dom";
-import { useAuthContext } from "../context/AuthContext";
 
 export default function ProtectedRoute({
   children,
@@ -8,7 +7,7 @@ export default function ProtectedRoute({
   requireUnLogin,
   isAdmin,
 }) {
-  const { user } = useAuthContext();
+  const user = JSON.parse(localStorage.getItem("user"));
   if ((requireAdmin && !isAdmin) || (requireLogin && !user) || (requireUnLogin && user)) {
     return <Navigate to="/" />;
   }

@@ -1,6 +1,8 @@
 import React from "react";
 import { styled } from "styled-components";
 import { Link } from "react-router-dom";
+import ReactMarkdown from "react-markdown";
+
 const StyleAbout = styled.div`
   display: flex;
   flex-direction: column;
@@ -22,6 +24,14 @@ const StyleAbout = styled.div`
       text-align: center;
     }
   }
+  ul {
+    list-style: disc;
+    padding-left: 20px;
+  }
+  ol {
+    list-style: decimal;
+    padding-left: 20px;
+  }
 `;
 
 export default function About({ userProfile }) {
@@ -29,7 +39,7 @@ export default function About({ userProfile }) {
   return (
     <StyleAbout $admin={isAdmin}>
       <h4>About</h4>
-      {aboutMe && aboutMe}
+      {aboutMe && <ReactMarkdown children={aboutMe} />}
       {isAdmin && !aboutMe && (
         <div className="write-about">
           <span>

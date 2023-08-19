@@ -1,7 +1,6 @@
 import React from "react";
 import { useAuthContext } from "../../../context/AuthContext";
 import { styled } from "styled-components";
-import { MdNoBackpack } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 
 const StyleRemovebutton = styled.button`
