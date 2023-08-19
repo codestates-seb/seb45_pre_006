@@ -2,11 +2,11 @@ package com.example.stackoverflow.exeception;
 
 import lombok.Getter;
 
-public class BusinessLogicException extends RuntimeException {
+public class JwtException extends RuntimeException{
     @Getter
-    private final ExceptionCode exceptionCode;
+    private ExceptionCode exceptionCode;
 
-    public BusinessLogicException(ExceptionCode exceptionCode) {
+    public JwtException(ExceptionCode exceptionCode) {
         super(exceptionCode.getMessage());
         this.exceptionCode = exceptionCode;
     }
