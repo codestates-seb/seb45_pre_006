@@ -15,11 +15,12 @@ export default function QuestionDetail() {
   const [postData, setPostData] = useState();
   const axiosData = useAxiosData();
 
-  const qeustion_id = useParams();
+  // question_id 파라미터 받아서 axios 통신하기
+  const { question_id } = useParams();
 
   useEffect(() => {
     const requestBody = null;
-    axiosData("get", `questions/${qeustion_id.questionId}`, requestBody)
+    axiosData("get", `questions/${question_id}`, requestBody)
       .then((responseData) => {
         setPostData(responseData);
       })
@@ -31,7 +32,6 @@ export default function QuestionDetail() {
   return (
     <PostProvider>
       <StyleQuestionDetail>
-        {console.log(qeustion_id)}
         <QuestionContainer postData={postData} />
         <AnswerContainer postData={postData} />
       </StyleQuestionDetail>

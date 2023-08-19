@@ -53,7 +53,6 @@ export default function AnswerMain({ postData }) {
 
   return (
     <StyleAnswerMain>
-      {console.log(AnswerData)}
       <PaginationControls
         totalPages={totalPages}
         currentPage={currentPage}
@@ -69,7 +68,7 @@ export default function AnswerMain({ postData }) {
             <AnswerVote data={answerItem} />
             <AnswerContents data={answerItem} idx={idx} />
           </div>
-          <AnswerComment data={answerItem} />
+          <AnswerComment data={answerItem} answer_id={answerItem.answer_id} />
         </div>
       ))}
       <PaginationControls

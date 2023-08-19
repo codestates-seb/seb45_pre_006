@@ -95,10 +95,18 @@ export default function Contents({ postData }) {
       alert("권한이 없습니다.");
     }
   };
+  // 수정된지 여부를 판단하고 알맞는 날자데이터를 뿌려주는 로직 **** 서버 버그 수정해야함(질문상세들어가면 수정시간이 변경되는버그)
+  const isModified =
+    postData.question_createdAt !== postData.question_modifiedAt;
+  const dateInfo =
+    postData.question_createdAt === postData.question_modifiedAt
+      ? postData.question_createdAt
+      : postData.question_modifiedAt;
 
   return (
     <StyleContents>
-      {console.log(postData)}
+      {console.log(postData.question_createdAt)}
+      {console.log(postData.question_modifiedAt)}
       {postData.question_content}
       <div className="userInfoWrap">
         <div className="shareEdit">
@@ -117,9 +125,12 @@ export default function Contents({ postData }) {
           </div>
         </div>
         <div className="userInfo">
-          <div className="date">
-            asked {getWriteDate(postData.question_createdAt)}
-          </div>
+          {isModified ? (
+            <div className="date">modified {getWriteDate(dateInfo)}</div>
+          ) : (
+            <div className="date">asked {getWriteDate(dateInfo)}</div>
+          )}
+
           <div className="useProfile">
             <img src="/images/userImg.png" alt="userImg" />
             <div className="username">{postData.user_id}</div> {/******/}

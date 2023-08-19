@@ -15,6 +15,7 @@ export default function Edit() {
   // 해결 어려우면 질문용 edit, 답변용 edit 만들어야할듯
   const post = location.state;
 
+  // edit이 question인경우와 answer인 경우 조건부렌더링으로 구현..? ******
   return (
     <StyleEdit>
       <EditContainer post={post}></EditContainer>

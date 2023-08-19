@@ -5,6 +5,7 @@ import "@toast-ui/editor/dist/toastui-editor.css";
 import ContentGuide from "./ContentGuide";
 import { BlueButton } from "../common/Button";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   display: flex;
@@ -42,9 +43,10 @@ const StyleWriteContent = styled.div`
   }
 `;
 
-export default function WriteContent({ isActive, editorRef }) {
+export default function WriteContent({ isActive, editorRef, inputData }) {
   const [content, setContent] = useState("");
   const [editorFocused, setEditorFocused] = useState(false);
+  const nav = useNavigate();
 
   useEffect(() => {
     const editor = new Editor({
@@ -78,12 +80,18 @@ export default function WriteContent({ isActive, editorRef }) {
     const markdownContent = editorInstance.getMarkdown();
 
     try {
-      // 주소교체하시고,
-      const response = await axios.post("주소적으삼", {
-        content: markdownContent,
-      });
+      const url = "https://03d7-175-125-163-108.ngrok-free.app/questions";
+
+      const requestData = {
+        question_title: inputData.title,
+        question_content: markdownContent,
+      };
+
+      const response = await axios.post(url, requestData);
 
       console.log("Post successful:", response.data);
+      // 글 작성시 해당 작성글로 리다이렉션
+      nav(`/questions/${response.data.question_id}`);
     } catch (error) {
       console.error("Error posting:", error);
     }
@@ -91,10 +99,12 @@ export default function WriteContent({ isActive, editorRef }) {
 
   return (
     <Container isActive={isActive}>
+      {console.log(content)}
       <StyleWriteContent>
         <div className="title">What are the details of your problem?</div>
         <div className="discription">
-          Introduce the problem and expand on what you put in the title. Minimum 20 characters.
+          Introduce the problem and expand on what you put in the title. Minimum
+          20 characters.
         </div>
         <div id="editor"></div>
         <BlueButton onClick={handlePostClick}>Post</BlueButton>

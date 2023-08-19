@@ -91,8 +91,8 @@ export default function AnswerContents({ data, idx }) {
     if (true) {
       // 데이터도 같이 넘겨줌
       // answer 배열로 넘어와서 인덱스를 주소값으로 넘겨줘야함
-      navigate(`/answers/${AnswerData[idx].answer_Id}/edit`, {
-        state: post,
+      navigate(`/answers/${data.answer_id}/edit`, {
+        state: data,
       });
     } else {
       alert("권한이 없습니다.");

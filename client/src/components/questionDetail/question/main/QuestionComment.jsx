@@ -3,6 +3,8 @@ import { styled } from "styled-components";
 import { usePostContext } from "../../../../context/PostContext";
 import useForm from "../../../../hooks/useForm";
 import getWriteDate from "../../../common/getWriteDate";
+import axios from "axios";
+import { useNavigate, useParams } from "react-router-dom";
 
 const StyleQuestionComment = styled.div`
   grid-column: 2;
@@ -49,6 +51,11 @@ export default function QuestionComment({ postData }) {
   // 상태 변수 추가
   const [showAllComments, setShowAllComments] = useState(false);
 
+  // 주소 파라미터값 받기
+  const { question_id } = useParams();
+
+  const nav = useNavigate();
+
   // 댓글을 더 보여주기 위한 함수
   const handleShowMoreComments = () => {
     setShowAllComments(true);
@@ -61,12 +68,31 @@ export default function QuestionComment({ postData }) {
   const [inputData, onInputChangeHandler, clearForm] =
     useForm(initialInputData);
 
-  const handleEnterKeyPress = (e) => {
+  const handleEnterKeyPress = async (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
+
       // 폼 제출시 로직을 구현해야함
+
+      try {
+        const url =
+          "https://03d7-175-125-163-108.ngrok-free.app/question-comments";
+
+        const requestData = {
+          question_id: question_id,
+          questionComment_content: inputData.comment,
+        };
+
+        const response = await axios.post(url, requestData);
+
+        console.log("Post successful:", response.data);
+      } catch (error) {
+        console.error("Error posting:", error);
+      }
+
       console.log("Form submitted:", inputData.comment);
       clearForm(); //  입력값 초기화
+      nav(0);
     }
   };
 
@@ -99,7 +125,9 @@ export default function QuestionComment({ postData }) {
         </div>
       )}
       {/* show more comment 누를시에만 댓글입력창 렌더링 */}
-      {showAllComments && (
+      {(showAllComments ||
+        postData.questionCommentList.length <= 5 ||
+        postData.questionCommentList.length >= 0) && (
         <input
           type="text"
           name="comment"

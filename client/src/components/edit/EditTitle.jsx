@@ -103,7 +103,7 @@ export default function EditTitle({
         />
         <div className="buttonSection">
           <BlueButton onClick={handleSubmit}>Next</BlueButton>
-          {length > 5 || length == 0 ? null : (
+          {length > 5 || length === 0 ? null : (
             <div className="alert">Minimum 5 characters.</div>
           )}
         </div>
