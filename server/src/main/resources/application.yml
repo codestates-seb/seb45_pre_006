@@ -15,18 +15,6 @@ spring:
   sql:
     init:
       data-locations: classpath*:db/h2/data.sql
-  mail:
-    host: smtp.gmail.com
-    port: 587
-    username: akqjqcjs7@gmail.com
-    password: gkdwkrtk2018!
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
-
 mail:
   address:
     admin: admin@gmail.com

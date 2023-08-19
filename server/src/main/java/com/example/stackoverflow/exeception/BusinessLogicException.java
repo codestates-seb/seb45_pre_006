@@ -2,10 +2,11 @@ package com.example.stackoverflow.exeception;
 
 import lombok.Getter;
 
-public class BusinessLogicException extends RuntimeException{
+public class BusinessLogicException extends RuntimeException {
     @Getter
-    private ExceptionCode exceptionCode;
-    public BusinessLogicException(ExceptionCode exceptionCode){
+    private final ExceptionCode exceptionCode;
+
+    public BusinessLogicException(ExceptionCode exceptionCode) {
         super(exceptionCode.getMessage());
         this.exceptionCode = exceptionCode;
     }

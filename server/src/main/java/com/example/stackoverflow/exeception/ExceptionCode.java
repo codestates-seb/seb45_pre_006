@@ -10,11 +10,12 @@ public enum ExceptionCode {
     BAD_ACCESS(401, "Bad Access"),
     TIME_OUT(401, "Time Out"),
     BAD_TOKEN(401, "Bad Token");
-
+    ANSWER_NOT_FOUND(404,"Answer not found"),
+    QUESTIONCOMMENT_NOT_FOUND(404,"QuestionComment not found"),
+    ANSWERCOMMENT_NOT_FOUND(404,"AnswerComment not found");
 
     @Getter
     private int status;
-
     @Getter
     private String message;
 
