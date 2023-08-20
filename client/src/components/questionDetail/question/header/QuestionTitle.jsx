@@ -5,6 +5,7 @@ import AskQuestion from "./AskQuestion";
 import { usePostContext } from "../../../../context/PostContext";
 import useAxiosData from "../../../../hooks/useAxiosData";
 import { useDataContext } from "../../../../context/DataContext";
+import Loading from "../../../common/Loading";
 
 const StyleQuestionTitle = styled.div`
   display: flex;
@@ -17,7 +18,7 @@ const StyleQuestionTitle = styled.div`
 
 export default function QuestionTitle({ postData }) {
   if (!postData) {
-    return <div>Loading...</div>;
+    return <Loading></Loading>;
   }
 
   return (

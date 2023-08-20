@@ -4,6 +4,8 @@ import { styled } from "styled-components";
 import { usePostContext } from "../../../../context/PostContext";
 import getWriteDate from "../../../utils/getWriteDate";
 import { useNavigate } from "react-router-dom";
+import Loading from "../../../common/Loading";
+import axios from "axios";
 
 const StyleAnswerContents = styled.div`
   text-align: left;
@@ -81,7 +83,7 @@ export default function AnswerContents({ data, idx }) {
   // 질문 post 정보 받아오기
   const { post } = usePostContext();
   if (!post || !post.posts) {
-    return <div>Loading...</div>;
+    return <Loading></Loading>;
   }
   const AnswerData = post.posts[0].Answer;
 
@@ -96,6 +98,29 @@ export default function AnswerContents({ data, idx }) {
       });
     } else {
       alert("권한이 없습니다.");
+    }
+  };
+
+  // 질문 삭제 로직 **** 본인인경우에만 삭제 가능해야함
+  const handleDelete = async () => {
+    // 경고메세지
+    const shouldDelete = window.confirm(
+      "Are you sure you want to delete this answer?"
+    );
+    if (shouldDelete) {
+      try {
+        const response = await axios.delete(
+          `https://62c2-175-125-163-108.ngrok-free.app/answers/${data.answer_id}`
+        );
+        if (response.status === 204) {
+          console.log("Question deleted successfully");
+          window.location.reload(); // 해당 질문페이지로 이동
+        } else {
+          console.log("Failed to delete question");
+        }
+      } catch (error) {
+        console.error("An error occurred while deleting the question:", error);
+      }
     }
   };
 
@@ -114,6 +139,9 @@ export default function AnswerContents({ data, idx }) {
           )}
           <div className="edit" onClick={handleEdit}>
             Edit
+          </div>
+          <div className="delete" onClick={handleDelete}>
+            Delete
           </div>
         </div>
         <div className="userInfo">

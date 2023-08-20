@@ -5,6 +5,7 @@ import { usePostContext } from "../../../../context/PostContext";
 import getWriteDate from "../../../utils/getWriteDate";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Loading from "../../../common/Loading";
 
 const StyleContents = styled.div`
   text-align: left;
@@ -80,7 +81,7 @@ export default function Contents({ postData }) {
   }, [isClickedShare]);
 
   if (!postData) {
-    return <div>Loading...</div>;
+    return <Loading></Loading>;
   }
 
   // edit 누를시 페이지전환
@@ -95,6 +96,30 @@ export default function Contents({ postData }) {
       alert("권한이 없습니다.");
     }
   };
+
+  // 질문 삭제 로직 **** 본인인경우에만 삭제 가능해야함
+  const handleDelete = async () => {
+    // 경고메세지
+    const shouldDelete = window.confirm(
+      "Are you sure you want to delete this question?"
+    );
+    if (shouldDelete) {
+      try {
+        const response = await axios.delete(
+          `https://62c2-175-125-163-108.ngrok-free.app/questions/${postData.question_id}`
+        );
+        if (response.status === 204) {
+          console.log("Question deleted successfully");
+          navigate(-2); // 홈으로 이동
+        } else {
+          console.log("Failed to delete question");
+        }
+      } catch (error) {
+        console.error("An error occurred while deleting the question:", error);
+      }
+    }
+  };
+
   // 수정된지 여부를 판단하고 알맞는 날자데이터를 뿌려주는 로직 **** 서버 버그 수정해야함(질문상세들어가면 수정시간이 변경되는버그)
   const isModified =
     postData.question_createdAt !== postData.question_modifiedAt;
@@ -105,8 +130,8 @@ export default function Contents({ postData }) {
 
   return (
     <StyleContents>
-      {console.log(postData.question_createdAt)}
-      {console.log(postData.question_modifiedAt)}
+      {/* {console.log(postData.question_createdAt)}
+      {console.log(postData.question_modifiedAt)} */}
       {postData.question_content}
       <div className="userInfoWrap">
         <div className="shareEdit">
@@ -122,6 +147,9 @@ export default function Contents({ postData }) {
           )}
           <div className="edit" onClick={handleEdit}>
             Edit
+          </div>
+          <div className="delete" onClick={handleDelete}>
+            Delete
           </div>
         </div>
         <div className="userInfo">

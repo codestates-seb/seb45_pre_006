@@ -25,7 +25,7 @@ export default function AnswerEditor({ postData }) {
 
   const handlePost = async () => {
     try {
-      const url = "https://03d7-175-125-163-108.ngrok-free.app/answers";
+      const url = "https://62c2-175-125-163-108.ngrok-free.app/answers";
 
       const requestData = {
         question_id: postData.question_id,

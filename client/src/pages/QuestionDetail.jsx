@@ -6,9 +6,7 @@ import { PostProvider } from "../context/PostContext";
 import useAxiosData from "../hooks/useAxiosData";
 import { useParams } from "react-router-dom";
 
-const StyleQuestionDetail = styled.div`
-  width: 100%;
-`;
+const StyleQuestionDetail = styled.div``;
 
 export default function QuestionDetail() {
   // 데이터 받아서 저장하는 코드

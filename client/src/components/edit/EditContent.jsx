@@ -95,7 +95,7 @@ export default function EditContent({
     const markdownContent = editorInstance.getMarkdown();
 
     try {
-      const url = `https://03d7-175-125-163-108.ngrok-free.app/${
+      const url = `https://62c2-175-125-163-108.ngrok-free.app/${
         question_id ? "questions" : "answers"
       }/${question_id ? question_id : answer_id}`;
 
