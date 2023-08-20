@@ -51,7 +51,7 @@ export default function UsersList(props) {
   return (
     <StyleUsersList>
 
-      {props.filteredUser !== 0 ?
+      {props.filteredUser.length !== 0 ?
         props.filteredUser.map((user,idx)=>{
         return(
           <StyleUser key={idx}>

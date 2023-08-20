@@ -9,6 +9,7 @@ const StyleUsers = styled.div`
   padding: 40px 30px;
   .title {
     font-size: 27px;
+    font-weight: bolder;
   }
   .filter {
     display: flex;
@@ -60,7 +61,6 @@ export default function Users() {
         />
       </div>
       <UsersList 
-        inputData={inputData} 
         filteredUser = {filteredUser}
         ></UsersList>
     </StyleUsers>
