@@ -52,7 +52,7 @@ export default function Vote({ data }) {
 
     try {
       await axios.post(
-        `https://03d7-175-125-163-108.ngrok-free.app/answers/${data.answer_id}/recommend`
+        `https://62c2-175-125-163-108.ngrok-free.app/answers/${data.answer_id}/recommend`
       );
       setVoted(!voted);
       setVoteCount(voteCount + 1);
@@ -67,7 +67,7 @@ export default function Vote({ data }) {
     }
     try {
       await axios.post(
-        `https://03d7-175-125-163-108.ngrok-free.app/answers/${data.answer_id}/unrecommend`
+        `https://62c2-175-125-163-108.ngrok-free.app/answers/${data.answer_id}/unrecommend`
       );
       setVoted(!voted);
       setVoteCount(voteCount - 1);

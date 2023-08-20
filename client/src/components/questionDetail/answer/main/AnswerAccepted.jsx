@@ -30,7 +30,7 @@ export default function AnswerAccepted({ data }) {
     if (!isAccepted) {
       try {
         await axios.post(
-          `https://03d7-175-125-163-108.ngrok-free.app/answers/${data.answer_id}/accept`
+          `https://62c2-175-125-163-108.ngrok-free.app/answers/${data.answer_id}/accept`
         );
         setIsAccepted(true);
       } catch (error) {
@@ -39,7 +39,7 @@ export default function AnswerAccepted({ data }) {
     } else {
       try {
         await axios.post(
-          `https://03d7-175-125-163-108.ngrok-free.app/answers/${data.answer_id}/unaccept`
+          `https://62c2-175-125-163-108.ngrok-free.app/answers/${data.answer_id}/unaccept`
         );
         setIsAccepted(false);
       } catch (error) {

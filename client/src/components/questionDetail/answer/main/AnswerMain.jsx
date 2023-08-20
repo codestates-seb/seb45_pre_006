@@ -6,6 +6,7 @@ import AnswerComment from "./AnswerComment";
 import { useLocation } from "react-router-dom";
 import PaginationControls from "./PaginationControls";
 import AnswerAccepted from "./AnswerAccepted";
+import Loading from "../../../common/Loading";
 
 const StyleAnswerMain = styled.div`
   .container {
@@ -42,7 +43,7 @@ export default function AnswerMain({ postData, sortedData }) {
   });
 
   if (!postData) {
-    return <div>Loading...</div>;
+    return <Loading></Loading>;
   }
 
   // 페이지네이션 구현

@@ -80,7 +80,7 @@ export default function WriteContent({ isActive, editorRef, inputData }) {
     const markdownContent = editorInstance.getMarkdown();
 
     try {
-      const url = "https://03d7-175-125-163-108.ngrok-free.app/questions";
+      const url = "https://62c2-175-125-163-108.ngrok-free.app/questions";
 
       const requestData = {
         question_title: inputData.title,

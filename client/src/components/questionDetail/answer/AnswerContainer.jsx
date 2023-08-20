@@ -4,6 +4,7 @@ import AnswerHeader from "./header/AnswerHeader";
 import AnswerMain from "./main/AnswerMain";
 import AnswerEditor from "./main/AnswerEditor";
 import set from "date-fns/set/index.js";
+import Loading from "../../common/Loading";
 
 const StyleAnswerContainer = styled.div`
   padding: 0px 16px;
@@ -25,7 +26,7 @@ export default function AnswerContainer({ postData }) {
   };
 
   if (!postData) {
-    return <div>Loading...</div>;
+    return <Loading></Loading>;
   }
   // 답변 필터링 데이터
   const sortedData =

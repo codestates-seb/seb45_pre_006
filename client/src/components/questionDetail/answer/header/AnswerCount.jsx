@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import Loading from "../../../common/Loading";
 
 const StyleAnswerCount = styled.div`
   font-size: 19px;
@@ -7,7 +8,7 @@ const StyleAnswerCount = styled.div`
 
 export default function AnswerCount({ postData }) {
   if (!postData) {
-    return <div>Loading...</div>;
+    return <Loading></Loading>;
   }
 
   const answerData = postData.answerList;

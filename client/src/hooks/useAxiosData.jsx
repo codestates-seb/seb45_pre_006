@@ -1,7 +1,7 @@
 import axios from "axios";
 
 function useAxiosData() {
-  const defaultUrl = " https://03d7-175-125-163-108.ngrok-free.app/";
+  const defaultUrl = "https://62c2-175-125-163-108.ngrok-free.app/";
 
   return async (method, endpoint = "", requestBody) => {
     const url = defaultUrl + endpoint;
