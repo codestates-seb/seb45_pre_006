@@ -90,15 +90,15 @@ export const ListStyle = styled.ul `
 `
 export default function QuestionsList(props) {
   const currentPath = useNavigate()
+
     return(
       <ListStyle>
-        {props.questionsData.map((question)=>{
-            const tempKey = question.question_id + 234;
+        {props.answerFiltered.map((question, idx)=>{
             return(
-                <li key={tempKey} className="questions-container">
+                <li key={idx} className="questions-container">
                   <div className="content-side-wrap">
                     <span>0 votes</span>
-                    <span>{question.question_answercount} answers</span>
+                    <span>{question.question_answerCount} answers</span>
                     <span>{question.question_viewcount} views</span>
                   </div>
                   <div className="question-content-wrap">
