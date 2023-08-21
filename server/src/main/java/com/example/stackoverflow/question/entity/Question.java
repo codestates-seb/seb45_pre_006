@@ -3,6 +3,7 @@ package com.example.stackoverflow.question.entity;
 import com.example.stackoverflow.answer.entity.Answer;
 import com.example.stackoverflow.answercomment.entity.AnswerComment;
 import com.example.stackoverflow.questioncomment.entity.QuestionComment;
+import com.example.stackoverflow.user.entity.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -42,6 +43,10 @@ public class Question {
     @LastModifiedDate
     @Column(name = "LAST_MODIFIED_AT")
     private LocalDateTime question_modifiedAt;
+
+    @ManyToOne
+    @JoinColumn(name = "USER_ID", nullable = false)
+    private User user;
 
     @OneToMany(mappedBy = "question", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Answer> answerList = new ArrayList<>();

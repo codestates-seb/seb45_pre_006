@@ -1,6 +1,7 @@
 package com.example.stackoverflow.user.entity;
 
 import com.example.stackoverflow.audit.Auditable;
+import com.example.stackoverflow.question.entity.Question;
 import lombok.*;
 
 import javax.persistence.*;
@@ -34,6 +35,9 @@ public class User extends Auditable {
     // img 의 url 저장
     private String img;
 
+    // 내가 작성한 QuestionList
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    List<Question> questionList = new ArrayList<>();
     public User(String email, String password, String displayName, List<String> roles, String img){
         this.email = email;
         this.password = password;
@@ -42,9 +46,7 @@ public class User extends Auditable {
         this.img = img;
     }
 
-    // 개인 이미지
-
-    // 내가 작성한 QuestionList
-    // OneToMany(mappedBy = "user")
-    // List<Question> questions = new ArrayList<>();
+    public void setQuestionList(Question question) {
+        questionList.add(question);
+    }
 }

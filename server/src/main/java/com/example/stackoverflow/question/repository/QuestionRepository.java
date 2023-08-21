@@ -5,8 +5,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 @Repository
 public interface QuestionRepository extends JpaRepository<Question,Long> {
     /** 최신순으로 질문 리스트 정렬 **/
@@ -21,4 +23,7 @@ public interface QuestionRepository extends JpaRepository<Question,Long> {
     @Query("SELECT q FROM Question q WHERE q.question_answerCount > 0 ORDER BY q.question_createdAt DESC")
     Page<Question> findByQuestionAnswerCountIsNotEmpty(Pageable pageable);
 
+    // 회원 id 가 userId 인 질문들을 찾아 답글 수로 정렬하고 limit 10
+    @Query("SELECT q FROM Question q WHERE q.user.id = :userId ORDER BY q.question_answerCount DESC")
+    Page<Question> findByQuestionTopQuestions(@Param("userId") Long userId, Pageable pageable);
 }

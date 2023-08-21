@@ -1,5 +1,8 @@
 package com.example.stackoverflow.user.controller;
 
+import com.example.stackoverflow.question.entity.Question;
+import com.example.stackoverflow.question.mapper.QuestionMapper;
+import com.example.stackoverflow.question.service.QuestionService;
 import com.example.stackoverflow.user.dto.request.UserLoginPasswordUpdateRequest;
 import com.example.stackoverflow.user.dto.request.UserPatchRequest;
 import com.example.stackoverflow.user.dto.request.UserPostRequest;
@@ -8,7 +11,11 @@ import com.example.stackoverflow.user.dto.response.UserResponse;
 import com.example.stackoverflow.user.entity.User;
 import com.example.stackoverflow.user.mapper.UserMapper;
 import com.example.stackoverflow.user.service.UserService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.Param;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -20,6 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
+import java.util.List;
 
 @RestController
 @RequestMapping("/user")
@@ -28,10 +36,14 @@ import javax.validation.constraints.PositiveOrZero;
 public class UserController {
     private final UserService userService;
     private final UserMapper userMapper;
+    private final QuestionService questionService;
+    private final QuestionMapper questionMapper;
 
-    public UserController(UserService userService, UserMapper userMapper) {
+    public UserController(UserService userService, UserMapper userMapper, QuestionService questionService, QuestionMapper questionMapper) {
         this.userService = userService;
         this.userMapper = userMapper;
+        this.questionService = questionService;
+        this.questionMapper = questionMapper;
     }
 
     // 회원가입 (post)
@@ -99,6 +111,9 @@ public class UserController {
     public ResponseEntity getUser(@PathVariable("profile-id") @Positive long profileId, // 방문하고자 하는 회원의 식별자
                                   @PathVariable("user-id") @PositiveOrZero long userId) { // 방문하
         UserResponse userResponse = userMapper.userToUserResponse(userService.findUser(profileId));
+        Page<Question> questionsList = questionService.findTopQuestions(profileId);
+        userResponse.setPostList(questionMapper.questionListToQuestionTopDto(questionsList.getContent()));
+
         boolean isAdmin = false;
         // 로그아웃 상태에서 조회
         if(userId != 0) {
@@ -107,6 +122,24 @@ public class UserController {
         }
 
         return new ResponseEntity<>(new CustomUserResponse(isAdmin, userResponse), HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity getUsers(@RequestParam(name = "page", defaultValue = "0") @Positive int page,
+                                   @RequestParam(name = "size", defaultValue = "10") @Positive int size){
+        Page<User> pageUsers = userService.findUsers(page, size);
+        List<User> users = pageUsers.getContent();
+
+        return new ResponseEntity(userMapper.usersToUserByPagingDtos(users), HttpStatus.OK);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity getUsersByKeyword(@RequestParam(name = "keyword") String keyword,
+                                            @PageableDefault(size = 10, direction = Sort.Direction.DESC) Pageable pageable){
+        Page<User> pageUsers = userService.findUsersByKeyword(keyword, pageable);
+        List<User> users = pageUsers.getContent();
+
+        return new ResponseEntity<>(userMapper.usersToUserByPagingDtos(users), HttpStatus.OK);
     }
 
     @PostMapping("/login")

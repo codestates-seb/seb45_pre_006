@@ -2,6 +2,9 @@ package com.example.stackoverflow.user.service;
 
 import com.example.stackoverflow.exeception.BusinessLogicException;
 import com.example.stackoverflow.exeception.ExceptionCode;
+import com.example.stackoverflow.question.entity.Question;
+import com.example.stackoverflow.question.repository.QuestionRepository;
+import com.example.stackoverflow.question.service.QuestionService;
 import com.example.stackoverflow.security.utils.CustomAuthorityUtils;
 import com.example.stackoverflow.user.dto.request.UserLoginPasswordUpdateRequest;
 import com.example.stackoverflow.user.dto.request.UserPatchRequest;
@@ -9,6 +12,10 @@ import com.example.stackoverflow.user.dto.request.UserPostRequest;
 import com.example.stackoverflow.user.dto.response.UserPatchResponse;
 import com.example.stackoverflow.user.entity.User;
 import com.example.stackoverflow.user.repository.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,13 +28,16 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final CustomAuthorityUtils authorityUtils;
+    private final QuestionRepository questionRepository;
 
     public UserService(UserRepository userRepository,
                        PasswordEncoder passwordEncoder,
-                       CustomAuthorityUtils authorityUtils) {
+                       CustomAuthorityUtils authorityUtils,
+                       QuestionRepository questionRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityUtils = authorityUtils;
+        this.questionRepository = questionRepository;
     }
 
     public void createUser(User user){
@@ -68,10 +78,16 @@ public class UserService {
     public User findUser(Long userId){
         // id 를 통한 유저 탐색
         User user = findVerifiedUser(userId);
-        // 탐색 결과가 존재한다면 userId 를 통해 question 테이블 최신순 탐색
+
         return user;
     }
+    public Page<User> findUsers(int page, int size){
+        return userRepository.findAll(PageRequest.of(page, size, Sort.by("userId").descending()));
+    }
 
+    public Page<User> findUsersByKeyword(String keyword, Pageable pageable){
+        return userRepository.findByDisplayNameContaining(keyword, pageable);
+    }
 
     @Transactional
     public void deleteUser(Long userId){
@@ -80,7 +96,6 @@ public class UserService {
         userRepository.delete(user);
         System.out.println("들어오나?2");
     }
-
 
     // 이메일로 테이블 조회
     public void verifiedExistsEmail(String email){
