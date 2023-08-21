@@ -2,6 +2,7 @@ package com.example.stackoverflow.answer.entity;
 
 import com.example.stackoverflow.answercomment.entity.AnswerComment;
 import com.example.stackoverflow.question.entity.Question;
+import com.example.stackoverflow.user.entity.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -31,17 +32,30 @@ public class Answer {
 
     private Integer answer_recommendation =0;
 
-    @CreatedDate
     @Column(name = "created_at", updatable = false)
     private LocalDateTime answer_createdAt;
 
-    @LastModifiedDate
     @Column(name = "LAST_MODIFIED_AT")
     private LocalDateTime answer_modifiedAt;
+
+    @PrePersist
+    public void prePersist() {
+        answer_createdAt = LocalDateTime.now();
+        answer_modifiedAt = LocalDateTime.now();
+    }
 
     @ManyToOne
     @JoinColumn(name = "QUESTION_ID",nullable = false)
     private Question question;
+
+    /** user - answer 매핑 **/
+    @ManyToOne
+    @JoinColumn(name = "USER_ID",nullable = false)
+    private User user;
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     @OneToMany(mappedBy = "answer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<AnswerComment> answerCommentList = new ArrayList<>();
@@ -53,6 +67,7 @@ public class Answer {
     public void setAnswerCommentList(AnswerComment answerComment){
         this.answerCommentList.add(answerComment);
     }
+
 
     /** 답변 추천하면 추천 수 증가 **/
     public int incrementRecommendation() {
