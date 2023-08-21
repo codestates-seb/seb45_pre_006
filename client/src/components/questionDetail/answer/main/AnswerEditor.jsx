@@ -21,7 +21,7 @@ const StyleAnswerEditor = styled.div`
 
 export default function AnswerEditor({ postData }) {
   const [content, setContent] = useState("");
-  const nav = useNavigate();
+  const navigate = useNavigate();
 
   const handlePost = async () => {
     try {
@@ -40,7 +40,7 @@ export default function AnswerEditor({ postData }) {
     }
     console.log("Form submitted:", content);
 
-    nav(0);
+    navigate(0);
   };
 
   useEffect(() => {

@@ -79,7 +79,7 @@ export default function QuestionComment({ postData }) {
   // 주소 파라미터값 받기
   const { question_id } = useParams();
 
-  const nav = useNavigate();
+  const navigate = useNavigate();
 
   // axios 커스텀훅 사용
   const axiosData = useAxiosData();
@@ -115,7 +115,7 @@ export default function QuestionComment({ postData }) {
         await axiosData("post", "question-comments", requestData);
         console.log("Form submitted:", inputData.comment);
         clearForm(); // 인풋값 초기화
-        nav(0);
+        navigate(0);
       } catch (error) {
         console.error("Error posting:", error);
       }
@@ -147,7 +147,7 @@ export default function QuestionComment({ postData }) {
       } catch (error) {
         console.error("Error patching:", error);
       }
-      nav(0);
+      navigate(0);
     }
   };
   const handleDelete = async (questionComment_id) => {
@@ -166,7 +166,7 @@ export default function QuestionComment({ postData }) {
       } catch (error) {
         console.error("Error deleting:", error);
       }
-      nav(0);
+      navigate(0);
     }
   };
 

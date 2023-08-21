@@ -1,7 +1,7 @@
 import api from "../components/utils/send";
 
 function useAxiosData() {
-  const defaultUrl = "https://62c2-175-125-163-108.ngrok-free.app/";
+  const defaultUrl = "http://13.125.37.74:8080/";
 
   return async (method, endpoint = "", requestBody) => {
     const url = defaultUrl + endpoint;

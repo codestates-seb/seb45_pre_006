@@ -78,7 +78,7 @@ export default function AnswerComment({ data, answer_id }) {
   const [showEditInput, setShowEditInput] = useState(false);
   const [editId, setEditId] = useState("");
 
-  const nav = useNavigate();
+  const navigate = useNavigate();
 
   // 댓글을 더 보여주기 위한 함수
   const handleShowMoreComments = () => {
@@ -116,7 +116,7 @@ export default function AnswerComment({ data, answer_id }) {
       }
       console.log("Form submitted:", inputData.comment);
       clearForm(); //  입력값 초기화
-      nav(0);
+      navigate(0);
     }
   };
 
@@ -146,7 +146,7 @@ export default function AnswerComment({ data, answer_id }) {
       } catch (error) {
         console.error("Error posting:", error);
       }
-      nav(0);
+      navigate(0);
     }
   };
   const handleDelete = async (answerComment_id) => {
@@ -164,7 +164,7 @@ export default function AnswerComment({ data, answer_id }) {
       } catch (error) {
         console.error("Error posting:", error);
       }
-      nav(0);
+      navigate(0);
     }
   };
 

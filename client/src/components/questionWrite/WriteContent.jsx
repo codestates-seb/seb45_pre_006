@@ -47,7 +47,7 @@ const StyleWriteContent = styled.div`
 export default function WriteContent({ isActive, editorRef, inputData }) {
   const [content, setContent] = useState("");
   const [editorFocused, setEditorFocused] = useState(false);
-  const nav = useNavigate();
+  const navigate = useNavigate();
   const axiosData = useAxiosData();
 
   useEffect(() => {
@@ -91,7 +91,7 @@ export default function WriteContent({ isActive, editorRef, inputData }) {
 
       console.log("Post successful:", responseData);
       //  글 작성시 해당 작성글로 리다이렉션
-      nav(`/questions/${responseData.question_id}`);
+      navigate(`/questions/${responseData.question_id}`);
     } catch (error) {
       console.error("Error posting:", error);
     }
