@@ -10,8 +10,6 @@ import lombok.Setter;
 public class QuestionPostDto {
     private Long userId;
 
-    private Long userId;
-
     private String question_title;
 
     private String question_content;

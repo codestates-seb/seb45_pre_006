@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-08-19T15:12:36+0900",
+    date = "2023-08-21T11:17:49+0900",
     comments = "version: 1.5.2.Final, compiler: javac, environment: Java 11.0.18 (Azul Systems, Inc.)"
 )
 @Component
@@ -26,6 +26,7 @@ public class QuestionCommentMapperImpl implements QuestionCommentMapper {
         QuestionComment questionComment = new QuestionComment();
 
         questionComment.setQuestion( questionCommentPostDto.getQuestion() );
+        questionComment.setUser( questionCommentPostDto.getUser() );
         questionComment.setQuestionComment_content( questionCommentPostDto.getQuestionComment_content() );
 
         return questionComment;
@@ -53,6 +54,7 @@ public class QuestionCommentMapperImpl implements QuestionCommentMapper {
 
         QuestionCommentResponseDto questionCommentResponseDto = new QuestionCommentResponseDto();
 
+        questionCommentResponseDto.setUser( questionComment.getUser() );
         questionCommentResponseDto.setQuestionComment_id( questionComment.getQuestionComment_id() );
         questionCommentResponseDto.setQuestionComment_content( questionComment.getQuestionComment_content() );
         questionCommentResponseDto.setQuestionComment_createdAt( questionComment.getQuestionComment_createdAt() );
