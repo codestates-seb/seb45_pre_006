@@ -18,7 +18,7 @@ const StyleRemovebutton = styled.button`
   }
 `;
 
-export default function RemoveUser({ userProfile }) {
+export default function RemoveUser() {
   const { removeUser } = useAuthContext();
 
   return (

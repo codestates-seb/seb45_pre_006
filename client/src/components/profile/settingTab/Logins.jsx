@@ -13,7 +13,7 @@ export default function Logins({ userProfile }) {
   return (
     <StyleLogins>
       <PasswordChange userProfile={userProfile} />
-      <RemoveUser userProfile={userProfile} />
+      <RemoveUser />
     </StyleLogins>
   );
 }

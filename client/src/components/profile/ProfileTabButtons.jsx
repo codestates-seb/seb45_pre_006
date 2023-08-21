@@ -9,7 +9,7 @@ const StyleProfileTabButtons = styled.div`
   margin: 18px 0;
 `;
 export default function ProfileTabButtons({ userProfile }) {
-  const nav = useNavigate();
+  const navigate = useNavigate();
   const location = useLocation().pathname.split("/")[3];
   const { userId, isAdmin } = userProfile;
   const tabButtons = [
@@ -22,7 +22,7 @@ export default function ProfileTabButtons({ userProfile }) {
       {tabButtons.map((button) => (
         <WhiteButton
           className={location === button.location ? "active" : ""}
-          onClick={() => nav(button.link)}
+          onClick={() => navigate(button.link)}
           key={button.link}
         >
           {button.text}

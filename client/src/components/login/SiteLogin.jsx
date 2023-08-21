@@ -5,8 +5,8 @@ import useForm from "../../hooks/useForm";
 import useError from "../../hooks/useError";
 import { BlueButton } from "../common/Button";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { useAuthContext } from "../../context/AuthContext";
+import network from "../utils/network";
 const StyleSiteLogin = styled.form`
   width: 288px;
   height: 234px;
@@ -33,7 +33,7 @@ const StyleSiteLogin = styled.form`
 export default function SiteLogin() {
   const [signinForm, setSigninForm, clearSigninForm] = useForm({ email: "", password: "" });
   const [error, setError] = useError({ email: "", password: "" });
-  const nav = useNavigate();
+  const navigate = useNavigate();
   const { userHandler } = useAuthContext();
 
   const loginValidation = () => {
@@ -60,39 +60,40 @@ export default function SiteLogin() {
     return Object.values(errors).every((error) => error === "");
   };
 
-  const loginSuccess = (res) => {
+  const handleLoginSuccess = (res) => {
     const { userid: userId, img, displayname: displayName } = res.headers;
     userHandler({ userId, img, displayName });
     localStorage.setItem(
       "user",
       JSON.stringify({ userId, img: img || "/images/userImg.png", displayName })
     );
-    nav("/");
+    navigate("/");
     clearSigninForm();
   };
 
-  const UnauthorizedError = () => {
+  const handleUnauthorizedError = () => {
     setError({ email: "", password: "Please check your id or password" });
     setSigninForm(null, "password", "");
   };
 
-  const NotFoundError = () => {
+  const handleNotFoundError = () => {
     setError({ password: "", email: "This user does not exist" });
     clearSigninForm();
   };
 
-  const siteLoginHandler = async (e) => {
+  const siteLoginHandler = (e) => {
     e.preventDefault();
     if (loginValidation()) {
       try {
         const { email, password } = signinForm;
-        const res = await axios.post("/user/login", { email, password });
+        const res = network("post", "/user/login", { email, password });
         localStorage.setItem("refreshToken", JSON.stringify(res.headers.refreshtoken));
-        loginSuccess(res);
+        handleLoginSuccess(res);
       } catch (e) {
+        console.log(e);
         const statusText = e.response.statusText;
-        if (statusText === "Unauthorized") UnauthorizedError();
-        else if (statusText === "Not Found") NotFoundError();
+        if (statusText === "Unauthorized") handleUnauthorizedError();
+        else if (statusText === "Not Found") handleNotFoundError();
       }
     }
   };

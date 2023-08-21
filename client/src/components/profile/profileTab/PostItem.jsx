@@ -12,7 +12,7 @@ const StylePostItem = styled.li`
   &:not(:last-child) {
     border-bottom: 1px solid var(--border);
   }
-  .count {
+  .answer-count {
     border: 1px solid var(--border);
     width: 45px;
     height: 30px;
@@ -43,11 +43,12 @@ export default function PostItem({ question }) {
   const { question_id, question_title, createdAt, question_answerCount } = question;
   return (
     <StylePostItem>
-      <div className={`count ${question_answerCount ? "active" : ""}`}>{question_answerCount}</div>
+      <div className={`answer-count ${question_answerCount ? "active" : ""}`}>
+        {question_answerCount}
+      </div>
       <Link className="title" to={`/questions/${question_id}`}>
         {question_title}
       </Link>
-
       <span className="timestamp">{getTimeAgoText(createdAt)}</span>
     </StylePostItem>
   );

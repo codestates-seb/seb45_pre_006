@@ -25,7 +25,7 @@ const StyleSearchForm = styled.form`
 export default function SearchForm() {
   const { keyword, keywordHandler } = useKeywordContext();
   const [searchForm, setSearchForm] = useForm({ search: "" });
-  const nav = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     // 키워드를 주소창으로부터 받아와서 설정
@@ -36,7 +36,7 @@ export default function SearchForm() {
   const onSearchSubmitHandler = (e) => {
     e.preventDefault();
     keywordHandler(searchForm.search);
-    nav(`/search/${searchForm.search}`); // 검색시 검색 페이지로 이동
+    navigate(`/search/${searchForm.search}`); // 검색시 검색 페이지로 이동
   };
 
   return (
