@@ -100,7 +100,6 @@ export default function Search() {
     })
       .then((res)=>{console.log(res.data.data)
         setQuestionsData(res.data.data)
-        console.log(res.data.data)
       })
       .catch((Error)=>{console.log(Error)})
       .then(()=>{
