@@ -10,10 +10,10 @@ const StyleSubLogo = styled.div`
 `;
 
 export default function SubLogo() {
-  const nav = useNavigate();
+  const navigate = useNavigate();
   return (
     <StyleSubLogo>
-      <img src="/images/subLogo.png" alt="subLogo" onClick={() => nav("/")} />
+      <img src="/images/subLogo.png" alt="subLogo" onClick={() => navigate("/")} />
     </StyleSubLogo>
   );
 }

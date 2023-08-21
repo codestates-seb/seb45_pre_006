@@ -5,8 +5,7 @@ import ErrorInput from "../../common/ErrorInput";
 import { styled } from "styled-components";
 import { BlueButton, PowderButton } from "../../common/Button";
 import { useNavigate } from "react-router-dom";
-import api from "../../utils/send";
-
+import network from "../../utils/network";
 const StylePasswordChange = styled.div`
   p {
     padding-bottom: 16px;
@@ -28,7 +27,7 @@ export default function PasswordChange({ userProfile }) {
     newPassword: "",
     passwordCheck: "",
   });
-  const nav = useNavigate();
+  const navigate = useNavigate();
   const [error, setError] = useError({ currentPassword: "", password: "", passwordCheck: "" });
   const passChangeValidation = () => {
     const errors = {
@@ -61,11 +60,8 @@ export default function PasswordChange({ userProfile }) {
     if (passChangeValidation()) {
       try {
         const { currentPassword, newPassword } = passwordForm;
-        await api.patch(`/user/password/${userId}`, {
-          currentPassword,
-          newPassword,
-        });
-        nav(`/users/${userId}`);
+        network("patch", `/user/password/${userId}`, { currentPassword, newPassword });
+        navigate(`/users/${userId}`);
       } catch (e) {
         console.log(e);
       }
@@ -109,7 +105,7 @@ export default function PasswordChange({ userProfile }) {
           <BlueButton type="submit" onSubmit={onSubmitHandler}>
             Save profile
           </BlueButton>
-          <PowderButton onClick={() => nav(`/users/${userId}`)}>Cancel</PowderButton>
+          <PowderButton onClick={() => navigate(`/users/${userId}`)}>Cancel</PowderButton>
         </div>
       </form>
     </StylePasswordChange>

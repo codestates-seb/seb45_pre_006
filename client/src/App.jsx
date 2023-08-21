@@ -7,7 +7,6 @@ import QuestionDetail from "./pages/QuestionDetail";
 import Search from "./pages/Search";
 import Signup from "./pages/Signup";
 import Users from "./pages/Users";
-import ResetPassword from "./pages/ResetPassword";
 import NotFound from "./pages/NotFound";
 import { styled } from "styled-components";
 import Sidebar from "./components/sidebar/Sidebar";
@@ -16,7 +15,6 @@ import Header from "./components/header/Header";
 import { SearchKeywordProvider } from "./context/SearchKeywordContext";
 import Edit from "./pages/Edit";
 import ProtectedRoute from "./pages/ProtectedRoute";
-import network from "./components/utils/network";
 
 const StyleApp = styled.div`
   background-color: ${(props) =>
@@ -93,14 +91,7 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            <Route
-              path={"/reset-password"}
-              element={
-                <ProtectedRoute requireUnLogin>
-                  <ResetPassword />
-                </ProtectedRoute>
-              }
-            />
+
             <Route path={"*"} element={<NotFound />} />
           </Routes>
         </div>
