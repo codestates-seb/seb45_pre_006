@@ -52,7 +52,7 @@ const StyleUserCard = styled.div`
 export default function UserCard({ userProfile }) {
   const { displayName, userId, img, createdAt, isAdmin } = userProfile;
 
-  const nav = useNavigate();
+  const navigate = useNavigate();
   return (
     <StyleUserCard>
       <img src={img} alt="userImg" />
@@ -64,7 +64,7 @@ export default function UserCard({ userProfile }) {
         </div>
       </div>
       {isAdmin && (
-        <button className="edit-profile" onClick={() => nav(`/users/${userId}/edit`)}>
+        <button className="edit-profile" onClick={() => navigate(`/users/${userId}/edit`)}>
           <BiSolidPencil size={17} />
           Edit profile
         </button>

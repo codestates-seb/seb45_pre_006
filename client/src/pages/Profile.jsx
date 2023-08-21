@@ -9,8 +9,8 @@ import ProfileTabButtons from "../components/profile/ProfileTabButtons";
 import NotFound from "./NotFound";
 import { useEffect } from "react";
 import { useState } from "react";
-import api from "../components/utils/send";
 import { useAuthContext } from "../context/AuthContext";
+import api from "../components/utils/send";
 
 const StyleProfile = styled.section`
   width: 100%;
@@ -18,29 +18,7 @@ const StyleProfile = styled.section`
 `;
 
 const profileParams = ["", "edit"];
-const mokUser = {
-  isAdmin: false,
-  aboutMe: "```\nconst a = 1\n```",
-  displayName: "myeongin",
-  userId: "1",
-  img: "/images/userImg.png",
-  email: "mungin10@naver.com",
-  postList: [
-    {
-      question_id: "1",
-      question_title: "1",
-      question_createdAt: new Date(),
-      question_answerCount: 1,
-    },
-    {
-      question_id: "2",
-      question_title: "2",
-      question_createdAt: new Date(),
-      question_answerCount: 1,
-    },
-  ],
-  createAt: new Date(),
-};
+
 export default function Profile() {
   const [userProfile, setUserProfile] = useState();
   const { profileId } = useParams();
@@ -53,24 +31,16 @@ export default function Profile() {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
+    async function fetchProfile() {
       try {
-        const res = await api.get(`/user/profile/${profileId}/${user?.userId || 0}`, {
-          headers: {
-            "ngrok-skip-browser-warning": "69420",
-          },
-        });
-        setUserProfile({
-          isAdmin: res.data.admin,
-          ...res.data.response,
-          img: res.data.response.img || "/images/userImg.png",
-        });
+        const res = await api.get(`/user/profile/${profileId}/${user?.userId || 0}`);
+        const { admin, response } = res.data;
+        setUserProfile({ isAdmin: admin, ...response, img: response.img || "/images/userImg.png" });
       } catch (e) {
         console.log(e);
       }
-    };
-
-    fetchData();
+    }
+    fetchProfile();
   }, []);
 
   if (!profileParams.includes(useParams()["*"])) return <NotFound />;

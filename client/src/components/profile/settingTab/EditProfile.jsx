@@ -17,7 +17,7 @@ export default function EditProfile({ userProfile, userProfileHandler }) {
   const { displayName, aboutMe, userId } = userProfile;
   const [editForm, setEditForm] = useForm({ displayName, aboutMe });
   const [error, setError] = useError({ displayName: "" });
-  const nav = useNavigate();
+  const navigate = useNavigate();
 
   const displayNameValidation = () => {
     if (editForm.displayName.length < 2) {
@@ -27,16 +27,14 @@ export default function EditProfile({ userProfile, userProfileHandler }) {
     setError({ displayName: "" });
     return true;
   };
-  console.log(JSON.stringify(editForm.aboutMe));
+
   const onSubmitHandler = async () => {
     if (displayNameValidation()) {
       try {
-        await api.patch(`/user/profile/${userId}`, {
-          displayName: editForm.displayName,
-          aboutMe: editForm.aboutMe,
-        });
+        const { displayName, aboutMe } = editForm;
+        await api.patch(`/user/profile/${userId}`, { displayName, aboutMe });
         userProfileHandler({ aboutMe: editForm.aboutMe });
-        nav(`/users/${userId}`);
+        navigate(`/users/${userId}`);
       } catch (e) {
         console.log(e);
       }
@@ -74,7 +72,7 @@ export default function EditProfile({ userProfile, userProfileHandler }) {
       <div id="editor" />
       <div className="buttons">
         <BlueButton onClick={onSubmitHandler}>Save profile</BlueButton>
-        <PowderButton onClick={() => nav(`/users/${userId}`)}>Cancel</PowderButton>
+        <PowderButton onClick={() => navigate(`/users/${userId}`)}>Cancel</PowderButton>
       </div>
     </StyleEditProfile>
   );

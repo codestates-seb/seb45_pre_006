@@ -7,18 +7,27 @@ const AuthContext = createContext();
 export default function AuthContextProvider({ children }) {
   const localUser = JSON.parse(localStorage.getItem("user"));
   const [user, setUser] = useState(localUser);
-  const nav = useNavigate();
-  
+  const navigate = useNavigate();
+
   const clearUser = () => {
     setUser(null);
     localStorage.removeItem("user");
     localStorage.removeItem("refreshToken");
-    nav("/");
+    navigate("/");
   };
 
   const logout = async () => {
-    await api.post("/user/logout");
+    api.post("/user/logout");
     clearUser();
+  };
+
+  const removeUser = async () => {
+    api.delete(`/user/${user.userId}`);
+    clearUser();
+  };
+
+  const userHandler = (user) => {
+    setUser(user);
   };
 
   useEffect(() => {
@@ -31,15 +40,6 @@ export default function AuthContextProvider({ children }) {
       window.removeEventListener("logoutEvent", handleTriggerLogout);
     };
   }, []);
-
-  const removeUser = async () => {
-    await api.delete(`/user/${user.userId}`);
-    clearUser();
-  };
-
-  const userHandler = (user) => {
-    setUser(user);
-  };
 
   return (
     <AuthContext.Provider value={{ user, userHandler, logout, removeUser }}>

@@ -93,8 +93,7 @@ export default function QuestionComment({ postData }) {
   const initialInputData = {
     comment: "",
   };
-  const [inputData, onInputChangeHandler, clearForm] =
-    useForm(initialInputData);
+  const [inputData, onInputChangeHandler, clearForm] = useForm(initialInputData);
 
   // 댓글 edit 부분
   const [editInput, onEditInputChangeHandler, _] = useForm(initialInputData);
@@ -153,9 +152,7 @@ export default function QuestionComment({ postData }) {
   const handleDelete = async (questionComment_id) => {
     // 폼 제출시 로직을 구현해야함(완료) **** 작성자 유저id 추가로 넘겨줘야함
     // 경고메세지
-    const shouldDelete = window.confirm(
-      "Are you sure you want to delete this comment?"
-    );
+    const shouldDelete = window.confirm("Are you sure you want to delete this comment?");
     if (shouldDelete) {
       try {
         const url = `question-comments/${questionComment_id}`; // Updated URL
@@ -177,30 +174,18 @@ export default function QuestionComment({ postData }) {
           // 5개까지만 표시
           ((!showAllComments && idx < 5) || showAllComments) && (
             <div key={idx} className="comentlist">
-              <span className="commentbody">
-                {data.questionComment_content} -{" "}
-              </span>
+              <span className="commentbody">{data.questionComment_content} - </span>
               <span className="username"> {data.user_name}</span>
-              <span className="createdat">
-                {getWriteDate(data.questionComment_createdAt)}
-              </span>
-              <MdEdit
-                className="icon"
-                onClick={() => handleEdit(data.questionComment_id)}
-              />
-              <IoTrash
-                className="icon"
-                onClick={() => handleDelete(data.questionComment_id)}
-              />
+              <span className="createdat">{getWriteDate(data.questionComment_createdAt)}</span>
+              <MdEdit className="icon" onClick={() => handleEdit(data.questionComment_id)} />
+              <IoTrash className="icon" onClick={() => handleDelete(data.questionComment_id)} />
               {showEditInput && editId === data.questionComment_id ? (
                 <input
                   type="text"
                   name="comment"
                   value={editInput.comment}
                   onChange={(e) => onEditInputChangeHandler(e)}
-                  onKeyDown={(e) =>
-                    handleEditSubmmit(e, data.questionComment_id)
-                  }
+                  onKeyDown={(e) => handleEditSubmmit(e, data.questionComment_id)}
                   placeholder="Edit your comment ➡ Enter"
                   className="editcomment"
                 ></input>
@@ -212,8 +197,7 @@ export default function QuestionComment({ postData }) {
       {/* 5개 이상일경우 Show ~ more comments 렌더링 */}
       {postData.questionCommentList.length > 5 && !showAllComments && (
         <div className="showMoreButton" onClick={handleShowMoreComments}>
-          Show <span>{postData.questionCommentList.length - 5}</span> more
-          comments
+          Show <span>{postData.questionCommentList.length - 5}</span> more comments
         </div>
       )}
       {/* show more comment 누를시에만 댓글입력창 렌더링 */}

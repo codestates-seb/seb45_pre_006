@@ -4,11 +4,12 @@ import { BlueButton } from "../common/Button";
 import ErrorInput from "../common/ErrorInput";
 import useError from "../../hooks/useError";
 import useForm from "../../hooks/useForm";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import api from "../utils/send";
+
 const StyleSiteSignup = styled.form`
   background: var(--white);
-  height: 425px;
+
   box-shadow: 0 0 5px 2px var(--shadow);
   padding: 24px;
   border-radius: 5px;
@@ -43,7 +44,8 @@ export default function SiteSignup() {
     password: "",
   });
   const [error, setError] = useError({ displayName: "", email: "", password: "" });
-  const nav = useNavigate();
+  const navigate = useNavigate();
+
   const signupValidation = () => {
     const errors = {
       displayName: "",
@@ -72,11 +74,11 @@ export default function SiteSignup() {
     return Object.values(errors).every((error) => error === "");
   };
 
-  const sinupSuccess = () => {
-    nav("/login");
+  const handleSignupSuccess = () => {
+    navigate("/login");
     clearSignupForm();
   };
-  const existsError = () => {
+  const handleExistsError = () => {
     setError({ ...error, email: "email already exists" });
     setSignupForm(null, "email", "");
   };
@@ -86,10 +88,10 @@ export default function SiteSignup() {
     if (signupValidation()) {
       const { displayName, email, password } = signupForm;
       try {
-        await axios.post("/user/post", { displayName, email, password });
-        sinupSuccess();
+        await api.post("/user/post", { displayName, email, password });
+        handleSignupSuccess();
       } catch (e) {
-        existsError();
+        handleExistsError();
       }
     }
   };

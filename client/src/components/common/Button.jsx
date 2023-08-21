@@ -27,6 +27,7 @@ export const WhiteButton = styled(Button)`
   }
   &.active {
     background-color: var(--orange);
+    border-color: var(--orange);
     color: var(--white);
     &:hover {
       background-color: var(--orange-hover);
