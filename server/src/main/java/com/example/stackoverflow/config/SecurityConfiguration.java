@@ -25,6 +25,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 public class SecurityConfiguration {
@@ -79,6 +80,14 @@ public class SecurityConfiguration {
         // HTTP 메서드에 대한 HTTP 통신 허용
         configuration.setAllowedMethods(Arrays.asList("POST", "GET", "PATCH", "DELETE"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
+
+        configuration.setExposedHeaders(List.of(
+                "RefreshToken",
+                "userId",
+                "displayName",
+                "img"
+        ));
+        configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         // 모든 URL 에 앞에서 구성한 CORS 정책 적용
