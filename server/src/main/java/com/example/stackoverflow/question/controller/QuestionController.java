@@ -15,14 +15,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.util.List;
 
-@CrossOrigin
+
 @RestController
 @RequestMapping("/questions")
 @Validated
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class QuestionController {
 
     private final QuestionService questionService;
@@ -37,9 +39,7 @@ public class QuestionController {
     /** ✅질문 작성(Create) **/
     @PostMapping
     public ResponseEntity postQuestion(@Valid @RequestBody QuestionPostDto questionPostDto){
-        // 글자 수 제한 여부 체크 할지 말지
         Question question = questionService.createQuestion(mapper.questionPostDtoToQuestion(questionPostDto));
-        System.out.println(question.toString());
         return new ResponseEntity<>(mapper.questionToQuestionResponseDto(question), HttpStatus.CREATED);
     }
 
@@ -73,11 +73,13 @@ public class QuestionController {
     }
 
     /** ✅선택 질문 조회(Read) - 질문,질문 댓글,답변,답변 댓글 전부 나와야함 **/
+    @Transactional
     @GetMapping("/{question-id}")
     public ResponseEntity getQuestion(@PathVariable("question-id")@Positive long question_id){
         Question question = questionService.readQuestion(question_id);
         return new ResponseEntity<>(mapper.questionToQuestionResponseAllDto(question),HttpStatus.OK);
     }
+
 
     /** ✅질문 수정(Update) **/
     @PatchMapping("/{question-id}")
