@@ -76,11 +76,14 @@ public class SecurityConfiguration {
     CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration configuration = new CorsConfiguration();
         // 모든 출처에 대한 스크립트 기반 HTTP 통신 허용
-        configuration.setAllowedOrigins(Arrays.asList("*"));
-        // HTTP 메서드에 대한 HTTP 통신 허용
-        configuration.setAllowedMethods(Arrays.asList("POST", "GET", "PATCH", "DELETE"));
+        configuration.setAllowedOrigins(Arrays.asList(
+                "http://localhost:8080/",
+                "http://localhost:3000/",
+                "http://13.125.37.74/",
+                "https://f950-175-125-163-108.ngrok-free.app/"));
+                // HTTP 메서드에 대한 HTTP 통신 허용
+                configuration.setAllowedMethods(Arrays.asList("POST", "GET", "PATCH", "DELETE"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
-
         configuration.setExposedHeaders(List.of(
                 "RefreshToken",
                 "userId",
