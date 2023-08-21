@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ShareModal from "../../question/main/ShareModal";
 import { styled } from "styled-components";
-import getWriteDate from "../../../utils/getWriteDate";
+import getWriteDate from "../../../../utils/getWriteDate";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import ReactMarkdown from "react-markdown";
@@ -95,9 +95,7 @@ export default function AnswerContents({ data, idx }) {
   // 질문 삭제 로직 **** 본인인경우에만 삭제 가능해야함
   const handleDelete = async () => {
     // 경고메세지
-    const shouldDelete = window.confirm(
-      "Are you sure you want to delete this answer?"
-    );
+    const shouldDelete = window.confirm("Are you sure you want to delete this answer?");
     if (shouldDelete) {
       try {
         const response = await axios.delete(
@@ -140,9 +138,7 @@ export default function AnswerContents({ data, idx }) {
           </div>
         </div>
         <div className="userInfo">
-          <div className="date">
-            asked {getWriteDate(data.answer_createdAt)}
-          </div>
+          <div className="date">asked {getWriteDate(data.answer_createdAt)}</div>
           <div className="useProfile">
             <img src="/images/userImg.png" alt="userImg" />
             <div className="username">{data.user_id}</div>

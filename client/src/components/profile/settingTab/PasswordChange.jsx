@@ -5,7 +5,7 @@ import ErrorInput from "../../common/ErrorInput";
 import { styled } from "styled-components";
 import { BlueButton, PowderButton } from "../../common/Button";
 import { useNavigate } from "react-router-dom";
-import network from "../../utils/network";
+import network from "../../../utils/network";
 const StylePasswordChange = styled.div`
   p {
     padding-bottom: 16px;

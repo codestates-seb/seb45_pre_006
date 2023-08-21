@@ -7,7 +7,7 @@ import Editor from "@toast-ui/editor";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import { BlueButton, PowderButton } from "../../common/Button";
 import { useNavigate } from "react-router-dom";
-import network from "../../utils/network";
+import network from "../../../utils/network";
 
 const StyleEditProfile = styled.div`
   flex: 1;

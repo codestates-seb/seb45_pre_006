@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import ShareModal from "./ShareModal";
 import { styled } from "styled-components";
 import { usePostContext } from "../../../../context/PostContext";
-import getWriteDate from "../../../utils/getWriteDate";
+import getWriteDate from "../../../../utils/getWriteDate";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import ReactMarkdown from "react-markdown";

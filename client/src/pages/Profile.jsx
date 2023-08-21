@@ -10,7 +10,7 @@ import NotFound from "./NotFound";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useAuthContext } from "../context/AuthContext";
-import network from "../components/utils/network";
+import network from "../utils/network";
 
 const StyleProfile = styled.section`
   width: 100%;

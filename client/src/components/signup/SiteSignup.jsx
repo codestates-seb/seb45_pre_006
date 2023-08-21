@@ -5,7 +5,7 @@ import ErrorInput from "../common/ErrorInput";
 import useError from "../../hooks/useError";
 import useForm from "../../hooks/useForm";
 import { useNavigate } from "react-router-dom";
-import network from "../utils/network";
+import network from "../../utils/network";
 const StyleSiteSignup = styled.form`
   background: var(--white);
   height: 425px;
