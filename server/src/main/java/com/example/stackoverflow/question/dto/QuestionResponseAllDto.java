@@ -4,6 +4,7 @@ import com.example.stackoverflow.answer.dto.AnswerResponseDto;
 import com.example.stackoverflow.answercomment.dto.AnswerCommentResponseDto;
 import com.example.stackoverflow.questioncomment.dto.QuestionCommentResponseDto;
 import com.example.stackoverflow.questioncomment.entity.QuestionComment;
+import com.example.stackoverflow.user.entity.User;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,6 +17,10 @@ public class QuestionResponseAllDto {
 
     private Long question_id;
 
+    private Long userId;
+
+    private String displayName;
+
     private String question_title;
 
     private String question_content;
@@ -26,11 +31,14 @@ public class QuestionResponseAllDto {
 
     private int question_answerCount;
 
-    private Long question_viewCount;
+    private int question_viewCount;
 
     private List<QuestionCommentResponseDto> questionCommentList;
 
     private List<AnswerResponseDto> answerList;
 
-
+    public void setUser(User user){
+        this.userId = user.getUserId();
+        this.displayName = user.getDisplayName();
+    }
 }

@@ -3,20 +3,21 @@ package com.example.stackoverflow.question.service;
 import com.example.stackoverflow.question.entity.Question;
 import com.example.stackoverflow.question.repository.QuestionRepository;
 import com.example.stackoverflow.user.entity.User;
+import com.example.stackoverflow.user.repository.UserRepository;
 import com.example.stackoverflow.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
+import java.time.LocalDateTime;
 
 @Service
 public class QuestionService {
     private final QuestionRepository questionRepository;
     private final UserService userService;
-
+  
     public QuestionService(QuestionRepository questionRepository,
                             UserService userService) {
         this.questionRepository = questionRepository;
@@ -68,6 +69,7 @@ public class QuestionService {
         Question question1 = questionRepository.findById(question.getQuestion_id()).orElse(null);
         question1.setQuestion_title(question.getQuestion_title());
         question1.setQuestion_content(question.getQuestion_content());
+        question1.setQuestion_modifiedAt(LocalDateTime.now());
 
         return questionRepository.save(question1);
     }
