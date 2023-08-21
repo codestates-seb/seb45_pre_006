@@ -1,7 +1,10 @@
 package com.example.stackoverflow.user.entity;
 
+import com.example.stackoverflow.answer.entity.Answer;
+import com.example.stackoverflow.answercomment.entity.AnswerComment;
 import com.example.stackoverflow.audit.Auditable;
 import com.example.stackoverflow.question.entity.Question;
+import com.example.stackoverflow.questioncomment.entity.QuestionComment;
 import lombok.*;
 
 import javax.persistence.*;
@@ -38,7 +41,8 @@ public class User extends Auditable {
     // 내가 작성한 QuestionList
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     List<Question> questionList = new ArrayList<>();
-    public User(String email, String password, String displayName, List<String> roles, String img){
+
+    public User(String email, String password, String displayName, List<String> roles, String img) {
         this.email = email;
         this.password = password;
         this.displayName = displayName;
@@ -47,6 +51,31 @@ public class User extends Auditable {
     }
 
     public void setQuestionList(Question question) {
-        questionList.add(question);
+        this.questionList.add(question);
+    }
+
+    /** user - answer 매핑 **/
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Answer> answerList = new ArrayList<>();
+
+    public void setAnswerList(Answer answer) {
+        this.answerList.add(answer);
+    }
+
+    /** user - questionComment 매핑 **/
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<QuestionComment> questionCommentList = new ArrayList<>();
+
+    public void setQuestionCommentList(QuestionComment questionComment) {
+        this.questionCommentList.add(questionComment);
+    }
+
+    /** user - answerComment 매핑 **/
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<AnswerComment> answerCommentList = new ArrayList<>();
+
+    public void setAnswerCommentList(AnswerComment answerComment) {
+        this.answerCommentList.add(answerComment);
     }
 }
+
