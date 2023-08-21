@@ -7,6 +7,7 @@ import { BlueButton } from "../common/Button";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import useAxiosData from "../../hooks/useAxiosData";
+import { useAuthContext } from "../../context/AuthContext";
 
 const Container = styled.div`
   display: flex;
@@ -47,6 +48,10 @@ const StyleWriteContent = styled.div`
 export default function WriteContent({ isActive, editorRef, inputData }) {
   const [content, setContent] = useState("");
   const [editorFocused, setEditorFocused] = useState(false);
+  let { user } = useAuthContext();
+  if (!user) {
+    user = { userId: "0" };
+  }
   const navigate = useNavigate();
   const axiosData = useAxiosData();
 
@@ -83,6 +88,7 @@ export default function WriteContent({ isActive, editorRef, inputData }) {
 
     try {
       const requestData = {
+        userId: user.userId,
         question_title: inputData.title,
         question_content: markdownContent,
       };
@@ -99,7 +105,6 @@ export default function WriteContent({ isActive, editorRef, inputData }) {
 
   return (
     <Container isActive={isActive}>
-      {console.log(content)}
       <StyleWriteContent>
         <div className="title">What are the details of your problem?</div>
         <div className="discription">

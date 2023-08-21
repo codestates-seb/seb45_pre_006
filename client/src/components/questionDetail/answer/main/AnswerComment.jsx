@@ -6,6 +6,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { MdEdit } from "react-icons/md";
 import { IoTrash } from "react-icons/io5";
+import { useAuthContext } from "../../../../context/AuthContext";
+import useAxiosData from "../../../../hooks/useAxiosData";
 
 // questionComment 코드 중복 로직이 많음
 
@@ -78,7 +80,13 @@ export default function AnswerComment({ data, answer_id }) {
   const [showEditInput, setShowEditInput] = useState(false);
   const [editId, setEditId] = useState("");
 
+  let { user } = useAuthContext();
+  if (!user) {
+    user = { userId: "0" };
+  }
+
   const navigate = useNavigate();
+  const axiosData = useAxiosData();
 
   // 댓글을 더 보여주기 위한 함수
   const handleShowMoreComments = () => {
@@ -89,7 +97,8 @@ export default function AnswerComment({ data, answer_id }) {
   const initialInputData = {
     comment: "",
   };
-  const [inputData, onInputChangeHandler, clearForm] = useForm(initialInputData);
+  const [inputData, onInputChangeHandler, clearForm] =
+    useForm(initialInputData);
 
   // 댓글 edit 부분
   const [editInput, onEditInputChangeHandler, _] = useForm(initialInputData);
@@ -97,23 +106,25 @@ export default function AnswerComment({ data, answer_id }) {
   const handleEnterKeyPress = async (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      // 폼 제출시 로직을 구현해야함
+
       try {
-        const url = "https://62c2-175-125-163-108.ngrok-free.app/answer-comments";
+        const url = "answer-comments"; //
 
         const requestData = {
+          userId: user.userId,
           answer_id: answer_id,
           answerComment_content: inputData.comment,
         };
 
-        const response = await axios.post(url, requestData);
+        const responseData = await axiosData("post", url, requestData);
 
-        console.log("Post successful:", response.data);
+        console.log("Post successful:", responseData);
       } catch (error) {
         console.error("Error posting:", error);
       }
+
       console.log("Form submitted:", inputData.comment);
-      clearForm(); //  입력값 초기화
+      clearForm();
       navigate(0);
     }
   };
@@ -125,41 +136,44 @@ export default function AnswerComment({ data, answer_id }) {
     setEditId(answerComment_id);
   };
   // 댓글 수정 로직2
-  const handleEditSubmmit = async (e, answerComment_id) => {
+  const handleEditSubmit = async (e, answerComment_id) => {
     if (e.key === "Enter") {
       e.preventDefault();
 
-      // 폼 제출시 로직을 구현해야함(완료) **** 작성자 유저id 추가로 넘겨줘야함
       try {
-        const url = `https://62c2-175-125-163-108.ngrok-free.app/answer-comments/${answerComment_id}`;
+        const url = `answer-comments/${answerComment_id}`; // Assuming the endpoint is handled in the axiosData function
 
         const requestData = {
+          userId: user.userId,
           answer_id: answer_id,
           answerComment_content: editInput.comment,
         };
 
-        const response = await axios.patch(url, requestData);
+        const responseData = await axiosData("patch", url, requestData);
 
-        console.log("Post successful:", response.data);
+        console.log("Post successful:", responseData);
       } catch (error) {
         console.error("Error posting:", error);
       }
+
       navigate(0);
     }
   };
   const handleDelete = async (answerComment_id) => {
-    // 폼 제출시 로직을 구현해야함(완료) **** 작성자 유저id 추가로 넘겨줘야함
-    const shouldDelete = window.confirm("Are you sure you want to delete this comment?");
+    const shouldDelete = window.confirm(
+      "Are you sure you want to delete this comment?"
+    );
     if (shouldDelete) {
       try {
-        const url = `https://62c2-175-125-163-108.ngrok-free.app/answer-comments/${answerComment_id}`;
+        const url = `answer-comments/${answerComment_id}`;
 
-        const response = await axios.delete(url);
+        const responseData = await axiosData("delete", url);
 
-        console.log("Delete successful:", response.data);
+        console.log("Delete successful:", responseData);
       } catch (error) {
         console.error("Error posting:", error);
       }
+
       navigate(0);
     }
   };
@@ -168,25 +182,37 @@ export default function AnswerComment({ data, answer_id }) {
 
   return (
     <StyleAnswerComment>
-      {console.log(postData)}
-      {console.log(editInput.comment)}
       {postData.map(
         (data, idx) =>
           // 5개까지만 표시
           ((!showAllComments && idx < 5) || showAllComments) && (
             <div key={idx} className="comentlist">
-              <span className="commentbody">{data.answerComment_content} - </span>
+              <span className="commentbody">
+                {data.answerComment_content} -
+              </span>
               <span className="username"> {data.user_id}</span>
-              <span className="createdat">{getWriteDate(data.answerComment_createdAt)}</span>
-              <MdEdit className="icon" onClick={() => handleEdit(data.answerComment_id)} />
-              <IoTrash className="icon" onClick={() => handleDelete(data.answerComment_id)} />
+              <span className="createdat">
+                {getWriteDate(data.answerComment_createdAt)}
+              </span>
+              {user.userId.toString() === data.userId.toString() && (
+                <>
+                  <MdEdit
+                    className="icon"
+                    onClick={() => handleEdit(data.answerComment_id)}
+                  />
+                  <IoTrash
+                    className="icon"
+                    onClick={() => handleDelete(data.answerComment_id)}
+                  />
+                </>
+              )}
               {showEditInput && editId === data.answerComment_id ? (
                 <input
                   type="text"
                   name="comment"
                   value={editInput.comment}
                   onChange={(e) => onEditInputChangeHandler(e)}
-                  onKeyDown={(e) => handleEditSubmmit(e, data.answerComment_id)}
+                  onKeyDown={(e) => handleEditSubmit(e, data.answerComment_id)}
                   placeholder="Edit your comment ➡ Enter"
                   className="editcomment"
                 ></input>
@@ -201,15 +227,17 @@ export default function AnswerComment({ data, answer_id }) {
         </div>
       )}
 
-      <input
-        type="text"
-        name="comment"
-        value={inputData.comment}
-        onChange={(e) => onInputChangeHandler(e)}
-        onKeyDown={handleEnterKeyPress}
-        placeholder="Add a comment"
-        className="writecomment"
-      ></input>
+      {user.userId !== "0" && (
+        <input
+          type="text"
+          name="comment"
+          value={inputData.comment}
+          onChange={(e) => onInputChangeHandler(e)}
+          onKeyDown={handleEnterKeyPress}
+          placeholder="Add a comment"
+          className="writecomment"
+        />
+      )}
     </StyleAnswerComment>
   );
 }

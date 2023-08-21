@@ -7,6 +7,7 @@ import { BlueButton } from "../common/Button";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import useAxiosData from "../../hooks/useAxiosData";
+import { useAuthContext } from "../../context/AuthContext";
 
 const Container = styled.div`
   display: flex;
@@ -62,6 +63,7 @@ export default function EditContent({
     post.question_content
   ); //초기값을 질문상세페이지 질문의 content값으로
   const [answerContent, setAnswerContent] = useState(post.answer_content); // 초기값 답변 내용
+  const { user } = useAuthContext();
   const navigate = useNavigate(); // 뒤로가기 기능 구현을 위한 훅
   const axiosData = useAxiosData(); //
 
@@ -95,7 +97,9 @@ export default function EditContent({
     const markdownContent = editorInstance.getMarkdown();
 
     try {
-      const url = `questions/${question_id ? question_id : answer_id}`;
+      const url = `${question_id ? "questions" : "answers"}/${
+        question_id ? question_id : answer_id
+      }`;
 
       const requestData = question_id
         ? {
@@ -104,6 +108,7 @@ export default function EditContent({
             question_content: markdownContent,
           }
         : {
+            userId: user.userId,
             answer_content: markdownContent,
           };
 
@@ -114,18 +119,16 @@ export default function EditContent({
       console.error("Error posting:", error);
     }
     // 수정된 내용으로 리다이렉트 & 렌더링
-    // navigate(-1);
+    navigate(-1);
   };
 
   const handleCancel = () => {
     // 뒤로가기 구현
     navigate(-1);
   };
-
   return (
     <Container>
       <div>
-        {console.log(post)}
         <StyleEditContent>
           <div className="title">What are the details of your problem?</div>
           <div className="discription">
