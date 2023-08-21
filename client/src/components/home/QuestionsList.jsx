@@ -2,13 +2,12 @@ import React from "react";
 import { styled } from "styled-components";
 import { useNavigate } from "react-router-dom";
 
-export const ListStyle = styled.ul`
-  .questions-container {
-    height: 100%;
-    background-color: white;
+import getTimeAgoText from '../utils/getTimeAgoText';
+
+export const ListStyle = styled.ul `
+  .qustions-item {
     border-bottom: 1px solid var(--border);
     display: flex;
-    flex-direction: row;
     padding: 16px;
     gap: 20px;
   }
@@ -89,45 +88,38 @@ export const ListStyle = styled.ul`
   }
 `;
 export default function QuestionsList(props) {
-  const currentPath = useNavigate();
-
-  return (
-    <ListStyle>
-      {props.answerFiltered?.map((question, idx) => {
-        return (
-          <li key={idx} className="questions-container">
-            <div className="content-side-wrap">
-              <span>0 votes</span>
-              <span>{question.question_answerCount} answers</span>
-              <span>{question.question_viewcount} views</span>
-            </div>
-            <div className="question-content-wrap">
-              <div className="question-content">
-                <h2
-                  onClick={(tempKey) => {
-                    currentPath(`/questions/${question.question_id}`);
-                  }}
-                >
-                  {question.question_title}
-                </h2>
-                <p>{question.question_content}</p>
-                <div className="question-user">
-                  <img src="/images/userImg.png" alt="userIcon" className="user-img"></img>
-                  {/* 이미지로 대체해야하나요? 아니면 기본이미지? */}
-                  <span
-                    onClick={(user_name) => {
-                      currentPath(`/users/${question.user_name}`);
-                    }}
-                  >
-                    {question.user_name}
-                  </span>
-                  <span>modified 1 min ago</span>
-                </div>
-              </div>
-            </div>
-          </li>
-        );
-      })}
-    </ListStyle>
-  );
+  const navigate = useNavigate()
+  console.log(props.questionsFiltered)
+    return(
+      <ListStyle>
+        {props.questionsFiltered.map((question, idx)=>{
+            return(
+                <li key={idx} className="qustions-item">
+                  <div className="content-side-wrap">
+                    <span>0 votes</span>
+                    <span>{question.question_answerCount} answers</span>
+                    <span>{question.question_viewCount} views</span>
+                  </div>
+                  <div className="question-content-wrap">
+                    <div className="question-content">
+                          <h2 onClick={(tempKey)=>{navigate(`/questions/${question.question_id}`)}}>
+                            {question.question_title}
+                          </h2>
+                          <p>
+                            {question.question_content}
+                          </p>
+                        <div className="question-user">
+                          <img src='/images/userImg.png' alt='userIcon' className='user-img'></img>
+                          <span onClick={(user_name)=>{navigate(`/users/${question.userId}`)}}>
+                            {question.displayName}
+                          </span>
+                          <span>{getTimeAgoText(question.question_createdAt)}</span>
+                        </div>
+                    </div>
+                  </div>
+                </li>
+            )
+        })}
+      </ListStyle>
+    )
 }

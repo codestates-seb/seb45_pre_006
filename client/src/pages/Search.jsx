@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useKeywordContext } from "../context/SearchKeywordContext";
 import { styled } from "styled-components";
-import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
 import { BlueButton } from "../components/common/Button";
-import { BiSearchAlt } from "react-icons/bi";
 import QuestionsList from "../components/home/QuestionsList";
-import { ListStyle } from "../components/home/QuestionsList";
 
 const SearchHeadLine = styled.div`
   width: 100%;
   margin-top: 26px;
-  height: 82px;
-  background-color: var(--white);
-  border-bottom: 1px solid var(--border);
+  .infinite-scroll  {
+    width: 100%;
+    height: 50px;
+    bottom: 0px;
+  }
   .search-headline-container {
     display: flex;
     justify-content: space-between;
@@ -37,7 +39,7 @@ const SearchHeadLine = styled.div`
     width: 1100px;
     height: 30px;
     margin-right: 24px;
-    margin-bottom: 12px;
+    border-bottom: 1px solid var(--border);
   }
   .counter-container > h3 {
     margin-left: 25px;
@@ -76,85 +78,62 @@ const SearchHeadLine = styled.div`
   }
 `;
 
-const questions = {
-  questions: [
-    {
-      question_id: 1,
-      question_title:
-        "IN THE ABOVE EXAMPLE STRICT MODE CHEC SDAKJHIWHIWUDHW KS WILL NOTE BE RUN AGAIST THE HAEADER CHECKS WILL NOTE BE RUN AGAIST THE HAEADER CHECKS WILL NOTE BE RUN AGAIST THE HAEADER AGAIST SDAKJHIWHIWUDHW KS WILL NOTE BE RUN AGAIST THE HAEADER CHECKS WILL NOTE BE RUN AGAIST THE HAEADER CHECKS WILL NOTE BE RUN AGAIST THE HAEADER AGAIST",
-      question_content:
-        "i change the version of i change the version of i change the version of i change the version of i change the version of i change the version of mode checks will not be run against strict mode checks mode checks will not be run against strict mode checks",
-      question_viewcount: 128,
-      created_at: "2023-08-10T10:00:00",
-      updated_at: "2023-08-10T12:30:00",
-      user_name: "user123",
-      question_answercount: 0,
-    },
-    {
-      question_id: 2,
-      question_title:
-        "Linux while i change the version of init, selinux shows i change the version of init, selinux shows i change the version of init, selinux shows Linux while i change the version of init, selinux shows i change the version ofm Linux while i change the version of init, selinux shows i change the version of init, selinux shows i change the version of init, selinux shows Linux while i change the version of init, selinux shows i change the version ofm ",
-      question_content:
-        "the version of , whi  whie i change the version of init, selinux shows i c version of init, selinux shows i chhange the version ofm Linux while i change the version of init, selinux shows i change the version of init, selinux shows i change the version of init, selinux shows Linux while i change the version of init, selinux shows i change the versio i change the version of init, selinux shows i change the version ofm Linux while i change the version of init, selinux shows i change the version of init, selinux shows i change the version of init, selinux shows Linux while i change the version of init, selinux shows i change the version ofn ofm",
-      question_viewcount: 128,
-      created_at: "2023-08-10T10:00:00",
-      updated_at: "2023-08-10T12:30:00",
-      user_name: "user1asdfa23",
-      question_answercount: 45,
-    },
-    {
-      question_id: 3,
-      question_title: "Context",
-      question_content:
-        "In the above example, strict mode checks will not be run against the Header and Footer components. However, ComponentOne and ComponentTwo, as well as all of their descendants, will have the checks.",
-      question_viewcount: 128,
-      created_at: "2023-08-10T10:00:00",
-      updated_at: "2023-08-10T12:30:00",
-      user_name: "user1232323",
-      question_answercount: 25,
-    },
-  ],
-};
-
 export default function Search() {
-  const currentPath = useNavigate();
+  const navigate = useNavigate()
   const { keyword } = useParams();
   const { keywordHandler } = useKeywordContext();
-  const [resultCount, setResultCount] = useState();
-  const testData = JSON.parse(JSON.stringify(questions)); //
+  const [questionsData, setQuestionsData] = useState([]);
 
-  useEffect(() => {
+  // 백앤드에서 url로 키워드를 넣어서 보내면 데이터를 filter해서 보내준다고함 이부분은 추후에 삭제해야함.
+  const questionsFiltered = questionsData.filter((question)=>{
+    return question.question_title.toLowerCase().includes(keyword.toLowerCase())
+  })
+
+  //GET : /questions/search?keyword={keyword} 
+  const url = `http://13.125.37.74:8080/questions/search?keyword=${keyword}`;
+  useEffect( ()=>{
+    axios.get(url,{
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': '69420',
+      },
+    })
+      .then((res)=>{console.log(res.data.data)
+        setQuestionsData(res.data.data)
+      })
+      .catch((Error)=>{console.log(Error)})
+      .then(()=>{
+      })
+      return keywordClear()
+  },[])
+
+  const keywordClear =()=>{
     keywordHandler(keyword);
     return () => keywordHandler("");
-  }, []);
+  }
+  const askBtnHandler =()=>{
+    navigate("/ask")
+  }
 
-  const askBtnHandler = () => {
-    currentPath("/ask");
-  };
-
-  return (
-    <SearchHeadLine>
-      <div className="search-headline-container">
-        <h1>Search Results</h1>
-        <BlueButton
-          onClick={() => {
-            askBtnHandler();
-          }}
-        >
-          Ask Question
-        </BlueButton>
-      </div>
-      <div className="counter-container">
-        <h3>1245124 questions</h3>
-      </div>
-
-      {/* <div className="result-container">
-          <img src="/images/searchImg.png" alt="searchIcon" className="search-icon" ></img>
-          <h2>We couldn't find anything for <span className="keyword-wrap">{'asdfhklh'}</span></h2>
-          <h3 >Try different or less specific keywords.</h3>
-        </div> */}
-
-      <QuestionsList questionsData={testData.questions}></QuestionsList>
-    </SearchHeadLine>
+  return(
+      <SearchHeadLine>
+          <div className="search-headline-container">
+            <h1>Search Results</h1>
+            <BlueButton onClick={()=>{askBtnHandler()}}>Ask Question</BlueButton>
+          </div>
+          <div className="counter-container">
+              <h3>{`${questionsData.length} questions`}</h3>
+          </div>
+          {questionsData.length > 0 ?
+            <QuestionsList questionsFiltered={questionsData}></QuestionsList>
+            :
+            <div className="result-container">
+              <img src="/images/searchImg.png" alt="searchIcon" className="search-icon" ></img>
+              <h2>We couldn't find anything for <span className="keyword-wrap">{keyword}</span></h2>
+              <h3 >Try different or less specific keywords.</h3>
+            </div>
+          }
+            <div className="infinite-scroll" ></div>
+      </SearchHeadLine>
   );
 }
