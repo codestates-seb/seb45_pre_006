@@ -6,7 +6,6 @@ import AnswerComment from "./AnswerComment";
 import { useLocation } from "react-router-dom";
 import PaginationControls from "./PaginationControls";
 import AnswerAccepted from "./AnswerAccepted";
-import Loading from "../../../common/Loading";
 
 const StyleAnswerMain = styled.div`
   .container {
@@ -41,10 +40,6 @@ export default function AnswerMain({ postData, sortedData }) {
       }
     }
   });
-
-  if (!postData) {
-    return <Loading></Loading>;
-  }
 
   // 페이지네이션 구현
   const totalPages = Math.ceil(postData.answerList.length / itemsPerPage);

@@ -2,7 +2,6 @@ import React from "react";
 import { styled } from "styled-components";
 import { usePostContext } from "../../../../context/PostContext";
 import getTimeAgoText from "../../../utils/getTimeAgoText";
-import Loading from "../../../common/Loading";
 
 const StyleQuestionInfo = styled.div`
   display: flex;
@@ -15,10 +14,6 @@ const StyleQuestionInfo = styled.div`
 `;
 
 export default function QuestionInfo({ postData }) {
-  if (!postData) {
-    return <Loading></Loading>;
-  }
-
   return (
     <StyleQuestionInfo>
       <div>Asked: {getTimeAgoText(postData.question_createdAt)}</div>

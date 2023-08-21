@@ -4,7 +4,6 @@ import AnswerHeader from "./header/AnswerHeader";
 import AnswerMain from "./main/AnswerMain";
 import AnswerEditor from "./main/AnswerEditor";
 import set from "date-fns/set/index.js";
-import Loading from "../../common/Loading";
 
 const StyleAnswerContainer = styled.div`
   padding: 0px 16px;
@@ -25,9 +24,6 @@ export default function AnswerContainer({ postData }) {
     setSort(selectedOption.value);
   };
 
-  if (!postData) {
-    return <Loading></Loading>;
-  }
   // 답변 필터링 데이터
   const sortedData =
     sort === "high"
@@ -51,9 +47,9 @@ export default function AnswerContainer({ postData }) {
         filterOptions={filterOptions}
         setSort={setSort}
         handleSelectChange={handleSelectChange}
-      ></AnswerHeader>
-      <AnswerMain postData={postData} sortedData={sortedData}></AnswerMain>
-      <AnswerEditor postData={postData}></AnswerEditor>
+      />
+      <AnswerMain postData={postData} sortedData={sortedData} />
+      <AnswerEditor postData={postData} />
     </StyleAnswerContainer>
   );
 }

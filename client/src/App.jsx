@@ -19,7 +19,8 @@ import ProtectedRoute from "./pages/ProtectedRoute";
 import network from "./components/utils/network";
 
 const StyleApp = styled.div`
-  background-color: ${(props) => (props.$background ? "var(--app-back-color)" : "")};
+  background-color: ${(props) =>
+    props.$background ? "var(--app-back-color)" : ""};
   .center {
     width: var(--inner);
     margin: 0 auto;
@@ -48,9 +49,26 @@ function App() {
             <Route path={"/users"} element={<Users />} />
             <Route path={"/search/:keyword"} element={<Search />} />
             <Route path="/users/:profileId/*" element={<Profile />} />
-            <Route path={"/questions/:question_id"} element={<QuestionDetail />} />
-            <Route path={"/questions/:question_id/edit"} element={<Edit />} />
-            <Route path={"/answers/:answer_id/edit"} element={<Edit />} />
+            <Route
+              path={"/questions/:question_id"}
+              element={<QuestionDetail />}
+            />
+            <Route
+              path={"/questions/:question_id/edit"}
+              element={
+                <ProtectedRoute isAdmin requireLogin>
+                  <Edit />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path={"/answers/:answer_id/edit"}
+              element={
+                <ProtectedRoute isAdmin requireLogin>
+                  <Edit />
+                </ProtectedRoute>
+              }
+            />
             <Route
               path={"/ask"}
               element={

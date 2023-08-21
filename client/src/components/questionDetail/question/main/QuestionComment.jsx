@@ -5,9 +5,9 @@ import useForm from "../../../../hooks/useForm";
 import getWriteDate from "../../../utils/getWriteDate";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
-import Loading from "../../../common/Loading";
 import { MdEdit } from "react-icons/md";
 import { IoTrash } from "react-icons/io5";
+import useAxiosData from "../../../../hooks/useAxiosData";
 
 const StyleQuestionComment = styled.div`
   grid-column: 2;
@@ -52,7 +52,7 @@ const StyleQuestionComment = styled.div`
     font-size: 16px;
     color: var(--black-400);
     margin-left: 2px;
-    margin-bottom: -3px;
+    margin-bottom: -2px;
     &:hover {
       color: var(--black-600);
     }
@@ -81,6 +81,9 @@ export default function QuestionComment({ postData }) {
 
   const nav = useNavigate();
 
+  // axios 커스텀훅 사용
+  const axiosData = useAxiosData();
+
   // 댓글을 더 보여주기 위한 함수
   const handleShowMoreComments = () => {
     setShowAllComments(true);
@@ -96,32 +99,26 @@ export default function QuestionComment({ postData }) {
   // 댓글 edit 부분
   const [editInput, onEditInputChangeHandler, _] = useForm(initialInputData);
 
-  // 댓글 작성 로직
+  // 댓글 작성 로직 axios훅 적용버전
   const handleEnterKeyPress = async (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
 
       // 폼 제출시 로직을 구현해야함(완료) **** 작성자 유저id 추가로 넘겨줘야함
 
+      const requestData = {
+        question_id: question_id,
+        questionComment_content: inputData.comment,
+      };
+
       try {
-        const url =
-          "https://62c2-175-125-163-108.ngrok-free.app/question-comments";
-
-        const requestData = {
-          question_id: question_id,
-          questionComment_content: inputData.comment,
-        };
-
-        const response = await axios.post(url, requestData);
-
-        console.log("Post successful:", response.data);
+        await axiosData("post", "question-comments", requestData);
+        console.log("Form submitted:", inputData.comment);
+        clearForm(); // 인풋값 초기화
+        nav(0);
       } catch (error) {
         console.error("Error posting:", error);
       }
-
-      console.log("Form submitted:", inputData.comment);
-      clearForm(); //  입력값 초기화
-      nav(0);
     }
   };
 
@@ -138,38 +135,40 @@ export default function QuestionComment({ postData }) {
 
       // 폼 제출시 로직을 구현해야함(완료) **** 작성자 유저id 추가로 넘겨줘야함
       try {
-        const url = `https://62c2-175-125-163-108.ngrok-free.app/question-comments/${questionComment_id}`;
+        const url = `question-comments/${questionComment_id}`; // Updated URL
 
         const requestData = {
           questionComment_content: editInput.comment,
         };
 
-        const response = await axios.patch(url, requestData);
+        const response = await axiosData("patch", url, requestData); // Using custom Axios hook
 
-        console.log("Post successful:", response.data);
+        console.log("Patch successful:", response.data);
       } catch (error) {
-        console.error("Error posting:", error);
+        console.error("Error patching:", error);
       }
       nav(0);
     }
   };
   const handleDelete = async (questionComment_id) => {
     // 폼 제출시 로직을 구현해야함(완료) **** 작성자 유저id 추가로 넘겨줘야함
-    try {
-      const url = `https://62c2-175-125-163-108.ngrok-free.app/question-comments/${questionComment_id}`;
+    // 경고메세지
+    const shouldDelete = window.confirm(
+      "Are you sure you want to delete this comment?"
+    );
+    if (shouldDelete) {
+      try {
+        const url = `question-comments/${questionComment_id}`; // Updated URL
 
-      const response = await axios.delete(url);
+        const response = await axiosData("delete", url);
 
-      console.log("Delete successful:", response.data);
-    } catch (error) {
-      console.error("Error posting:", error);
+        console.log("Delete successful:", response.data);
+      } catch (error) {
+        console.error("Error deleting:", error);
+      }
+      nav(0);
     }
-    nav(0);
   };
-
-  if (!postData) {
-    return <Loading></Loading>;
-  }
 
   return (
     <StyleQuestionComment>

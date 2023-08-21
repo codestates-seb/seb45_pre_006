@@ -6,6 +6,7 @@ import ContentGuide from "./ContentGuide";
 import { BlueButton } from "../common/Button";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import useAxiosData from "../../hooks/useAxiosData";
 
 const Container = styled.div`
   display: flex;
@@ -47,6 +48,7 @@ export default function WriteContent({ isActive, editorRef, inputData }) {
   const [content, setContent] = useState("");
   const [editorFocused, setEditorFocused] = useState(false);
   const nav = useNavigate();
+  const axiosData = useAxiosData();
 
   useEffect(() => {
     const editor = new Editor({
@@ -80,18 +82,16 @@ export default function WriteContent({ isActive, editorRef, inputData }) {
     const markdownContent = editorInstance.getMarkdown();
 
     try {
-      const url = "https://62c2-175-125-163-108.ngrok-free.app/questions";
-
       const requestData = {
         question_title: inputData.title,
         question_content: markdownContent,
       };
 
-      const response = await axios.post(url, requestData);
+      const responseData = await axiosData("post", "questions", requestData);
 
-      console.log("Post successful:", response.data);
-      // 글 작성시 해당 작성글로 리다이렉션
-      nav(`/questions/${response.data.question_id}`);
+      console.log("Post successful:", responseData);
+      //  글 작성시 해당 작성글로 리다이렉션
+      nav(`/questions/${responseData.question_id}`);
     } catch (error) {
       console.error("Error posting:", error);
     }
