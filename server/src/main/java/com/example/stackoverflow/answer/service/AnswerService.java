@@ -5,22 +5,33 @@ import com.example.stackoverflow.answer.repository.AnswerRepository;
 import com.example.stackoverflow.question.entity.Question;
 import com.example.stackoverflow.question.repository.QuestionRepository;
 import com.example.stackoverflow.question.service.QuestionService;
+import com.example.stackoverflow.user.entity.User;
+import com.example.stackoverflow.user.repository.UserRepository;
+import com.example.stackoverflow.user.service.UserService;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 @Service
 public class AnswerService {
     private final AnswerRepository answerRepository;
     private final QuestionRepository questionRepository;
 
-    public AnswerService(AnswerRepository answerRepository, QuestionRepository questionRepository) {
+    private final UserRepository userRepository;
+
+    public AnswerService(AnswerRepository answerRepository, QuestionRepository questionRepository, UserRepository userRepository) {
         this.answerRepository = answerRepository;
         this.questionRepository = questionRepository;
+        this.userRepository = userRepository;
     }
 
     /**
      * 답변 작성(Create)
      **/
     public Answer createAnswer(Answer answer) {
+        User user = verifyExistingUser(answer.getUser().getUserId());
+        answer.setUser(user);
+        user.setAnswerList(answer);
         Question question = findVerifiedQuestion(answer.getQuestion().getQuestion_id());
         answer.setQuestion(question);
         question.setAnswerList(answer);
@@ -42,6 +53,7 @@ public class AnswerService {
     public Answer updateAnswer(Answer answer) {
         Answer answer1 = answerRepository.findById(answer.getAnswer_id()).orElse(null);
         answer1.setAnswer_content(answer.getAnswer_content());
+        answer1.setAnswer_modifiedAt(LocalDateTime.now());
 
         return answerRepository.save(answer1);
     }
@@ -99,6 +111,10 @@ public class AnswerService {
      **/
     private Question findVerifiedQuestion(long questionId) {
         return questionRepository.findById(questionId).orElse(null);
+    }
+
+    private User verifyExistingUser(long userId) {
+        return userRepository.findById(userId).orElse(null);
     }
 
 }
