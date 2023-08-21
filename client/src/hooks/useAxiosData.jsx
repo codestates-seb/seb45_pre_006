@@ -1,4 +1,4 @@
-import api from "../utils/send";
+import api from "../components/utils/send";
 
 function useAxiosData() {
   const defaultUrl = "https://62c2-175-125-163-108.ngrok-free.app/";

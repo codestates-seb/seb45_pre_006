@@ -12,7 +12,7 @@ const StyleErrorInput = styled.div`
     margin-bottom: 3px;
   }
   .error-message {
-    height: 3px;
+    height: 100%;
     font-size: 13px;
     font-weight: bold;
     color: #d0393e;

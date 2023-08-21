@@ -3,7 +3,7 @@ import { styled } from "styled-components";
 import useForm from "../hooks/useForm";
 import UserSearch from "../components/users/UserSearch";
 import UserList from "../components/users/UserList";
-import scrollToTop from "../utils/scrollToTop.js";
+import scrollToTop from "../components/utils/scrollToTop.js";
 import PageButton from "../components/users/PageButton";
 
 const StyleUsers = styled.div`
@@ -39,7 +39,7 @@ const userData = [
 export default function Users() {
   const [searchInput, setSearchInput] = useForm({ search: "" });
   const [userList, setUserList] = useState(userData);
-  const [page, setPage] = useState({ currentPage: 1, maxPage: 12 });
+  const [page, setPage] = useState({ currentPage: 1, maxPage: 20 });
   let first = useRef(true);
 
   const pageHandler = (page) => setPage((prePage) => ({ ...prePage, currentPage: page }));
@@ -50,13 +50,11 @@ export default function Users() {
   };
 
   useEffect(() => {
-    // 검색시에 게시글 요청
     const search = setTimeout(() => {
       if (!first.current) {
         console.log("검색한 유저 조회");
-        // 검색한 페이지 요청
-        // 검색 응답을 받을 때 받아야 하는 데이터  - 무조건 1번째 페이지 유저 정보, 현재 페이지 정보, 마지막 페이지 정보
-        handleListSetting(userData, 1, 22);
+        // 검색 응답을 받을 때 받아야 하는 데이터  - 무조건 1번째 페이지 유저 정보, 현재 페이지 정보, 마지막 페이지 정보 현재 페이지 유저정보
+        handleListSetting(userData, 1, 12);
       }
       first.current = false;
     }, 1000);
@@ -66,6 +64,8 @@ export default function Users() {
 
   useEffect(() => {
     if (!first.current) {
+      // 키워드가 있으면 키워드를 가지고 검색 키워드가 없으면 전체로 검색
+
       console.log("페이지 전환 검색 요청");
     }
   }, [page]);

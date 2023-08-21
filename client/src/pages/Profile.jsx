@@ -10,7 +10,7 @@ import NotFound from "./NotFound";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useAuthContext } from "../context/AuthContext";
-import network from "../utils/network";
+import api from "../components/utils/send";
 
 const StyleProfile = styled.section`
   width: 100%;
@@ -31,13 +31,16 @@ export default function Profile() {
   };
 
   useEffect(() => {
-    try {
-      const res = network("get", `/user/profile/${profileId}/${user?.userId || 0}`);
-      const { admin, response } = res.data;
-      setUserProfile({ isAdmin: admin, ...response, img: response.img || "/images/userImg.png" });
-    } catch (e) {
-      console.log(e);
+    async function fetchProfile() {
+      try {
+        const res = await api.get(`/user/profile/${profileId}/${user?.userId || 0}`);
+        const { admin, response } = res.data;
+        setUserProfile({ isAdmin: admin, ...response, img: response.img || "/images/userImg.png" });
+      } catch (e) {
+        console.log(e);
+      }
     }
+    fetchProfile();
   }, []);
 
   if (!profileParams.includes(useParams()["*"])) return <NotFound />;

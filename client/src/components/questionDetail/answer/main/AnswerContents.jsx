@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ShareModal from "../../question/main/ShareModal";
 import { styled } from "styled-components";
-import getWriteDate from "../../../../utils/getWriteDate";
+import getWriteDate from "../../../utils/getWriteDate";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import ReactMarkdown from "react-markdown";

@@ -1,37 +1,40 @@
 import React from "react";
 import { styled } from "styled-components";
 import { WhiteButton } from "../common/Button";
+
 const StylePageButton = styled.div`
   display: flex;
   gap: 5px;
   button {
-    padding: 3px 8px;
+    padding: 4px 7px;
     font-size: 15px;
     border: 1px solid var(--black-200);
     border-radius: 5px;
-    .active {
+    &.active {
       border-color: var(--orange);
     }
   }
+  span {
+    line-height: 25px;
+    padding: 0 5px;
+  }
 `;
+
 export default function PageButton({ page, pageHandler }) {
   const { currentPage, maxPage } = page;
-  console.log({ currentPage, maxPage });
+
+  const generatePageArray = (start, end) => {
+    return Array.from({ length: end - start + 1 }, (_, index) => start + index);
+  };
 
   const buttonArray = () => {
-    let array = [];
     if (currentPage < 5) {
-      array = [2, 3, 4, 5];
+      return [2, 3, 4, 5];
     } else if (maxPage <= currentPage + 4) {
-      for (let i = maxPage - 4; i < maxPage; i++) {
-        array.push(i);
-      }
-    } else if (currentPage >= 5) {
-      for (let i = currentPage - 2; i <= currentPage + 2; i++) {
-        array.push(i);
-      }
+      return generatePageArray(maxPage - 4, maxPage - 1);
+    } else {
+      return generatePageArray(currentPage - 2, currentPage + 2);
     }
-    return array;
   };
 
   return (
@@ -41,7 +44,7 @@ export default function PageButton({ page, pageHandler }) {
           Prev
         </WhiteButton>
       )}
-      <WhiteButton className={1 === currentPage ? "active" : ""} onClick={() => pageHandler(1)}>
+      <WhiteButton className={currentPage === 1 ? "active" : ""} onClick={() => pageHandler(1)}>
         1
       </WhiteButton>{" "}
       {currentPage >= 5 && <span>...</span>}
@@ -69,6 +72,3 @@ export default function PageButton({ page, pageHandler }) {
     </StylePageButton>
   );
 }
-
-// 1페이지는 12345 ... maxPage next
-// 5페이지부터는 prev 1 ... 34 5 67 ... maxPage next

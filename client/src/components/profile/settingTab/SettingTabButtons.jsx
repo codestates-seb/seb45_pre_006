@@ -7,7 +7,7 @@ const StyleSettingTabButtons = styled.div`
   h3 {
     font-size: 12px;
     padding: 6px 12px;
-    font-weight: 900;
+    font-weight: 600;
   }
   button {
     width: 185px;

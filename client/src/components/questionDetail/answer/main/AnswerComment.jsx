@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { styled } from "styled-components";
 import useForm from "../../../../hooks/useForm";
-import getWriteDate from "../../../../utils/getWriteDate";
+import getWriteDate from "../../../utils/getWriteDate";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { MdEdit } from "react-icons/md";

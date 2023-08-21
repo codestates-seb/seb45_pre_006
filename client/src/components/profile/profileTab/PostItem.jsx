@@ -1,7 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import { Link } from "react-router-dom";
-import getTimeAgoText from "../../../utils/getTimeAgoText";
+import getTimeAgoText from "../../utils/getTimeAgoText";
 
 const StylePostItem = styled.li`
   height: 60px;

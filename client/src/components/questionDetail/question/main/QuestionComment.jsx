@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { styled } from "styled-components";
 import { usePostContext } from "../../../../context/PostContext";
 import useForm from "../../../../hooks/useForm";
-import getWriteDate from "../../../../utils/getWriteDate";
+import getWriteDate from "../../../utils/getWriteDate";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { MdEdit } from "react-icons/md";

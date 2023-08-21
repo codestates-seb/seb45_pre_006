@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from "react";
-import network from "../utils/network";
+import api from "../components/utils/send";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 const AuthContext = createContext();
@@ -17,12 +17,12 @@ export default function AuthContextProvider({ children }) {
   };
 
   const logout = async () => {
-    network("post", "/user/logout");
+    api.post("/user/logout");
     clearUser();
   };
 
   const removeUser = async () => {
-    network("delete", `/user/${user.userId}`);
+    api.delete(`/user/${user.userId}`);
     clearUser();
   };
 
