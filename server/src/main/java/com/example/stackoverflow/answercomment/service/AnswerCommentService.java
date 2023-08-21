@@ -8,6 +8,8 @@ import com.example.stackoverflow.answercomment.repository.AnswerCommentRepositor
 import com.example.stackoverflow.exeception.BusinessLogicException;
 import com.example.stackoverflow.exeception.ExceptionCode;
 import com.example.stackoverflow.question.entity.Question;
+import com.example.stackoverflow.user.entity.User;
+import com.example.stackoverflow.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,12 +20,18 @@ public class AnswerCommentService {
     private final AnswerCommentRepository answerCommentRepository;
     private final AnswerRepository answerRepository;
 
-    public AnswerCommentService(AnswerCommentRepository answerCommentRepository, AnswerRepository answerRepository) {
+    private final UserRepository userRepository;
+
+    public AnswerCommentService(AnswerCommentRepository answerCommentRepository, AnswerRepository answerRepository, UserRepository userRepository) {
         this.answerCommentRepository = answerCommentRepository;
         this.answerRepository = answerRepository;
+        this.userRepository = userRepository;
     }
 
     public AnswerComment createAnswerComment(AnswerComment answerComment){
+        User user = verifyExistingUser(answerComment.getUser().getUserId());
+        answerComment.setUser(user);
+        user.setAnswerCommentList(answerComment);
         Answer answer = findVerifiedAnswer(answerComment.getAnswer().getAnswer_id());
         answerComment.setAnswer(answer);
         answer.setAnswerCommentList(answerComment);
@@ -54,4 +62,9 @@ public class AnswerCommentService {
     private Answer findVerifiedAnswer(long answer_id){
         return answerRepository.findById(answer_id).orElse(null);
     }
+
+    private User verifyExistingUser(long userId) {
+        return userRepository.findById(userId).orElse(null);
+    }
+
 }
