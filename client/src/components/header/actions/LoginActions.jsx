@@ -7,16 +7,13 @@ export default function LoginActions() {
   const nav = useNavigate();
   const { user, logout } = useAuthContext();
   const { userId, img } = user;
-  const logoutHandler = () => {
-    if (logout()) nav("/");
-  };
 
   return (
     <>
       <div className="user-profile" onClick={() => nav(`/users/${userId}`)}>
         <img src={img || "/images/userImg.png"} alt="userProfile img" />
       </div>
-      <PowderButton $width="80px" onClick={logoutHandler}>
+      <PowderButton $width="80px" onClick={logout}>
         Log out
       </PowderButton>
     </>

@@ -5,6 +5,8 @@ const api = axios.create();
 api.interceptors.request.use((config) => {
   const refreshToken = JSON.parse(localStorage.getItem("refreshToken"));
   config.headers["RefreshToken"] = refreshToken;
+  config.headers["Content-Type"] = "application/json";
+  config.headers["ngrok-skip-browser-warning"] = "69420";
   return config;
 });
 

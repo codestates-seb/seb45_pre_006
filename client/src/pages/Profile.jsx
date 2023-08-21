@@ -19,9 +19,8 @@ const StyleProfile = styled.section`
 
 const profileParams = ["", "edit"];
 const mokUser = {
-  isAdmin: true,
-  aboutMe:
-    "### hello\n- hello\n```js\n const a = 1;\n for(let i = 0; i< 10; i++) {\n   console.log(i);\n }\n```",
+  isAdmin: false,
+  aboutMe: "```\nconst a = 1\n```",
   displayName: "myeongin",
   userId: "1",
   img: "/images/userImg.png",
@@ -44,7 +43,6 @@ const mokUser = {
 };
 export default function Profile() {
   const [userProfile, setUserProfile] = useState();
-
   const { profileId } = useParams();
   const { user } = useAuthContext();
 
