@@ -1,6 +1,7 @@
 package com.example.stackoverflow.questioncomment.entity;
 
 import com.example.stackoverflow.question.entity.Question;
+import com.example.stackoverflow.user.entity.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,5 +25,14 @@ public class QuestionComment extends QuestionBaseTimeEntity {
 
     public void setQuestion(Question question){
         this.question = question;
+    }
+
+    /** user - questionComment 매핑 **/
+    @ManyToOne
+    @JoinColumn(name = "USER_ID",nullable = false)
+    private User user;
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

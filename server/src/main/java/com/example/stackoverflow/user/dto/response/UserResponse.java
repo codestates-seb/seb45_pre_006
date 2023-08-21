@@ -1,5 +1,6 @@
 package com.example.stackoverflow.user.dto.response;
 
+import com.example.stackoverflow.question.dto.QuestionTopDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,6 +23,6 @@ public class UserResponse {
     private LocalDateTime createdAt;
     // 임시
     private String img = "";
-    private List<String> postList = new ArrayList<>();
+    private List<QuestionTopDto> postList;
     // questionList
 }

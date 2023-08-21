@@ -2,7 +2,6 @@ package com.example.stackoverflow.advice;
 
 import com.example.stackoverflow.exeception.BusinessLogicException;
 import com.example.stackoverflow.response.ErrorResponse;
-import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

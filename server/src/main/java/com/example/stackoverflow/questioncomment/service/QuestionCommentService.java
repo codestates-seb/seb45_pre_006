@@ -7,6 +7,8 @@ import com.example.stackoverflow.question.repository.QuestionRepository;
 import com.example.stackoverflow.question.service.QuestionService;
 import com.example.stackoverflow.questioncomment.entity.QuestionComment;
 import com.example.stackoverflow.questioncomment.repository.QuestionCommentRepository;
+import com.example.stackoverflow.user.entity.User;
+import com.example.stackoverflow.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,12 +20,18 @@ public class QuestionCommentService {
     private final QuestionRepository questionRepository;
     private final QuestionCommentRepository questionCommentRepository;
 
-    public QuestionCommentService(QuestionRepository questionRepository, QuestionCommentRepository questionCommentRepository) {
+    private final UserRepository userRepository;
+
+    public QuestionCommentService(QuestionRepository questionRepository, QuestionCommentRepository questionCommentRepository, UserRepository userRepository) {
         this.questionRepository = questionRepository;
         this.questionCommentRepository = questionCommentRepository;
+        this.userRepository = userRepository;
     }
 
     public QuestionComment createQuestionComment(QuestionComment questionComment){
+        User user = verifyExistingUser(questionComment.getUser().getUserId());
+        questionComment.setUser(user);
+        user.setQuestionCommentList(questionComment);
         Question question = findVerifiedQuestion(questionComment.getQuestion().getQuestion_id());
         questionComment.setQuestion(question);
         question.setQuestionCommentList(questionComment);
@@ -57,5 +65,9 @@ public class QuestionCommentService {
      **/
     private Question findVerifiedQuestion(long questionId) {
         return questionRepository.findById(questionId).orElse(null);
+    }
+
+    private User verifyExistingUser(long userId) {
+        return userRepository.findById(userId).orElse(null);
     }
 }
