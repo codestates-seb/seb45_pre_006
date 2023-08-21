@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import { styled } from "styled-components";
 import QuestionContainer from "../components/questionDetail/question/QuestionContainer";
 import AnswerContainer from "../components/questionDetail/answer/AnswerContainer";
-import { PostProvider } from "../context/PostContext";
 import useAxiosData from "../hooks/useAxiosData";
 import { useParams } from "react-router-dom";
+import Loading from "../components/common/Loading";
+import { useAuthContext } from "../context/AuthContext";
 
 const StyleQuestionDetail = styled.div``;
 
@@ -27,12 +28,15 @@ export default function QuestionDetail() {
       });
   }, []);
 
+  // 여기에 로딩처리 한번에하기
+  if (!postData) {
+    return <Loading />;
+  }
+
   return (
-    <PostProvider>
-      <StyleQuestionDetail>
-        <QuestionContainer postData={postData} />
-        <AnswerContainer postData={postData} />
-      </StyleQuestionDetail>
-    </PostProvider>
+    <StyleQuestionDetail>
+      <QuestionContainer postData={postData} />
+      <AnswerContainer postData={postData} />
+    </StyleQuestionDetail>
   );
 }

@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import ShareModal from "../../question/main/ShareModal";
 import { styled } from "styled-components";
-import { usePostContext } from "../../../../context/PostContext";
 import getWriteDate from "../../../utils/getWriteDate";
 import { useNavigate } from "react-router-dom";
-import Loading from "../../../common/Loading";
 import axios from "axios";
+import ReactMarkdown from "react-markdown";
 
 const StyleAnswerContents = styled.div`
   text-align: left;
@@ -17,18 +16,17 @@ const StyleAnswerContents = styled.div`
   flex: 1;
   .userInfoWrap {
     display: flex;
-    flex-direction: row;
     justify-content: space-between;
     padding-top: 30px;
     color: var(--black-600);
-    div {
-      cursor: pointer;
-    }
   }
   .shareEdit {
     display: flex;
     > div {
       margin-right: 10px;
+      > span {
+        cursor: pointer;
+      }
     }
   }
   .userInfo {
@@ -80,13 +78,6 @@ export default function AnswerContents({ data, idx }) {
     };
   }, [isClickedShare]);
 
-  // 질문 post 정보 받아오기
-  const { post } = usePostContext();
-  if (!post || !post.posts) {
-    return <Loading></Loading>;
-  }
-  const AnswerData = post.posts[0].Answer;
-
   // edit 누를시 페이지전환
   const handleEdit = () => {
     // 로그인 -> 본인이 쓴글일때 조건을 확인해서 넣어줘야함. !!!!!!!!!!
@@ -126,22 +117,26 @@ export default function AnswerContents({ data, idx }) {
 
   return (
     <StyleAnswerContents>
-      {data.answer_content}
+      <div className="content">
+        <ReactMarkdown children={data.answer_content} />
+      </div>
       <div className="userInfoWrap">
         <div className="shareEdit">
           {isClickedShare ? (
             <div onClick={toggleShare}>
-              Share
+              <span>Share</span>
               <ShareModal data={data}></ShareModal>
             </div>
           ) : (
-            <div onClick={toggleShare}>Share</div>
+            <div onClick={toggleShare}>
+              <span>Share</span>
+            </div>
           )}
           <div className="edit" onClick={handleEdit}>
-            Edit
+            <span>Edit</span>
           </div>
           <div className="delete" onClick={handleDelete}>
-            Delete
+            <span>Delete</span>
           </div>
         </div>
         <div className="userInfo">

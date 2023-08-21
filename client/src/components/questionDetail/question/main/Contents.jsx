@@ -5,7 +5,7 @@ import { usePostContext } from "../../../../context/PostContext";
 import getWriteDate from "../../../utils/getWriteDate";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Loading from "../../../common/Loading";
+import ReactMarkdown from "react-markdown";
 
 const StyleContents = styled.div`
   text-align: left;
@@ -13,22 +13,25 @@ const StyleContents = styled.div`
   line-height: 20px;
   display: flex;
   flex-direction: column;
+  .content {
+    line-height: 1.8rem;
+  }
   .userInfoWrap {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     padding-top: 30px;
     color: var(--black-600);
-
-    > div {
-      cursor: pointer;
-    }
+    // 커서 확인
   }
 
   .shareEdit {
     display: flex;
     > div {
       margin-right: 10px;
+      > span {
+        cursor: pointer;
+      }
     }
   }
   .userInfo {
@@ -80,10 +83,6 @@ export default function Contents({ postData }) {
     };
   }, [isClickedShare]);
 
-  if (!postData) {
-    return <Loading></Loading>;
-  }
-
   // edit 누를시 페이지전환
   const handleEdit = () => {
     // 로그인 -> 본인이 쓴글일때 조건을 확인해서 넣어줘야함. !!!!!!!!!!********
@@ -130,34 +129,28 @@ export default function Contents({ postData }) {
 
   return (
     <StyleContents>
-      {/* {console.log(postData.question_createdAt)}
-      {console.log(postData.question_modifiedAt)} */}
-      {postData.question_content}
+      <div className="content">
+        <ReactMarkdown children={postData.question_content} />
+      </div>
+      {/* {postData.question_content} */}
       <div className="userInfoWrap">
         <div className="shareEdit">
-          {isClickedShare ? (
-            <div onClick={toggleShare}>
-              Share
-              <ShareModal data={postData}></ShareModal>
-            </div>
-          ) : (
-            <div className="share" onClick={toggleShare}>
-              Share
-            </div>
-          )}
+          <div onClick={toggleShare} className={isClickedShare ? "" : "share"}>
+            <span>Share</span>
+            {isClickedShare && <ShareModal data={postData} />}
+          </div>
           <div className="edit" onClick={handleEdit}>
-            Edit
+            <span>Edit</span>
           </div>
           <div className="delete" onClick={handleDelete}>
-            Delete
+            <span>Delete</span>
           </div>
         </div>
         <div className="userInfo">
-          {isModified ? (
-            <div className="date">modified {getWriteDate(dateInfo)}</div>
-          ) : (
-            <div className="date">asked {getWriteDate(dateInfo)}</div>
-          )}
+          <div className="date">
+            {isModified ? "modified " : "asked "}
+            {getWriteDate(dateInfo)}
+          </div>
 
           <div className="useProfile">
             <img src="/images/userImg.png" alt="userImg" />

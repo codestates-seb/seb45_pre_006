@@ -151,16 +151,21 @@ export default function AnswerComment({ data, answer_id }) {
   };
   const handleDelete = async (answerComment_id) => {
     // 폼 제출시 로직을 구현해야함(완료) **** 작성자 유저id 추가로 넘겨줘야함
-    try {
-      const url = `https://62c2-175-125-163-108.ngrok-free.app/answer-comments/${answerComment_id}`;
+    const shouldDelete = window.confirm(
+      "Are you sure you want to delete this comment?"
+    );
+    if (shouldDelete) {
+      try {
+        const url = `https://62c2-175-125-163-108.ngrok-free.app/answer-comments/${answerComment_id}`;
 
-      const response = await axios.delete(url);
+        const response = await axios.delete(url);
 
-      console.log("Delete successful:", response.data);
-    } catch (error) {
-      console.error("Error posting:", error);
+        console.log("Delete successful:", response.data);
+      } catch (error) {
+        console.error("Error posting:", error);
+      }
+      nav(0);
     }
-    nav(0);
   };
 
   const postData = data.answerCommentList;

@@ -69,8 +69,22 @@ function App() {
               path={"/questions/:question_id"}
               element={<QuestionDetail />}
             />
-            <Route path={"/questions/:question_id/edit"} element={<Edit />} />
-            <Route path={"/answers/:answer_id/edit"} element={<Edit />} />
+            <Route
+              path={"/questions/:question_id/edit"}
+              element={
+                <ProtectedRoute isAdmin requireLogin>
+                  <Edit />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path={"/answers/:answer_id/edit"}
+              element={
+                <ProtectedRoute isAdmin requireLogin>
+                  <Edit />
+                </ProtectedRoute>
+              }
+            />
             <Route
               path={"/ask"}
               element={
