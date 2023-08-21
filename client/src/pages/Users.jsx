@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState, useEffect }from "react";
 import { styled } from "styled-components";
 import useForm from "../hooks/useForm";
 import UserSearch from "../components/users/UserSearch";
@@ -72,10 +72,21 @@ export default function Users() {
 
   return (
     <StyleUsers>
-      <h1>Users</h1>
-      <UserSearch search={searchInput.search} setSearchInput={setSearchInput} />
-      <UserList userList={userList} />
-      <PageButton page={page} pageHandler={pageHandler} />
+      <div className="title">Users</div>
+      <div className="filter">
+        <PiMagnifyingGlass size={20} color="gray"></PiMagnifyingGlass>
+        <input
+          type="text"
+          name="search"
+          value={inputData.search}
+          onChange={(e) => onInputChangeHandler(e)}
+          className="search"
+          placeholder="Filter by user"
+        />
+      </div>
+      <UsersList 
+        filteredUser = {filteredUser}
+        ></UsersList>
     </StyleUsers>
   );
 }
