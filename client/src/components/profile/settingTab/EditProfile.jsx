@@ -7,7 +7,7 @@ import Editor from "@toast-ui/editor";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import { BlueButton, PowderButton } from "../../common/Button";
 import { useNavigate } from "react-router-dom";
-import network from "../../utils/network";
+import api from "../../utils/send";
 
 const StyleEditProfile = styled.div`
   flex: 1;
@@ -32,7 +32,7 @@ export default function EditProfile({ userProfile, userProfileHandler }) {
     if (displayNameValidation()) {
       try {
         const { displayName, aboutMe } = editForm;
-        network("patch", `/user/profile/${userId}`, { displayName, aboutMe });
+        await api.patch(`/user/profile/${userId}`, { displayName, aboutMe });
         userProfileHandler({ aboutMe: editForm.aboutMe });
         navigate(`/users/${userId}`);
       } catch (e) {

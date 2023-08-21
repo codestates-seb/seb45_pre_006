@@ -6,10 +6,9 @@ import useError from "../../hooks/useError";
 import { BlueButton } from "../common/Button";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../context/AuthContext";
-import network from "../utils/network";
+import api from "../utils/send";
 const StyleSiteLogin = styled.form`
   width: 288px;
-  height: 234px;
   background-color: var(--white);
   border-radius: 5px;
   box-shadow: 0 0 5px 2px var(--shadow);
@@ -30,6 +29,7 @@ const StyleSiteLogin = styled.form`
     padding: 10px;
   }
 `;
+
 export default function SiteLogin() {
   const [signinForm, setSigninForm, clearSigninForm] = useForm({ email: "", password: "" });
   const [error, setError] = useError({ email: "", password: "" });
@@ -81,12 +81,13 @@ export default function SiteLogin() {
     clearSigninForm();
   };
 
-  const siteLoginHandler = (e) => {
+  const siteLoginHandler = async (e) => {
     e.preventDefault();
     if (loginValidation()) {
       try {
         const { email, password } = signinForm;
-        const res = network("post", "/user/login", { email, password });
+        const res = await api.post("/user/login", { email, password });
+        console.log(res);
         localStorage.setItem("refreshToken", JSON.stringify(res.headers.refreshtoken));
         handleLoginSuccess(res);
       } catch (e) {

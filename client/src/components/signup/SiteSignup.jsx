@@ -5,10 +5,11 @@ import ErrorInput from "../common/ErrorInput";
 import useError from "../../hooks/useError";
 import useForm from "../../hooks/useForm";
 import { useNavigate } from "react-router-dom";
-import network from "../utils/network";
+import api from "../utils/send";
+
 const StyleSiteSignup = styled.form`
   background: var(--white);
-  height: 425px;
+
   box-shadow: 0 0 5px 2px var(--shadow);
   padding: 24px;
   border-radius: 5px;
@@ -87,7 +88,7 @@ export default function SiteSignup() {
     if (signupValidation()) {
       const { displayName, email, password } = signupForm;
       try {
-        network("post", "/user/post", { displayName, email, password });
+        await api.post("/user/post", { displayName, email, password });
         handleSignupSuccess();
       } catch (e) {
         handleExistsError();

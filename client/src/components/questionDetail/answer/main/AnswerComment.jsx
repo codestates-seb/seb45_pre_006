@@ -89,8 +89,7 @@ export default function AnswerComment({ data, answer_id }) {
   const initialInputData = {
     comment: "",
   };
-  const [inputData, onInputChangeHandler, clearForm] =
-    useForm(initialInputData);
+  const [inputData, onInputChangeHandler, clearForm] = useForm(initialInputData);
 
   // 댓글 edit 부분
   const [editInput, onEditInputChangeHandler, _] = useForm(initialInputData);
@@ -100,8 +99,7 @@ export default function AnswerComment({ data, answer_id }) {
       e.preventDefault();
       // 폼 제출시 로직을 구현해야함
       try {
-        const url =
-          "https://62c2-175-125-163-108.ngrok-free.app/answer-comments";
+        const url = "https://62c2-175-125-163-108.ngrok-free.app/answer-comments";
 
         const requestData = {
           answer_id: answer_id,
@@ -151,9 +149,7 @@ export default function AnswerComment({ data, answer_id }) {
   };
   const handleDelete = async (answerComment_id) => {
     // 폼 제출시 로직을 구현해야함(완료) **** 작성자 유저id 추가로 넘겨줘야함
-    const shouldDelete = window.confirm(
-      "Are you sure you want to delete this comment?"
-    );
+    const shouldDelete = window.confirm("Are you sure you want to delete this comment?");
     if (shouldDelete) {
       try {
         const url = `https://62c2-175-125-163-108.ngrok-free.app/answer-comments/${answerComment_id}`;
@@ -179,21 +175,11 @@ export default function AnswerComment({ data, answer_id }) {
           // 5개까지만 표시
           ((!showAllComments && idx < 5) || showAllComments) && (
             <div key={idx} className="comentlist">
-              <span className="commentbody">
-                {data.answerComment_content} -{" "}
-              </span>
+              <span className="commentbody">{data.answerComment_content} - </span>
               <span className="username"> {data.user_id}</span>
-              <span className="createdat">
-                {getWriteDate(data.answerComment_createdAt)}
-              </span>
-              <MdEdit
-                className="icon"
-                onClick={() => handleEdit(data.answerComment_id)}
-              />
-              <IoTrash
-                className="icon"
-                onClick={() => handleDelete(data.answerComment_id)}
-              />
+              <span className="createdat">{getWriteDate(data.answerComment_createdAt)}</span>
+              <MdEdit className="icon" onClick={() => handleEdit(data.answerComment_id)} />
+              <IoTrash className="icon" onClick={() => handleDelete(data.answerComment_id)} />
               {showEditInput && editId === data.answerComment_id ? (
                 <input
                   type="text"

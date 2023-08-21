@@ -5,7 +5,7 @@ import ErrorInput from "../../common/ErrorInput";
 import { styled } from "styled-components";
 import { BlueButton, PowderButton } from "../../common/Button";
 import { useNavigate } from "react-router-dom";
-import network from "../../utils/network";
+import api from "../../utils/send";
 const StylePasswordChange = styled.div`
   p {
     padding-bottom: 16px;
@@ -60,7 +60,7 @@ export default function PasswordChange({ userProfile }) {
     if (passChangeValidation()) {
       try {
         const { currentPassword, newPassword } = passwordForm;
-        network("patch", `/user/password/${userId}`, { currentPassword, newPassword });
+        await api.patch(`/user/password/${userId}`, { currentPassword, newPassword });
         navigate(`/users/${userId}`);
       } catch (e) {
         console.log(e);
