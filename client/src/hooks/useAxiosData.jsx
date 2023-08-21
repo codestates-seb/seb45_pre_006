@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "../components/utils/send";
 
 function useAxiosData() {
   const defaultUrl = "https://62c2-175-125-163-108.ngrok-free.app/";
@@ -7,7 +7,7 @@ function useAxiosData() {
     const url = defaultUrl + endpoint;
 
     try {
-      const response = await axios({
+      const response = await api({
         method,
         url,
         data: requestBody,

@@ -64,7 +64,8 @@ export default function Contents({ postData }) {
 
   const navigate = useNavigate();
 
-  const toggleShare = () => {
+  const toggleShare = (e) => {
+    e.stopPropagation();
     setIsClickedShare(!isClickedShare);
   };
 
@@ -75,6 +76,10 @@ export default function Contents({ postData }) {
         setIsClickedShare(false);
       }
     };
+
+    window.addEventListener("click", () => {
+      if (setIsClickedShare) setIsClickedShare(false);
+    });
 
     document.addEventListener("mousedown", handleOutsideClick);
 
@@ -99,9 +104,7 @@ export default function Contents({ postData }) {
   // 질문 삭제 로직 **** 본인인경우에만 삭제 가능해야함
   const handleDelete = async () => {
     // 경고메세지
-    const shouldDelete = window.confirm(
-      "Are you sure you want to delete this question?"
-    );
+    const shouldDelete = window.confirm("Are you sure you want to delete this question?");
     if (shouldDelete) {
       try {
         const response = await axios.delete(
@@ -120,8 +123,7 @@ export default function Contents({ postData }) {
   };
 
   // 수정된지 여부를 판단하고 알맞는 날자데이터를 뿌려주는 로직 **** 서버 버그 수정해야함(질문상세들어가면 수정시간이 변경되는버그)
-  const isModified =
-    postData.question_createdAt !== postData.question_modifiedAt;
+  const isModified = postData.question_createdAt !== postData.question_modifiedAt;
   const dateInfo =
     postData.question_createdAt === postData.question_modifiedAt
       ? postData.question_createdAt

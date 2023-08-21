@@ -1,7 +1,6 @@
 import React from "react";
 import { useAuthContext } from "../../../context/AuthContext";
 import { styled } from "styled-components";
-import { useNavigate } from "react-router-dom";
 
 const StyleRemovebutton = styled.button`
   border: 1px solid #d0393e;
@@ -21,14 +20,11 @@ const StyleRemovebutton = styled.button`
 
 export default function RemoveUser({ userProfile }) {
   const { removeUser } = useAuthContext();
-  const nav = useNavigate();
-  const removeUserHandler = () => {
-    if (removeUser()) nav("/");
-  };
+
   return (
     <>
       <h4>Remove user</h4>
-      <StyleRemovebutton onClick={removeUserHandler}>Remove</StyleRemovebutton>
+      <StyleRemovebutton onClick={removeUser}>Remove</StyleRemovebutton>
     </>
   );
 }

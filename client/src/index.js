@@ -1,4 +1,3 @@
-import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import "./reset.css";
@@ -8,9 +7,9 @@ import AuthContextProvider from "./context/AuthContext";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
-  <AuthContextProvider>
-    <BrowserRouter>
+  <BrowserRouter>
+    <AuthContextProvider>
       <App />
-    </BrowserRouter>
-  </AuthContextProvider>
+    </AuthContextProvider>
+  </BrowserRouter>
 );

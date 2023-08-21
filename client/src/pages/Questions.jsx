@@ -1,7 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import { useState, useEffect, useRef } from "react";
-import axios from 'axios'
+import axios from "axios";
 
 import MainHeadLine from "../components/home/MainHeadLine";
 import QuestionsList from "../components/home/QuestionsList";
@@ -121,8 +121,6 @@ const questions = {
       user_name: "user1232323",
       question_answerCount: 25,
     },
-
-
   ],
 };
 
@@ -130,27 +128,26 @@ const QuestionStyle = styled.main`
   width: 100%;
   margin-top: 26px;
   position: relative;
-  .infinite-scroll  {
+  .infinite-scroll {
     width: 1100px;
     height: 50px;
     bottom: -250px;
     position: relative;
   }
-`
-
+`;
 
 export default function Question() {
-  const [togle,setTogle] = useState(false);
-  const testData = JSON.parse(JSON.stringify(questions))// MockUp data 
+  const [togle, setTogle] = useState(false);
+  const testData = JSON.parse(JSON.stringify(questions)); // MockUp data
   const [questionsData, setQuestionsData] = useState(testData.questions);
- 
-  const answerFiltered = questionsData.filter((question)=>{
-    return togle ? question.question_answerCount > 0: question 
-  })
-  const filterHandler = () =>{
-    setTogle(!togle)
-  }
-  //GET 요청 
+
+  const answerFiltered = questionsData.filter((question) => {
+    return togle ? question.question_answerCount > 0 : question;
+  });
+  const filterHandler = () => {
+    setTogle(!togle);
+  };
+  //GET 요청
   // const url = 'https://c285-175-125-163-108.ngrok-free.app/questions';
   // useEffect( ()=>{
   //   axios.get(url,{
@@ -187,55 +184,53 @@ export default function Question() {
   //   .catch((Error)=>{console.log(Error)})
   // }
 
-
   // infiniteScroll
   const [isLoading, setIsLoading] = useState(false);
   const target = useRef(null);
   const viewPort = useRef();
 
   const options = {
-      root: viewPort.current,
-      rootMargin: "0px",
-      threshold: 0.1,
-  }
-  
-  const onIntersect = ([entry], observer)=>{
-      if (entry.isIntersecting && !isLoading){
-          setIsLoading(true);
-          axios.get('http://cozshopping.codestates-seb.link/api/v1/products?count=10')
-          .then((res)=>{
-            const newData = res.data && res.data.map((el)=>{
-              return {...el, isBookMarked:false}})
-              setQuestionsData(questionsData);
-          })
-          setIsLoading(false);
-          observer.observe(target.current);
-      }
-  } 
+    root: viewPort.current,
+    rootMargin: "0px",
+    threshold: 0.1,
+  };
 
-  useEffect( () => {
-      let observer;
-      if (target.current) {
-        // callback 함수, option
-        observer = new IntersectionObserver(onIntersect, options);
-        observer.observe(target.current); // 타겟 엘리먼트 지정
-      }
-      return () => observer && observer.disconnect();//다수의 엘리먼트를 관찰하고 있을떄, 이에대한 모든 관찰을 멈추고 싶을때 사용
-    }, [target]); 
+  const onIntersect = ([entry], observer) => {
+    if (entry.isIntersecting && !isLoading) {
+      setIsLoading(true);
+      axios.get("http://cozshopping.codestates-seb.link/api/v1/products?count=10").then((res) => {
+        const newData =
+          res.data &&
+          res.data.map((el) => {
+            return { ...el, isBookMarked: false };
+          });
+        setQuestionsData(questionsData);
+      });
+      setIsLoading(false);
+      observer.observe(target.current);
+    }
+  };
+
+  useEffect(() => {
+    let observer;
+    if (target.current) {
+      // callback 함수, option
+      observer = new IntersectionObserver(onIntersect, options);
+      observer.observe(target.current); // 타겟 엘리먼트 지정
+    }
+    return () => observer && observer.disconnect(); //다수의 엘리먼트를 관찰하고 있을떄, 이에대한 모든 관찰을 멈추고 싶을때 사용
+  }, [target]);
 
   return (
-        <QuestionStyle>
-          <MainHeadLine 
-            filterHandler={filterHandler} 
-            togle={togle}>
-          </MainHeadLine>
-          <QuestionsList 
-            questionsData={questionsData} 
-            togle={togle} 
-            answerFiltered={answerFiltered}>
-          </QuestionsList>
-          <div className="infinite-scroll" ref={target}></div>
-          <Loading></Loading>
-        </QuestionStyle>
-  )
+    <QuestionStyle>
+      <MainHeadLine filterHandler={filterHandler} togle={togle}></MainHeadLine>
+      <QuestionsList
+        questionsData={questionsData}
+        togle={togle}
+        answerFiltered={answerFiltered}
+      ></QuestionsList>
+      <div className="infinite-scroll" ref={target}></div>
+      <Loading></Loading>
+    </QuestionStyle>
+  );
 }

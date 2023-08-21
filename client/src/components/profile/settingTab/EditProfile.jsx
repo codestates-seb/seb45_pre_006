@@ -12,6 +12,7 @@ import api from "../../utils/send";
 const StyleEditProfile = styled.div`
   flex: 1;
 `;
+
 export default function EditProfile({ userProfile, userProfileHandler }) {
   const { displayName, aboutMe, userId } = userProfile;
   const [editForm, setEditForm] = useForm({ displayName, aboutMe });
@@ -26,7 +27,7 @@ export default function EditProfile({ userProfile, userProfileHandler }) {
     setError({ displayName: "" });
     return true;
   };
-  
+  console.log(JSON.stringify(editForm.aboutMe));
   const onSubmitHandler = async () => {
     if (displayNameValidation()) {
       try {
