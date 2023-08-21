@@ -40,8 +40,6 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
 
-
-
     public JwtVerificationFilter(JwtTokenizer jwtTokenizer, CustomAuthorityUtils authorityUtils) {
         this.jwtTokenizer = jwtTokenizer;
         this.authorityUtils = authorityUtils;
@@ -62,60 +60,27 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException{
+        if(request.getRequestURI().startsWith("/h2")) return true;
+        if(request.getRequestURI().startsWith("/user/logout")) return true;
         String accessToken = findAccessToken(request.getCookies());
         String refreshToken = request.getHeader("RefreshToken");
-        System.out.println("if 전 : " + request.getMethod());
         // 로그아웃 상태에서의 요청
         if(accessToken == null && refreshToken == null){
-            System.out.println("if 후 : " + request.getMethod());
             // 회원가입 신청은 로그아웃 상태에서 정상적인 요청으로 올 수 있는 유일한 POST 방식이다.
             // 그 이외의, 글 등록, 댓글 등록 등 요청들은 토큰이 있어야 가능
-            if(request.getMethod().equals("POST") && (request.getRequestURI().startsWith("/user/post")
-                                                        || request.getRequestURI().startsWith("/user/logout"))) return true;
+            if(request.getMethod().equals("POST") && (request.getRequestURI().startsWith("/user/post"))) return true;
             // GET 이외에 DB 에 직접적인 영향을 주는 요청들은 토큰 없이 실행 불가능 하므로 예외 발생
             if(!request.getMethod().equals("GET")) throw new JwtException(ExceptionCode.BAD_ACCESS);
             // GET 요청은 토큰 없이도 가능하므로 필터 실행 x
             return true;
         }
 
-        // 로그인 상태에서이 요청
+        // 로그인 상태에서의 요청
         // 여기로 왔다는 뜻은 refreshToken 이 존재하므로 로그인 상태에서의 요청이다.
         // accessToken 이 비었다면 refreshToken 검증을 위해 false
         // accessToken 이 존재한다면 알맞는 형식의 토큰인지 검증해서 잘못되었다면 true, 맞다면 false
         return accessToken == null ? false : !accessToken.startsWith("Bearer");
     }
-//    @Override
-//    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException{
-//        // 이쪽은 사용자가 비로그인 상태 및 jwt 필요가 없는 상태에서만 해당
-//        // 로그인 상태에서 쿠키가 사라진것과는 다르다.
-//        if(request.getRequestURI().startsWith("/h2")) return true;
-//        // 회원 가입
-//        if(request.getMethod().equals("POST") && request.getRequestURI().startsWith("/user/post")) return true;
-//        // 로그 아웃
-//        if(request.getMethod().equals("POST") && request.getRequestURI().startsWith("/user/logout")) return true;
-//        // 개인 정보 조회
-//        if(request.getMethod().equals("GET") && request.getRequestURI().startsWith("/user/profile")) return true;
-//
-//        // String authorization = request.getHeader("Authorization");
-//        // 기존 accessToken 또는 재발급된 Token 이 담긴다.
-//        String[] tokens = findAuthorizationInCookie(request.getCookies());
-//        System.out.println("Verification(accessToken): "  + tokens[0]);
-//
-//        if(tokens[0] == null){
-//            if(tokens[1] == null) {
-//                System.out.println("1");
-//                return true;
-//            }
-//            else {
-//                System.out.println("2");
-//                return false;
-//            }
-//        }else{
-//            return !tokens[0].startsWith("Bearer"); // 예외를 던져야 하지 않나?
-//        }
-//
-//        // return (tokens[0] == null && tokens[1] == null) || (tokens[0] != null && !tokens[0].startsWith("Bearer")); // access 가 없거나 제대로 된 토큰이 아닐 경우
-//    }
 
     private Map<String, Object> verifyJws(HttpServletRequest request, HttpServletResponse response){
         // refreshToken 검증 및 accessToken 재발급
@@ -148,7 +113,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
         // accessToken 및 refreshToken 만료 에러 발생시켜 로그아웃
         String accessToken = findAccessToken(request.getCookies());
         String refreshToken = request.getHeader("RefreshToken");
-        System.out.println(accessToken);
+
         // refresh 유효성 검증이 선으로 되어야 한다.
         // 유효성 검증에 실패할 경우 예외 발생
         String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
@@ -164,9 +129,6 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
         } catch (Exception e) {
             throw new JwtException(ExceptionCode.BAD_ACCESS);
         }
-
-        System.out.println(refreshToken);
-
         // accessToken 만료, refreshToken 은 아직 쿠키가 남아 있으므로 기간이 유효하다.
         // 따라서, accessToken 만 생성해서 리턴
         if(accessToken == null) {
@@ -197,6 +159,4 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
             System.out.println(e.getMessage());
         }
     }
-
-
 }

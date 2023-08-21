@@ -55,6 +55,10 @@ public class SecurityConfiguration {
                         .antMatchers("/mail").permitAll()
                         .antMatchers(HttpMethod.GET, "/user/profile/**").permitAll()
                         .antMatchers("/user/logout").permitAll() // 엔드포인트까지 연결 가능
+                        .antMatchers("/questions/**").permitAll()
+                        .antMatchers("/answers/**").permitAll()
+                        .antMatchers("/answer-comments/**").permitAll()
+                        .antMatchers("/question-comments/**").permitAll()
                         .anyRequest().authenticated());
 
         return http.build();
