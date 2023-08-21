@@ -1,7 +1,7 @@
 import api from "../components/utils/send";
 
 function useAxiosData() {
-  const defaultUrl = "http://ec2-13-125-37-74.ap-northeast-2.compute.amazonaws.com:8080/";
+  const defaultUrl = "http://13.125.37.74:8080/";
 
   return async (method, endpoint = "", requestBody) => {
     const url = defaultUrl + endpoint;

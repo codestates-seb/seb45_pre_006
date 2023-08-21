@@ -32,8 +32,6 @@ export default function EditContainer({ post }) {
 
   return (
     <StyleEditContainer>
-      {console.log(inputData)}
-      {console.log(post)}
       <div className="header">Edit</div>
       {question_id ? (
         <EditTitle

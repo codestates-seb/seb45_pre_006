@@ -7,6 +7,7 @@ import { BlueButton } from "../common/Button";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import useAxiosData from "../../hooks/useAxiosData";
+import { useAuthContext } from "../../context/AuthContext";
 
 const Container = styled.div`
   display: flex;
@@ -47,7 +48,11 @@ const StyleWriteContent = styled.div`
 export default function WriteContent({ isActive, editorRef, inputData }) {
   const [content, setContent] = useState("");
   const [editorFocused, setEditorFocused] = useState(false);
-  const nav = useNavigate();
+  let { user } = useAuthContext();
+  if (!user) {
+    user = { userId: "0" };
+  }
+  const navigate = useNavigate();
   const axiosData = useAxiosData();
 
   useEffect(() => {
@@ -83,6 +88,7 @@ export default function WriteContent({ isActive, editorRef, inputData }) {
 
     try {
       const requestData = {
+        userId: user.userId,
         question_title: inputData.title,
         question_content: markdownContent,
       };
@@ -91,7 +97,7 @@ export default function WriteContent({ isActive, editorRef, inputData }) {
 
       console.log("Post successful:", responseData);
       //  글 작성시 해당 작성글로 리다이렉션
-      nav(`/questions/${responseData.question_id}`);
+      navigate(`/questions/${responseData.question_id}`);
     } catch (error) {
       console.error("Error posting:", error);
     }
@@ -99,7 +105,6 @@ export default function WriteContent({ isActive, editorRef, inputData }) {
 
   return (
     <Container isActive={isActive}>
-      {console.log(content)}
       <StyleWriteContent>
         <div className="title">What are the details of your problem?</div>
         <div className="discription">

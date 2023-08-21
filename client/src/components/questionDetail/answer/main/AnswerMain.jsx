@@ -50,7 +50,6 @@ export default function AnswerMain({ postData, sortedData }) {
 
   return (
     <StyleAnswerMain>
-      {console.log(sortedData)}
       <PaginationControls
         totalPages={totalPages}
         currentPage={currentPage}
@@ -65,7 +64,10 @@ export default function AnswerMain({ postData, sortedData }) {
           <div className="Contentscontainer">
             <div>
               <AnswerVote data={answerItem} />
-              <AnswerAccepted data={answerItem} />
+              <AnswerAccepted
+                data={answerItem}
+                question_userId={postData.userId}
+              />
             </div>
             <AnswerContents data={answerItem} idx={idx} />
           </div>

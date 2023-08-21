@@ -6,8 +6,8 @@ import FormatGuide from "./FormatGuide";
 import { BlueButton } from "../common/Button";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import AnswerContents from "../questionDetail/answer/main/AnswerContents";
-import QuestionTitle from "../questionDetail/question/header/QuestionTitle";
+import useAxiosData from "../../hooks/useAxiosData";
+import { useAuthContext } from "../../context/AuthContext";
 
 const Container = styled.div`
   display: flex;
@@ -63,7 +63,9 @@ export default function EditContent({
     post.question_content
   ); //초기값을 질문상세페이지 질문의 content값으로
   const [answerContent, setAnswerContent] = useState(post.answer_content); // 초기값 답변 내용
-  const nav = useNavigate(); // 뒤로가기 기능 구현을 위한 훅
+  const { user } = useAuthContext();
+  const navigate = useNavigate(); // 뒤로가기 기능 구현을 위한 훅
+  const axiosData = useAxiosData(); //
 
   useEffect(() => {
     const editor = new Editor({
@@ -95,34 +97,35 @@ export default function EditContent({
     const markdownContent = editorInstance.getMarkdown();
 
     try {
-      const url = `https://62c2-175-125-163-108.ngrok-free.app/${
-        question_id ? "questions" : "answers"
-      }/${question_id ? question_id : answer_id}`;
+      const url = `${question_id ? "questions" : "answers"}/${
+        question_id ? question_id : answer_id
+      }`;
 
       const requestData = question_id
         ? {
+            userId: post.userId,
             question_title: inputData.title,
             question_content: markdownContent,
           }
         : {
+            userId: user.userId,
             answer_content: markdownContent,
           };
 
-      const response = await axios.patch(url, requestData);
+      const response = await axiosData("patch", url, requestData); //
 
-      console.log("Post successful:", response.data);
+      console.log("Post successful:", response);
     } catch (error) {
       console.error("Error posting:", error);
     }
     // 수정된 내용으로 리다이렉트 & 렌더링
-    nav(-1);
+    navigate(-1);
   };
 
   const handleCancel = () => {
     // 뒤로가기 구현
-    nav(-1);
+    navigate(-1);
   };
-
   return (
     <Container>
       <div>

@@ -3,8 +3,9 @@ import ShareModal from "../../question/main/ShareModal";
 import { styled } from "styled-components";
 import getWriteDate from "../../../utils/getWriteDate";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import ReactMarkdown from "react-markdown";
+import { useAuthContext } from "../../../../context/AuthContext";
+import useAxiosData from "../../../../hooks/useAxiosData";
 
 const StyleAnswerContents = styled.div`
   text-align: left;
@@ -56,6 +57,11 @@ const StyleAnswerContents = styled.div`
 export default function AnswerContents({ data, idx }) {
   // Share 버튼 클릭한 상태
   const [isClickedShare, setIsClickedShare] = useState(false);
+  const axiosData = useAxiosData();
+  let { user } = useAuthContext();
+  if (!user) {
+    user = { userId: "0" };
+  }
 
   const navigate = useNavigate();
 
@@ -95,23 +101,25 @@ export default function AnswerContents({ data, idx }) {
   // 질문 삭제 로직 **** 본인인경우에만 삭제 가능해야함
   const handleDelete = async () => {
     // 경고메세지
-    const shouldDelete = window.confirm("Are you sure you want to delete this answer?");
+    const shouldDelete = window.confirm(
+      "Are you sure you want to delete this answer?"
+    );
     if (shouldDelete) {
       try {
-        const response = await axios.delete(
-          `https://62c2-175-125-163-108.ngrok-free.app/answers/${data.answer_id}`
-        );
-        if (response.status === 204) {
-          console.log("Question deleted successfully");
-          window.location.reload(); // 해당 질문페이지로 이동
-        } else {
-          console.log("Failed to delete question");
-        }
+        const url = `answers/${data.answer_id}`;
+        window.location.reload(); // 해당 질문페이지로 이동
+        await axiosData("delete", url);
       } catch (error) {
-        console.error("An error occurred while deleting the question:", error);
+        console.error("An error occurred while deleting the answer:", error);
       }
     }
   };
+  // 수정된지 여부를 판단하고 알맞는 날자데이터를 뿌려주는 로직 **** 서버 버그 수정해야함(질문상세들어가면 수정시간이 변경되는버그)
+  const isModified = data.answer_createdAt !== data.answer_modifiedAt;
+  const dateInfo =
+    data.answer_createdAt === data.answer_modifiedAt
+      ? data.answer_createdAt
+      : data.answer_modifiedAt;
 
   return (
     <StyleAnswerContents>
@@ -130,18 +138,25 @@ export default function AnswerContents({ data, idx }) {
               <span>Share</span>
             </div>
           )}
-          <div className="edit" onClick={handleEdit}>
-            <span>Edit</span>
-          </div>
-          <div className="delete" onClick={handleDelete}>
-            <span>Delete</span>
-          </div>
+          {user.userId.toString() === data.userId.toString() && (
+            <>
+              <div className="edit" onClick={handleEdit}>
+                <span>Edit</span>
+              </div>
+              <div className="delete" onClick={handleDelete}>
+                <span>Delete</span>
+              </div>
+            </>
+          )}
         </div>
         <div className="userInfo">
-          <div className="date">asked {getWriteDate(data.answer_createdAt)}</div>
+          <div className="date">
+            {isModified ? "modified " : "asked "}
+            {getWriteDate(dateInfo)}
+          </div>
           <div className="useProfile">
             <img src="/images/userImg.png" alt="userImg" />
-            <div className="username">{data.user_id}</div>
+            <div className="username">{data.displayName}</div>
           </div>
         </div>
       </div>

@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { styled } from "styled-components";
 import { PiCheckFatLight, PiCheckFatFill } from "react-icons/pi";
-import axios from "axios";
+import useAxiosData from "../../../../hooks/useAxiosData";
+import { useAuthContext } from "../../../../context/AuthContext";
 
 const StyledAnswerAccepted = styled.div`
   padding: 10px 10px 0px 13px;
@@ -22,33 +23,37 @@ const StyledAnswerAccepted = styled.div`
   }
 `;
 
-export default function AnswerAccepted({ data }) {
+export default function AnswerAccepted({ data, question_userId }) {
   const [isAccepted, setIsAccepted] = useState(data.answer_accepted);
+  const axiosData = useAxiosData();
+  let { user } = useAuthContext();
+  if (!user) {
+    user = { userId: "0" };
+  }
 
   // 글 작성자일 경우에만 해당 통신이 가능하도록 구현해야함 **********
   const handleAccept = async () => {
-    if (!isAccepted) {
-      try {
-        await axios.post(
-          `https://62c2-175-125-163-108.ngrok-free.app/answers/${data.answer_id}/accept`
-        );
-        setIsAccepted(true);
-      } catch (error) {
-        console.error("Error accepting answer:", error);
-      }
-    } else {
-      try {
-        await axios.post(
-          `https://62c2-175-125-163-108.ngrok-free.app/answers/${data.answer_id}/unaccept`
-        );
-        setIsAccepted(false);
-      } catch (error) {
-        console.error("Error accepting answer:", error);
-      }
+    try {
+      const url = `answers/${data.answer_id}/${
+        isAccepted ? "unaccept" : "accept"
+      }`;
+
+      await axiosData("post", url);
+
+      setIsAccepted(!isAccepted);
+    } catch (error) {
+      console.error(
+        "Error",
+        isAccepted ? "unaccepting" : "accepting",
+        "answer:",
+        error
+      );
     }
   };
-
-  return (
+  console.log(question_userId);
+  console.log(user.userId);
+  return user.userId !== "0" &&
+    question_userId.toString() === user.userId.toString() ? (
     <StyledAnswerAccepted onClick={handleAccept}>
       {isAccepted ? (
         <PiCheckFatFill className="accepted" />
@@ -56,5 +61,5 @@ export default function AnswerAccepted({ data }) {
         <PiCheckFatLight />
       )}
     </StyledAnswerAccepted>
-  );
+  ) : null;
 }

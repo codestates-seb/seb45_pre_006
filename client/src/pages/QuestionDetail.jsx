@@ -7,7 +7,9 @@ import { useParams } from "react-router-dom";
 import Loading from "../components/common/Loading";
 import { useAuthContext } from "../context/AuthContext";
 
-const StyleQuestionDetail = styled.div``;
+const StyleQuestionDetail = styled.div`
+  width: 100%;
+`;
 
 export default function QuestionDetail() {
   // 데이터 받아서 저장하는 코드
@@ -18,14 +20,19 @@ export default function QuestionDetail() {
   const { question_id } = useParams();
 
   useEffect(() => {
-    const requestBody = null;
-    axiosData("get", `questions/${question_id}`, requestBody)
-      .then((responseData) => {
+    (async () => {
+      try {
+        const requestBody = null;
+        const responseData = await axiosData(
+          "get",
+          `questions/${question_id}`,
+          requestBody
+        );
         setPostData(responseData);
-      })
-      .catch((error) => {
+      } catch (error) {
         console.log(error);
-      });
+      }
+    })();
   }, []);
 
   // 여기에 로딩처리 한번에하기
