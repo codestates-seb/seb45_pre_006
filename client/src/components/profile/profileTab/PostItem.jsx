@@ -40,14 +40,15 @@ const StylePostItem = styled.li`
 `;
 
 export default function PostItem({ question }) {
-  const { question_id, question_title, question_createdAt, question_answerCount } = question;
+  const { question_id, question_title, createdAt, question_answerCount } = question;
   return (
     <StylePostItem>
       <div className={`count ${question_answerCount ? "active" : ""}`}>{question_answerCount}</div>
       <Link className="title" to={`/questions/${question_id}`}>
         {question_title}
       </Link>
-      <span className="timestamp">{getTimeAgoText(question_createdAt)}</span>
+
+      <span className="timestamp">{getTimeAgoText(createdAt)}</span>
     </StylePostItem>
   );
 }

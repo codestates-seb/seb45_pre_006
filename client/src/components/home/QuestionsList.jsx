@@ -1,9 +1,8 @@
-import React from 'react';
-import { styled } from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import { styled } from "styled-components";
+import { useNavigate } from "react-router-dom";
 
-
-export const ListStyle = styled.ul `
+export const ListStyle = styled.ul`
   .questions-container {
     height: 100%;
     background-color: white;
@@ -11,6 +10,7 @@ export const ListStyle = styled.ul `
     display: flex;
     flex-direction: row;
     padding: 16px;
+    gap: 20px;
   }
   .content-side-wrap {
     width: 105px;
@@ -22,21 +22,21 @@ export const ListStyle = styled.ul `
     margin: 18px 16px 5px 50px;
   }
   .content-side-wrap > span {
-    color: #6A737C;
-    margin:0px 0px 15px 0px;
+    color: #6a737c;
+    margin: 0px 0px 15px 0px;
     margin-left: auto;
     font-size: 13px;
   }
   .content-side-wrap > span:first-child {
-      color: #0C0D0E;
-    }
+    color: #0c0d0e;
+  }
   .question-content-wrap {
     width: 834px;
     height: 85px;
     margin: 0px 2px 12px 0;
   }
   .question-content {
-    width: 100% ;
+    width: 100%;
     height: 100px;
     position: relative;
   }
@@ -87,41 +87,47 @@ export const ListStyle = styled.ul `
       color: var(--blue-500);
     }
   }
-`
+`;
 export default function QuestionsList(props) {
-  const currentPath = useNavigate()
+  const currentPath = useNavigate();
 
-    return(
-      <ListStyle>
-        {props.answerFiltered.map((question, idx)=>{
-            return(
-                <li key={idx} className="questions-container">
-                  <div className="content-side-wrap">
-                    <span>0 votes</span>
-                    <span>{question.question_answerCount} answers</span>
-                    <span>{question.question_viewcount} views</span>
-                  </div>
-                  <div className="question-content-wrap">
-                    <div className="question-content">
-                          <h2 onClick={(tempKey)=>{currentPath(`/questions/${question.question_id}`)}}>
-                            {question.question_title}
-                          </h2>
-                          <p>
-                            {question.question_content}
-                          </p>
-                        <div className="question-user">
-                          <img src='/images/userImg.png' alt='userIcon' className='user-img'></img>
-                          {/* 이미지로 대체해야하나요? 아니면 기본이미지? */}
-                          <span onClick={(user_name)=>{currentPath(`/users/${question.user_name}`)}}>
-                            {question.user_name}
-                          </span>
-                          <span>modified 1 min ago</span>
-                        </div>
-                    </div>
-                  </div>
-                </li>
-            )
-        })}
-      </ListStyle>
-    )
+  return (
+    <ListStyle>
+      {props.answerFiltered?.map((question, idx) => {
+        return (
+          <li key={idx} className="questions-container">
+            <div className="content-side-wrap">
+              <span>0 votes</span>
+              <span>{question.question_answerCount} answers</span>
+              <span>{question.question_viewcount} views</span>
+            </div>
+            <div className="question-content-wrap">
+              <div className="question-content">
+                <h2
+                  onClick={(tempKey) => {
+                    currentPath(`/questions/${question.question_id}`);
+                  }}
+                >
+                  {question.question_title}
+                </h2>
+                <p>{question.question_content}</p>
+                <div className="question-user">
+                  <img src="/images/userImg.png" alt="userIcon" className="user-img"></img>
+                  {/* 이미지로 대체해야하나요? 아니면 기본이미지? */}
+                  <span
+                    onClick={(user_name) => {
+                      currentPath(`/users/${question.user_name}`);
+                    }}
+                  >
+                    {question.user_name}
+                  </span>
+                  <span>modified 1 min ago</span>
+                </div>
+              </div>
+            </div>
+          </li>
+        );
+      })}
+    </ListStyle>
+  );
 }
