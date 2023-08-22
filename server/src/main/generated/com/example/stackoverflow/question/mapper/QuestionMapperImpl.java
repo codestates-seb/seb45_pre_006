@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-08-19T21:30:02+0900",
+    date = "2023-08-21T11:21:54+0900",
     comments = "version: 1.5.2.Final, compiler: javac, environment: Java 11.0.18 (Azul Systems, Inc.)"
 )
 @Component
@@ -32,9 +32,9 @@ public class QuestionMapperImpl implements QuestionMapper {
 
         Question question = new Question();
 
+        question.setUser( questionPostDto.getUser() );
         question.setQuestion_title( questionPostDto.getQuestion_title() );
         question.setQuestion_content( questionPostDto.getQuestion_content() );
-        question.setUser( questionPostDto.getUser() );
 
         return question;
     }
@@ -62,6 +62,7 @@ public class QuestionMapperImpl implements QuestionMapper {
 
         QuestionResponseDto questionResponseDto = new QuestionResponseDto();
 
+        questionResponseDto.setUser( question.getUser() );
         questionResponseDto.setQuestion_id( question.getQuestion_id() );
         questionResponseDto.setQuestion_title( question.getQuestion_title() );
         questionResponseDto.setQuestion_content( question.getQuestion_content() );
@@ -83,13 +84,16 @@ public class QuestionMapperImpl implements QuestionMapper {
 
         QuestionResponseAllDto questionResponseAllDto = new QuestionResponseAllDto();
 
+        questionResponseAllDto.setUser( question.getUser() );
         questionResponseAllDto.setQuestion_id( question.getQuestion_id() );
         questionResponseAllDto.setQuestion_title( question.getQuestion_title() );
         questionResponseAllDto.setQuestion_content( question.getQuestion_content() );
         questionResponseAllDto.setQuestion_createdAt( question.getQuestion_createdAt() );
         questionResponseAllDto.setQuestion_modifiedAt( question.getQuestion_modifiedAt() );
         questionResponseAllDto.setQuestion_answerCount( question.getQuestion_answerCount() );
-        questionResponseAllDto.setQuestion_viewCount( question.getQuestion_viewCount() );
+        if ( question.getQuestion_viewCount() != null ) {
+            questionResponseAllDto.setQuestion_viewCount( question.getQuestion_viewCount().intValue() );
+        }
         questionResponseAllDto.setQuestionCommentList( questionCommentListToQuestionCommentResponseDtoList( question.getQuestionCommentList() ) );
         questionResponseAllDto.setAnswerList( answerListToAnswerResponseDtoList( question.getAnswerList() ) );
 
@@ -117,6 +121,7 @@ public class QuestionMapperImpl implements QuestionMapper {
 
         QuestionCommentResponseDto questionCommentResponseDto = new QuestionCommentResponseDto();
 
+        questionCommentResponseDto.setUser( questionComment.getUser() );
         questionCommentResponseDto.setQuestionComment_id( questionComment.getQuestionComment_id() );
         questionCommentResponseDto.setQuestionComment_content( questionComment.getQuestionComment_content() );
         questionCommentResponseDto.setQuestionComment_createdAt( questionComment.getQuestionComment_createdAt() );
@@ -145,6 +150,7 @@ public class QuestionMapperImpl implements QuestionMapper {
 
         AnswerCommentResponseDto answerCommentResponseDto = new AnswerCommentResponseDto();
 
+        answerCommentResponseDto.setUser( answerComment.getUser() );
         if ( answerComment.getAnswerComment_id() != null ) {
             answerCommentResponseDto.setAnswerComment_id( answerComment.getAnswerComment_id() );
         }
@@ -176,6 +182,7 @@ public class QuestionMapperImpl implements QuestionMapper {
         AnswerResponseDto answerResponseDto = new AnswerResponseDto();
 
         answerResponseDto.setQuestion( answer.getQuestion() );
+        answerResponseDto.setUser( answer.getUser() );
         answerResponseDto.setAnswer_id( answer.getAnswer_id() );
         answerResponseDto.setAnswer_content( answer.getAnswer_content() );
         answerResponseDto.setAnswer_createdAt( answer.getAnswer_createdAt() );

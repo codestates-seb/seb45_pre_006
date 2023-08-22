@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-08-19T15:12:36+0900",
+    date = "2023-08-21T11:21:54+0900",
     comments = "version: 1.5.2.Final, compiler: javac, environment: Java 11.0.18 (Azul Systems, Inc.)"
 )
 @Component
@@ -27,6 +27,7 @@ public class AnswerMapperImpl implements AnswerMapper {
 
         Answer answer = new Answer();
 
+        answer.setUser( answerPostDto.getUser() );
         answer.setQuestion( answerPostDto.getQuestion() );
         answer.setAnswer_content( answerPostDto.getAnswer_content() );
 
@@ -56,6 +57,7 @@ public class AnswerMapperImpl implements AnswerMapper {
         AnswerResponseDto answerResponseDto = new AnswerResponseDto();
 
         answerResponseDto.setQuestion( answer.getQuestion() );
+        answerResponseDto.setUser( answer.getUser() );
         answerResponseDto.setAnswer_id( answer.getAnswer_id() );
         answerResponseDto.setAnswer_content( answer.getAnswer_content() );
         answerResponseDto.setAnswer_createdAt( answer.getAnswer_createdAt() );
@@ -74,6 +76,7 @@ public class AnswerMapperImpl implements AnswerMapper {
 
         AnswerCommentResponseDto answerCommentResponseDto = new AnswerCommentResponseDto();
 
+        answerCommentResponseDto.setUser( answerComment.getUser() );
         if ( answerComment.getAnswerComment_id() != null ) {
             answerCommentResponseDto.setAnswerComment_id( answerComment.getAnswerComment_id() );
         }
