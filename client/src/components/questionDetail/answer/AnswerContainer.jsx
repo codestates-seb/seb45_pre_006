@@ -24,17 +24,23 @@ export default function AnswerContainer({ postData }) {
   };
 
   // 답변 필터링 데이터
-  const sortedData =
-    sort === "high"
-      ? [...postData.answerList].sort(
-          (a, b) => b.answer_recommendation - a.answer_recommendation
-        )
-      : [...postData.answerList].sort(
-          (a, b) =>
-            new Date(a.answerComment_createdAt) -
-            new Date(b.answerComment_createdAt)
-        );
+  const sortedData = [...postData.answerList].sort((a, b) => {
+    if (b.answer_accepted && !a.answer_accepted) {
+      return 1;
+    }
+    if (a.answer_accepted && !b.answer_accepted) {
+      return -1;
+    }
 
+    if (sort === "high") {
+      return b.answer_recommendation - a.answer_recommendation;
+    } else {
+      return (
+        new Date(a.answerComment_createdAt) -
+        new Date(b.answerComment_createdAt)
+      );
+    }
+  });
   // 필터링 관련해서 질문 채택 여부를 맨위로 올리는 작업을 추가로 해줘야함
 
   return (

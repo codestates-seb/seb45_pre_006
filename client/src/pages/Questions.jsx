@@ -86,7 +86,10 @@ export default function Question() {
         togle={togle}
         questionsFiltered={questionsFiltered}
       ></MainHeadLine>
-      <QuestionsList togle={togle} questionsFiltered={questionsFiltered}></QuestionsList>
+      <QuestionsList
+        togle={togle}
+        questionsFiltered={questionsFiltered}
+      ></QuestionsList>
       <div className="infinite-scroll" ref={target} defer></div>
       {isLoading ? <Loading></Loading> : null}
     </QuestionStyle>

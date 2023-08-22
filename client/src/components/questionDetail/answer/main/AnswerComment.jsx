@@ -35,6 +35,11 @@ const StyleAnswerComment = styled.div`
   }
   .username {
     color: var(--blue-600);
+    cursor: pointer;
+    &:hover {
+      color: var(--blue-500);
+      font-weight: 600;
+    }
   }
   .createdat {
     color: var(--black-400);
@@ -190,7 +195,12 @@ export default function AnswerComment({ data, answer_id }) {
               <span className="commentbody">
                 {data.answerComment_content} -
               </span>
-              <span className="username"> {data.user_id}</span>
+              <span
+                className="username"
+                onClick={() => navigate(`/users/${data.userId}`)}
+              >
+                {data.displayName}
+              </span>
               <span className="createdat">
                 {getWriteDate(data.answerComment_createdAt)}
               </span>

@@ -95,7 +95,6 @@ export default function WriteContent({ isActive, editorRef, inputData }) {
 
       const responseData = await axiosData("post", "questions", requestData);
 
-      console.log("Post successful:", responseData);
       //  글 작성시 해당 작성글로 리다이렉션
       navigate(`/questions/${responseData.question_id}`);
     } catch (error) {
