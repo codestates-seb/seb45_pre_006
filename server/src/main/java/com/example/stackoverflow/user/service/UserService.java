@@ -81,8 +81,8 @@ public class UserService {
 
         return user;
     }
-    public Page<User> findUsers(int page, int size){
-        return userRepository.findAll(PageRequest.of(page, size, Sort.by("userId").descending()));
+    public Page<User> findUsers(Pageable pageable){
+        return userRepository.findAll(pageable);
     }
 
     public Page<User> findUsersByKeyword(String keyword, Pageable pageable){
@@ -91,10 +91,8 @@ public class UserService {
 
     @Transactional
     public void deleteUser(Long userId){
-        System.out.println("들어오나?1");
         User user = findVerifiedUser(userId);
         userRepository.delete(user);
-        System.out.println("들어오나?2");
     }
 
     // 이메일로 테이블 조회

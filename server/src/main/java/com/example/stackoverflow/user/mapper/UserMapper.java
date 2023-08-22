@@ -20,7 +20,8 @@ public interface UserMapper {
                 .map(user -> new UserByPagingDto(
                         user.getUserId(),
                         user.getDisplayName(),
-                        user.getImg()
+                        user.getImg(),
+                        user.getCreatedAt()
                 )).collect(Collectors.toList());
     }
 }
