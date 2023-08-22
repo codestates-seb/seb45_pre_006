@@ -1,10 +1,6 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React from "react";
 import { styled } from "styled-components";
 import AskQuestion from "./AskQuestion";
-import { usePostContext } from "../../../../context/PostContext";
-import useAxiosData from "../../../../hooks/useAxiosData";
-import { useDataContext } from "../../../../context/DataContext";
 
 const StyleQuestionTitle = styled.div`
   display: flex;
