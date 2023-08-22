@@ -40,8 +40,9 @@ public class Answer {
 
     @PrePersist
     public void prePersist() {
-        answer_createdAt = LocalDateTime.now();
-        answer_modifiedAt = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now();
+        answer_createdAt = now;
+        answer_modifiedAt = now;
     }
 
     @ManyToOne
