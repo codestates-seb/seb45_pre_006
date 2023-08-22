@@ -13,16 +13,16 @@ export default function AuthContextProvider({ children }) {
     setUser(null);
     localStorage.removeItem("user");
     localStorage.removeItem("refreshToken");
+    localStorage.removeItem("accessToken");
     navigate("/");
   };
 
   const logout = async () => {
-    api.post("/user/logout");
     clearUser();
   };
 
   const removeUser = async () => {
-    api.delete(`/user/${user.userId}`);
+    await api.delete(`/user/${user.userId}`);
     clearUser();
   };
 
@@ -32,8 +32,8 @@ export default function AuthContextProvider({ children }) {
 
   useEffect(() => {
     const handleTriggerLogout = () => {
-      alert("토큰이 만료되었습니다 다시 로그인해주세요.");
       logout();
+      alert("토큰이 만료되었습니다 다시 로그인해주세요.");
     };
     window.addEventListener("logoutEvent", handleTriggerLogout);
     return () => {

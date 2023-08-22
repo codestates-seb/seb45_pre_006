@@ -1,11 +1,12 @@
-import React from "react"
-import { styled } from "styled-components"
+import React from "react";
+import { styled } from "styled-components";
 
-
-
-const StyleUserNotFound = styled.div `
-  padding: 32px 32px 32px 32px;
-  width: 1051px;
+const StyleUserNotFound = styled.div`
+  position: absolute;
+  top: 0;
+  bottom: 200px;
+  margin: auto;
+  width: 1052px;
   height: 315px;
   display: flex;
   flex-direction: column;
@@ -23,13 +24,13 @@ const StyleUserNotFound = styled.div `
     color: var(--black-400);
     font-weight: 700;
   }
-`
+`;
 
-export default function UserNotFound (){
-    return(
-      <StyleUserNotFound className="not-found">
-          <img src="/images/userNotFound.png" alt="userNotFound"></img>
-          <span>No users matched your search.</span>
-      </StyleUserNotFound>
-    )
+export default function UserNotFound() {
+  return (
+    <StyleUserNotFound className="not-found">
+      <img src="/images/userNotFound.png" alt="userNotFound"></img>
+      <span>No users matched your search.</span>
+    </StyleUserNotFound>
+  );
 }

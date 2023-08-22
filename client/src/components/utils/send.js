@@ -1,12 +1,11 @@
 import axios from "axios";
-//
-const api = axios.create({
-  baseURL: "http://13.125.37.74:8080/",
-});
+const api = axios.create({ baseURL: "http://13.125.37.74:8080/" });
 
 api.interceptors.request.use((config) => {
   const refreshToken = JSON.parse(localStorage.getItem("refreshToken"));
+  const accessToken = JSON.parse(localStorage.getItem("accessToken"));
   config.headers["RefreshToken"] = refreshToken;
+  config.headers["AccessToken"] = accessToken;
   config.headers["Content-Type"] = "application/json";
   config.headers["ngrok-skip-browser-warning"] = "69420";
   config.withCredentials = true;
@@ -14,14 +13,22 @@ api.interceptors.request.use((config) => {
 });
 
 api.interceptors.response.use(
-  (response) => {
-    console.log(response);
-    return response;
+  function (res) {
+    if (res.headers.accesstoken) {
+      const accessToken = JSON.stringify(res.headers.accesstoken);
+      localStorage.setItem("accessToken", accessToken);
+    }
+    if (res.headers.refreshtoken) {
+      const refreshToken = JSON.stringify(res.headers.refreshtoken);
+      localStorage.setItem("refreshToken", refreshToken);
+    }
+    return res;
   },
-  async (error) => {
-    if (error.response.data.message === "Time Out") {
+  function (err) {
+    if (err.response.data.message === "Time Out") {
       window.dispatchEvent(new Event("logoutEvent"));
     }
+    return Promise.reject(err);
   }
 );
 
