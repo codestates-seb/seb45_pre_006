@@ -78,7 +78,7 @@ export default function WriteTitle({
 
   const handleSubmit = () => {
     // 폼 제출시 로직을 구현해야함
-    console.log("Form submitted:", inputData.title);
+    // console.log("Form submitted:", inputData.title);
     if (length > 5) {
       handleNextClick(); //포커스 이동핸들러함수
       //5글자 이상일경우 포커스 이동가능
@@ -114,7 +114,9 @@ export default function WriteTitle({
         />
         <div className="buttonSection">
           <BlueButton onClick={handleSubmit}>Next</BlueButton>
-          {length > 5 || length === 0 ? null : <div className="alert">Minimum 5 characters.</div>}
+          {length > 5 || length === 0 ? null : (
+            <div className="alert">Minimum 5 characters.</div>
+          )}
         </div>
       </StyleWriteTitle>
       {inputFocused && <TitleGuide />}

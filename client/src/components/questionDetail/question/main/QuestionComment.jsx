@@ -33,6 +33,11 @@ const StyleQuestionComment = styled.div`
   }
   .username {
     color: var(--blue-600);
+    cursor: pointer;
+    &:hover {
+      color: var(--blue-500);
+      font-weight: 600;
+    }
   }
   .createdat {
     color: var(--black-400);
@@ -179,7 +184,6 @@ export default function QuestionComment({ postData }) {
 
   return (
     <StyleQuestionComment>
-      {console.log(postData.questionCommentList)}
       {postData.questionCommentList.map(
         (data, idx) =>
           // 5개까지만 표시
@@ -188,7 +192,13 @@ export default function QuestionComment({ postData }) {
               <span className="commentbody">
                 {data.questionComment_content} -{" "}
               </span>
-              <span className="username"> {data.user_name}</span>
+              <span
+                className="username"
+                onClick={() => navigate(`/users/${data.userId}`)}
+              >
+                {" "}
+                {data.displayName}
+              </span>
               <span className="createdat">
                 {getWriteDate(data.questionComment_createdAt)}
               </span>

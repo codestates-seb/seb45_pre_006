@@ -120,7 +120,7 @@ export default function AnswerContents({ data, idx }) {
     data.answer_createdAt === data.answer_modifiedAt
       ? data.answer_createdAt
       : data.answer_modifiedAt;
-
+  console.log(data);
   return (
     <StyleAnswerContents>
       <div className="content">
@@ -154,7 +154,10 @@ export default function AnswerContents({ data, idx }) {
             {isModified ? "modified " : "asked "}
             {getWriteDate(dateInfo)}
           </div>
-          <div className="useProfile">
+          <div
+            className="useProfile"
+            onClick={() => navigate(`/users/${data.userId}`)}
+          >
             <img src="/images/userImg.png" alt="userImg" />
             <div className="username">{data.displayName}</div>
           </div>

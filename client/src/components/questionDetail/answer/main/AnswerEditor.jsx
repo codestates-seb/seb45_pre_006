@@ -85,7 +85,6 @@ export default function AnswerEditor({ postData }) {
       editor.destroy();
     };
   }, [user.userId]); // 한번실행
-  console.log(content);
   // 회원만 작성가능하도록 조건부 렌더링 구현해야함!! *********** 로그인시 유저정보가 있다는점을 고려하여 코드 짜면 좋을듯
   return (
     <StyleAnswerEditor>

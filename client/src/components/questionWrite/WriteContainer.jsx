@@ -21,7 +21,6 @@ export default function WriteContainer() {
   const handleNextClick = () => {
     if (editorRef.current) {
       editorRef.current.focus(); // editor에 포커스
-      console.log("handleNextClick실행");
     }
   };
 
