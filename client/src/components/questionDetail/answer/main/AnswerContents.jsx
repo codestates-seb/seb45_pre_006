@@ -5,8 +5,7 @@ import getWriteDate from "../../../utils/getWriteDate";
 import { useNavigate } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import { useAuthContext } from "../../../../context/AuthContext";
-import useAxiosData from "../../../../hooks/useAxiosData";
-
+import api from "../../../utils/send";
 const StyleAnswerContents = styled.div`
   text-align: left;
   font-size: 15px;
@@ -57,7 +56,6 @@ const StyleAnswerContents = styled.div`
 export default function AnswerContents({ data, idx }) {
   // Share 버튼 클릭한 상태
   const [isClickedShare, setIsClickedShare] = useState(false);
-  const axiosData = useAxiosData();
   let { user } = useAuthContext();
   if (!user) {
     user = { userId: "0" };
@@ -101,14 +99,12 @@ export default function AnswerContents({ data, idx }) {
   // 질문 삭제 로직 **** 본인인경우에만 삭제 가능해야함
   const handleDelete = async () => {
     // 경고메세지
-    const shouldDelete = window.confirm(
-      "Are you sure you want to delete this answer?"
-    );
+    const shouldDelete = window.confirm("Are you sure you want to delete this answer?");
     if (shouldDelete) {
       try {
         const url = `answers/${data.answer_id}`;
         window.location.reload(); // 해당 질문페이지로 이동
-        await axiosData("delete", url);
+        await api.delete(url);
       } catch (error) {
         console.error("An error occurred while deleting the answer:", error);
       }
@@ -154,10 +150,7 @@ export default function AnswerContents({ data, idx }) {
             {isModified ? "modified " : "asked "}
             {getWriteDate(dateInfo)}
           </div>
-          <div
-            className="useProfile"
-            onClick={() => navigate(`/users/${data.userId}`)}
-          >
+          <div className="useProfile" onClick={() => navigate(`/users/${data.userId}`)}>
             <img src="/images/userImg.png" alt="userImg" />
             <div className="username">{data.displayName}</div>
           </div>

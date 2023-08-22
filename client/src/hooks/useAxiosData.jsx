@@ -13,7 +13,7 @@ function useAxiosData() {
       return response.data;
     } catch (error) {
       console.log(error);
-      throw error;
+      return error;
     }
   };
 }

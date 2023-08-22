@@ -4,11 +4,9 @@ import { Editor } from "@toast-ui/editor";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import FormatGuide from "./FormatGuide";
 import { BlueButton } from "../common/Button";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import useAxiosData from "../../hooks/useAxiosData";
 import { useAuthContext } from "../../context/AuthContext";
-
+import api from "../utils/send";
 const Container = styled.div`
   display: flex;
   flex-direction: row;
@@ -52,20 +50,11 @@ const StyleEditContent = styled.div`
   }
 `;
 
-export default function EditContent({
-  editorRef,
-  post,
-  question_id,
-  answer_id,
-  inputData,
-}) {
-  const [qeustionContent, setQeustionContentContent] = useState(
-    post.question_content
-  ); //초기값을 질문상세페이지 질문의 content값으로
+export default function EditContent({ editorRef, post, question_id, answer_id, inputData }) {
+  const [qeustionContent, setQeustionContentContent] = useState(post.question_content); //초기값을 질문상세페이지 질문의 content값으로
   const [answerContent, setAnswerContent] = useState(post.answer_content); // 초기값 답변 내용
   const { user } = useAuthContext();
   const navigate = useNavigate(); // 뒤로가기 기능 구현을 위한 훅
-  const axiosData = useAxiosData(); //
 
   useEffect(() => {
     const editor = new Editor({
@@ -112,7 +101,7 @@ export default function EditContent({
             answer_content: markdownContent,
           };
 
-      const response = await axiosData("patch", url, requestData); //
+      const response = await api.patch(url, requestData);
 
       console.log("Post successful:", response);
     } catch (error) {
@@ -132,8 +121,7 @@ export default function EditContent({
         <StyleEditContent>
           <div className="title">What are the details of your problem?</div>
           <div className="discription">
-            Introduce the problem and expand on what you put in the title.
-            Minimum 20 characters.
+            Introduce the problem and expand on what you put in the title. Minimum 20 characters.
           </div>
           <div id="editor"></div>
           <div className="buttonContainer">

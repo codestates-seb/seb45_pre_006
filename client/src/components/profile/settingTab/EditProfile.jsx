@@ -35,9 +35,7 @@ export default function EditProfile({ userProfile, userProfileHandler }) {
         await api.patch(`/user/profile/${userId}`, { displayName, aboutMe });
         userProfileHandler({ displayName, aboutMe });
         alert("저장되었습니다");
-      } catch (e) {
-        console.log(e);
-      }
+      } catch (e) {}
     }
   };
 

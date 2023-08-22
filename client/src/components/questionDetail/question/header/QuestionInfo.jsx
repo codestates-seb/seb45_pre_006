@@ -1,6 +1,5 @@
 import React from "react";
 import { styled } from "styled-components";
-import { usePostContext } from "../../../../context/PostContext";
 import getTimeAgoText from "../../../utils/getTimeAgoText";
 
 const StyleQuestionInfo = styled.div`

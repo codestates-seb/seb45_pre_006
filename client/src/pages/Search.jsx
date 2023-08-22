@@ -3,15 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useKeywordContext } from "../context/SearchKeywordContext";
 import { styled } from "styled-components";
-import useAxiosData from "../hooks/useAxiosData";
-
+import api from "../components/utils/send";
 import { BlueButton } from "../components/common/Button";
 import QuestionsList from "../components/home/QuestionsList";
 
 const SearchHeadLine = styled.div`
   width: 100%;
   margin-top: 26px;
-  .infinite-scroll  {
+  .infinite-scroll {
     width: 100%;
     height: 50px;
     bottom: 0px;
@@ -79,49 +78,52 @@ const SearchHeadLine = styled.div`
 `;
 
 export default function Search() {
-  const axiosData = useAxiosData();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { keyword } = useParams();
   const { keywordHandler } = useKeywordContext();
   const [questionsData, setQuestionsData] = useState([]);
 
-  //GET : /questions/search?keyword={keyword} 
+  //GET : /questions/search?keyword={keyword}
   const endpoint = `/questions/search?keyword=${keyword}`;
-  useEffect(()=>{
-      const fetchData = async () =>{
-        const responseData = await axiosData("get", endpoint);
-        setQuestionsData(responseData.data)
-      }
-      fetchData();
-  },[ keyword ]);
+  useEffect(() => {
+    const fetchData = async () => {
+      const responseData = await api.get(endpoint).then((res) => res.data);
+      setQuestionsData(responseData.data);
+    };
+    fetchData();
+  }, [keyword]);
 
-  const keywordClear =()=>{
-    keywordHandler(keyword);
-    return () => keywordHandler("");
-  }
-  const askBtnHandler =()=>{
-    navigate("/ask")
-  }
+  const askBtnHandler = () => {
+    navigate("/ask");
+  };
 
-  return(
-      <SearchHeadLine>
-          <div className="search-headline-container">
-            <h1>Search Results</h1>
-            <BlueButton onClick={()=>{askBtnHandler()}}>Ask Question</BlueButton>
-          </div>
-          <div className="counter-container">
-              <h3>{`${questionsData.length} questions`}</h3>
-          </div>
-          {questionsData.length > 0 ?
-            <QuestionsList questionsFiltered={questionsData}></QuestionsList>
-            :
-            <div className="result-container">
-              <img src="/images/searchImg.png" alt="searchIcon" className="search-icon" ></img>
-              <h2>We couldn't find anything for <span className="keyword-wrap">{keyword}</span></h2>
-              <h3 >Try different or less specific keywords.</h3>
-            </div>
-          }
-            <div className="infinite-scroll" ></div>
-      </SearchHeadLine>
+  return (
+    <SearchHeadLine>
+      <div className="search-headline-container">
+        <h1>Search Results</h1>
+        <BlueButton
+          onClick={() => {
+            askBtnHandler();
+          }}
+        >
+          Ask Question
+        </BlueButton>
+      </div>
+      <div className="counter-container">
+        <h3>{`${questionsData.length} questions`}</h3>
+      </div>
+      {questionsData.length > 0 ? (
+        <QuestionsList questionsFiltered={questionsData}></QuestionsList>
+      ) : (
+        <div className="result-container">
+          <img src="/images/searchImg.png" alt="searchIcon" className="search-icon"></img>
+          <h2>
+            We couldn't find anything for <span className="keyword-wrap">{keyword}</span>
+          </h2>
+          <h3>Try different or less specific keywords.</h3>
+        </div>
+      )}
+      <div className="infinite-scroll"></div>
+    </SearchHeadLine>
   );
 }
