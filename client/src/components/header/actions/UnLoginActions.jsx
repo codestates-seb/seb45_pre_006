@@ -3,12 +3,12 @@ import { BlueButton, PowderButton } from "../../common/Button";
 import { useNavigate } from "react-router-dom";
 
 export default function UnLoginActions() {
-  const nav = useNavigate();
+  const navigate = useNavigate();
 
   return (
     <>
-      <PowderButton onClick={() => nav("/login")}>Log in</PowderButton>
-      <BlueButton onClick={() => nav("/signup")}>Sign up</BlueButton>
+      <PowderButton onClick={() => navigate("/login")}>Log in</PowderButton>
+      <BlueButton onClick={() => navigate("/signup")}>Sign up</BlueButton>
     </>
   );
 }

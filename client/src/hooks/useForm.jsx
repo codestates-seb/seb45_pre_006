@@ -1,15 +1,18 @@
 import { useState } from "react";
 
-export default function useForm(data) {
-  const [form, setForm] = useState(data);
+export default function useForm(initialData) {
+  const [form, setForm] = useState(initialData);
+
   const onInputChangeHandler = (e, name, value) => {
     if (e) {
       const { name, value } = e.target;
-      setForm({ ...form, [name]: value });
+      setForm((prevForm) => ({ ...prevForm, [name]: value }));
     } else {
-      setForm({ ...form, [name]: value });
+      setForm((prevForm) => ({ ...prevForm, [name]: value }));
     }
   };
-  const clearForm = () => setForm(data);
+
+  const clearForm = () => setForm(initialData);
+
   return [form, onInputChangeHandler, clearForm];
 }

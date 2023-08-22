@@ -2,7 +2,8 @@ import React from "react";
 import { styled } from "styled-components";
 import LoginActions from "./actions/LoginActions";
 import UnLoginActions from "./actions/UnLoginActions";
-import { useState } from "react";
+import { useAuthContext } from "../../context/AuthContext";
+
 const StyleUserActions = styled.div`
   display: flex;
   width: 135px;
@@ -27,12 +28,9 @@ const StyleUserActions = styled.div`
     }
   }
 `;
+
+
 export default function UserActions() {
-  const [user, setUser] = useState(false);
-  return (
-    <>
-      <button onClick={() => setUser(!user)}>change</button>
-      <StyleUserActions>{user ? <LoginActions /> : <UnLoginActions />}</StyleUserActions>
-    </>
-  );
+  const { user } = useAuthContext();
+  return <StyleUserActions>{user ? <LoginActions /> : <UnLoginActions />}</StyleUserActions>;
 }
