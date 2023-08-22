@@ -3,7 +3,6 @@ import { styled } from "styled-components";
 import SubLogo from "../components/common/SubLogo";
 import { Link } from "react-router-dom";
 import SiteLogin from "../components/login/SiteLogin";
-import GoogleLogin from "../components/login/GoogleLogin";
 const StyleLogin = styled.section`
   width: 288px;
   height: 420px;
@@ -25,7 +24,6 @@ export default function Login() {
   return (
     <StyleLogin>
       <SubLogo />
-      <GoogleLogin />
       <SiteLogin />
       <span className="dont-have-account">
         Don’t have an account? <Link to="/signup">Sign up</Link>

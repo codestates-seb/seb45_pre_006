@@ -11,6 +11,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { useAuthContext } from "../context/AuthContext";
 import api from "../components/utils/send";
+import Loading from "../components/common/Loading";
 
 const StyleProfile = styled.section`
   width: 100%;
@@ -23,6 +24,7 @@ export default function Profile() {
   const [userProfile, setUserProfile] = useState();
   const { profileId } = useParams();
   const { user } = useAuthContext();
+  const [isLoading, setIsLoading] = useState(false);
 
   const userProfileHandler = (user) => {
     setUserProfile((preUser) => {
@@ -32,18 +34,20 @@ export default function Profile() {
 
   useEffect(() => {
     async function fetchProfile() {
+      setIsLoading(true);
       try {
         const res = await api.get(`/user/profile/${profileId}/${user?.userId || 0}`);
         const { admin, response } = res.data;
         setUserProfile({ isAdmin: admin, ...response, img: response.img || "/images/userImg.png" });
-      } catch (e) {
-        console.log(e);
-      }
+      } catch (e) {}
+      setIsLoading(false);
     }
+
     fetchProfile();
   }, []);
 
   if (!profileParams.includes(useParams()["*"])) return <NotFound />;
+  if (isLoading) return <Loading />;
   if (!userProfile) return <NotFound />;
 
   return (

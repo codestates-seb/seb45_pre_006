@@ -22,8 +22,10 @@ export default function AuthContextProvider({ children }) {
   };
 
   const removeUser = async () => {
-    await api.delete(`/user/${user.userId}`);
-    clearUser();
+    if (window.confirm("정말 탈퇴하실건가요?")) {
+      await api.delete(`/user/${user.userId}`);
+      clearUser();
+    }
   };
 
   const userHandler = (user) => {

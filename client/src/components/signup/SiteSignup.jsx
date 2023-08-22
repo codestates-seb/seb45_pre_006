@@ -9,7 +9,6 @@ import api from "../utils/send";
 
 const StyleSiteSignup = styled.form`
   background: var(--white);
-
   box-shadow: 0 0 5px 2px var(--shadow);
   padding: 24px;
   border-radius: 5px;

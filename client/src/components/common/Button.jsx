@@ -42,27 +42,3 @@ export const BlueButton = styled(Button)`
     background-color: var(--blue-500-hover);
   }
 `;
-
-const StyleGoogleButton = styled(WhiteButton)`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 5px;
-  height: 38px;
-  width: 100%;
-  border: 1px solid var(--border);
-  border-radius: 5px;
-  &:hover {
-    background-color: #f8f9f9;
-  }
-  img {
-    width: 20px;
-  }
-`;
-
-export const GoogleButton = ({ children }) => (
-  <StyleGoogleButton>
-    <img src="/images/googleIcon.png" alt="google icon" />
-    {children}
-  </StyleGoogleButton>
-);

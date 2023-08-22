@@ -61,9 +61,9 @@ export default function PasswordChange({ userProfile }) {
       try {
         const { currentPassword, newPassword } = passwordForm;
         await api.patch(`/user/password/${userId}`, { currentPassword, newPassword });
+        alert('비밀번호 변경이 완료되었습니다')
         navigate(`/users/${userId}`);
       } catch (e) {
-        console.log(e);
       }
     }
   };
