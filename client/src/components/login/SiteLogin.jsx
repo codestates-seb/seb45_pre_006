@@ -87,14 +87,11 @@ export default function SiteLogin() {
       try {
         const { email, password } = signinForm;
         const res = await api.post("/user/login", { email, password });
-        console.log(res);
-        localStorage.setItem("refreshToken", JSON.stringify(res.headers.refreshtoken));
         handleLoginSuccess(res);
       } catch (e) {
-        console.log(e);
-        const statusText = e.response.statusText;
+        const statusText = e.response.data.message;
         if (statusText === "Unauthorized") handleUnauthorizedError();
-        else if (statusText === "Not Found") handleNotFoundError();
+        else if (statusText === "User not found") handleNotFoundError();
       }
     }
   };

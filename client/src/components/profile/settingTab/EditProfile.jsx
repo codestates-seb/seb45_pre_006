@@ -33,8 +33,8 @@ export default function EditProfile({ userProfile, userProfileHandler }) {
       try {
         const { displayName, aboutMe } = editForm;
         await api.patch(`/user/profile/${userId}`, { displayName, aboutMe });
-        userProfileHandler({ aboutMe: editForm.aboutMe });
-        navigate(`/users/${userId}`);
+        userProfileHandler({ displayName, aboutMe });
+        alert("저장되었습니다");
       } catch (e) {
         console.log(e);
       }

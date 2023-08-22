@@ -5,6 +5,11 @@ import { WhiteButton } from "../common/Button";
 const StylePageButton = styled.div`
   display: flex;
   gap: 5px;
+  bottom: 24px;
+  right: 24px;
+  width: 100%;
+  justify-content: flex-end;
+  margin: 20px 0;
   button {
     padding: 4px 7px;
     font-size: 15px;
@@ -20,16 +25,19 @@ const StylePageButton = styled.div`
   }
 `;
 
-export default function PageButton({ page, pageHandler }) {
-  const { currentPage, maxPage } = page;
-
+export default function PageButton({ currentPage, maxPage, pageHandler }) {
   const generatePageArray = (start, end) => {
     return Array.from({ length: end - start + 1 }, (_, index) => start + index);
   };
 
   const buttonArray = () => {
     if (currentPage < 5) {
-      return [2, 3, 4, 5];
+      const array = [];
+      for (let i = 2; i < maxPage; i++) {
+        array.push(i);
+        if (i >= 5) break;
+      }
+      return array;
     } else if (maxPage <= currentPage + 4) {
       return generatePageArray(maxPage - 4, maxPage - 1);
     } else {
@@ -58,12 +66,14 @@ export default function PageButton({ page, pageHandler }) {
         </WhiteButton>
       ))}
       {currentPage + 4 < maxPage && <span>...</span>}
-      <WhiteButton
-        className={maxPage === currentPage ? "active" : ""}
-        onClick={() => pageHandler(maxPage)}
-      >
-        {maxPage}
-      </WhiteButton>
+      {maxPage !== 1 && (
+        <WhiteButton
+          className={maxPage === currentPage ? "active" : ""}
+          onClick={() => pageHandler(maxPage)}
+        >
+          {maxPage}
+        </WhiteButton>
+      )}
       {currentPage !== maxPage && (
         <WhiteButton onClick={() => pageHandler(currentPage + 1)} className="next">
           Next
