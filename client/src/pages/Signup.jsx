@@ -11,6 +11,7 @@ const StyleSignup = styled.section`
   left: 0;
   bottom: 0;
   margin: auto;
+  align-items: center;
 `;
 export default function Signup() {
   return (
