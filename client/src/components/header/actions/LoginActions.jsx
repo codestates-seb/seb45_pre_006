@@ -1,15 +1,21 @@
 import React from "react";
 import { PowderButton } from "../../common/Button";
 import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "../../../context/AuthContext";
 
 export default function LoginActions() {
-  const nav = useNavigate();
+  const navigate = useNavigate();
+  const { user, logout } = useAuthContext();
+  const { userId, img } = user;
+
   return (
     <>
-      <div className="user-profile" onClick={() => nav("/users/123123123")}>
-        <img src="/images/userImg.png" alt="userProfile img" />
+      <div className="user-profile" onClick={() => navigate(`/users/${userId}`)}>
+        <img src={img || "/images/userImg.png"} alt="userProfile img" />
       </div>
-      <PowderButton $width="80px">Log out</PowderButton>
+      <PowderButton $width="80px" onClick={logout}>
+        Log out
+      </PowderButton>
     </>
   );
 }
