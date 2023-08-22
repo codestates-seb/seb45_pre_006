@@ -43,6 +43,16 @@ public class User extends Auditable {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Question> questionList = new ArrayList<>();
 
+    List<Question> questionList = new ArrayList<>();
+
+    public User(String email, String password, String displayName, List<String> roles, String img) {
+        this.email = email;
+        this.password = password;
+        this.displayName = displayName;
+        this.roles = roles;
+        this.img = img;
+    }
+
     public void setQuestionList(Question question) {
         this.questionList.add(question);
     }
