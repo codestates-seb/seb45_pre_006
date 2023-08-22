@@ -65,7 +65,6 @@ public class UserController {
                                      @PathVariable("user-id") @Positive long userId){
         // 회원 탈퇴시 클라이언트에 저장되어 있는 쿠키 및 jwt 삭제를 위해 지속시간을 0으로만들어 쿠키 유효를 종료시킨다.
         userService.deleteUser(userId);
-
         return new ResponseEntity(HttpStatus.OK);
     }
 
