@@ -17,9 +17,9 @@ const StyleMainLogo = styled.h1`
   }
 `;
 export default function MainLogo() {
-  const nav = useNavigate();
+  const navigate = useNavigate();
   return (
-    <StyleMainLogo onClick={() => nav("/")}>
+    <StyleMainLogo onClick={() => navigate("/")}>
       <img src="/images/mainLogo.png" alt="mainLogo" />
     </StyleMainLogo>
   );

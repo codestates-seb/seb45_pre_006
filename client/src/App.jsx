@@ -7,29 +7,30 @@ import QuestionDetail from "./pages/QuestionDetail";
 import Search from "./pages/Search";
 import Signup from "./pages/Signup";
 import Users from "./pages/Users";
-import ResetPassword from "./pages/ResetPassword";
 import NotFound from "./pages/NotFound";
 import { styled } from "styled-components";
 import Sidebar from "./components/sidebar/Sidebar";
 import Footer from "./components/footer/Footer";
 import Header from "./components/header/Header";
 import { SearchKeywordProvider } from "./context/SearchKeywordContext";
+import Edit from "./pages/Edit";
+import ProtectedRoute from "./pages/ProtectedRoute";
 
 const StyleApp = styled.div`
-  min-height: 100vh;
-  background-color: ${(props) => (props.$background ? "var(--app-back-color)" : "")};
+  background-color: ${(props) =>
+    props.$background ? "var(--app-back-color)" : ""};
   .center {
     width: var(--inner);
     margin: 0 auto;
     margin-top: 56px;
     display: flex;
-    min-height: 100vh;
+    min-height: calc(100vh - 56px);
+    position: relative;
   }
 `;
 
-const sidebarPaths = ["profile", "users", "search", "questions", ""];
+const sidebarPaths = ["profile", "users", "search", "questions", "answers", ""];
 const footerPaths = ["profile", "users", "search", "questions", "ask", ""];
-
 function App() {
   const path = useLocation().pathname.split("/")[1];
   const isSidebar = sidebarPaths.includes(path);
@@ -39,21 +40,61 @@ function App() {
     <StyleApp $background={!isSidebar}>
       <SearchKeywordProvider>
         <Header />
-        <section className="center">
+        <div className="center">
           {isSidebar && <Sidebar />}
           <Routes>
             <Route path={"/"} element={<Question />} />
             <Route path={"/users"} element={<Users />} />
             <Route path={"/search/:keyword"} element={<Search />} />
-            <Route path={"/users/:userId"} element={<Profile />} />
-            <Route path={"/questions/:questionId"} element={<QuestionDetail />} />
-            <Route path={"/ask"} element={<QuestionWrite />} />
-            <Route path={"/login"} element={<Login />} />
-            <Route path={"/signup"} element={<Signup />} />
-            <Route path={"/reset-password"} element={<ResetPassword />} />
+            <Route path="/users/:profileId/*" element={<Profile />} />
+            <Route
+              path={"/questions/:question_id"}
+              element={<QuestionDetail />}
+            />
+            <Route
+              path={"/questions/:question_id/edit"}
+              element={
+                <ProtectedRoute isAdmin requireLogin>
+                  <Edit />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path={"/answers/:answer_id/edit"}
+              element={
+                <ProtectedRoute isAdmin requireLogin>
+                  <Edit />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path={"/ask"}
+              element={
+                <ProtectedRoute requireLogin>
+                  <QuestionWrite />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path={"/login"}
+              element={
+                <ProtectedRoute requireUnLogin>
+                  <Login />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path={"/signup"}
+              element={
+                <ProtectedRoute requireUnLogin>
+                  <Signup />
+                </ProtectedRoute>
+              }
+            />
+
             <Route path={"*"} element={<NotFound />} />
           </Routes>
-        </section>
+        </div>
       </SearchKeywordProvider>
       {isFooter && <Footer />}
     </StyleApp>
