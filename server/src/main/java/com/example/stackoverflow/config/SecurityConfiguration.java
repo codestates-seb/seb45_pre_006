@@ -71,8 +71,7 @@ public class SecurityConfiguration {
         configuration.setAllowedOrigins(Arrays.asList(
                 "http://localhost:8080/",
                 "http://localhost:3000/",
-                "http://13.125.37.74/",
-                "https://f950-175-125-163-108.ngrok-free.app/"));
+                "http://13.125.37.74/"));
                 // HTTP 메서드에 대한 HTTP 통신 허용
                 configuration.setAllowedMethods(Arrays.asList("POST", "GET", "PATCH", "DELETE"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
