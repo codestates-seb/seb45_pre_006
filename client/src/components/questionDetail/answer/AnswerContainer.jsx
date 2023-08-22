@@ -22,6 +22,10 @@ export default function AnswerContainer({ postData }) {
     setSelectedOption(selectedOption);
     setSort(selectedOption.value);
   };
+  useEffect(() => {
+    // 처음렌더링시 필터링 적용되도록
+    setSort(selectedOption.value);
+  }, [selectedOption]);
 
   // 답변 필터링 데이터
   const sortedData = [...postData.answerList].sort((a, b) => {

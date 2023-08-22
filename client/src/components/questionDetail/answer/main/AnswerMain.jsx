@@ -19,12 +19,7 @@ const StyleAnswerMain = styled.div`
   }
 `;
 
-export default function AnswerMain({
-  postData,
-  sortedData,
-  setIsAccepted,
-  isAccepted,
-}) {
+export default function AnswerMain({ postData, sortedData }) {
   const location = useLocation(); //
 
   // 페이지네이션을 위한 useState
