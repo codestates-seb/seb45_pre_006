@@ -1,5 +1,7 @@
 package com.example.stackoverflow.user.controller;
 
+import com.example.stackoverflow.dto.MultiResponseDto;
+import com.example.stackoverflow.dto.PageInfo;
 import com.example.stackoverflow.question.entity.Question;
 import com.example.stackoverflow.question.mapper.QuestionMapper;
 import com.example.stackoverflow.question.service.QuestionService;
@@ -7,6 +9,7 @@ import com.example.stackoverflow.user.dto.request.UserLoginPasswordUpdateRequest
 import com.example.stackoverflow.user.dto.request.UserPatchRequest;
 import com.example.stackoverflow.user.dto.request.UserPostRequest;
 import com.example.stackoverflow.user.dto.response.CustomUserResponse;
+import com.example.stackoverflow.user.dto.response.UserByPagingDto;
 import com.example.stackoverflow.user.dto.response.UserResponse;
 import com.example.stackoverflow.user.entity.User;
 import com.example.stackoverflow.user.mapper.UserMapper;
@@ -56,7 +59,6 @@ public class UserController {
     }
 
 
-
     // 회원 정보 삭제(탈퇴, delete)
     @DeleteMapping("/{user-id}")
     public ResponseEntity deleteUser(HttpServletResponse response,
@@ -89,14 +91,6 @@ public class UserController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    // 로그아웃
-    @PostMapping("/logout")
-    public ResponseEntity updateUserPasswordStatusLogout(HttpServletResponse response){
-        // 로그아웃 시 클라이언트에 저장되어 있는 쿠키 및 jwt 삭제를 위해 지속시간을 0으로만들어 쿠키 유효를 종료시킨다.
-
-        return new ResponseEntity(HttpStatus.OK);
-    }
-
     // 회원 정보 조회(get)
     @GetMapping("/profile/{profile-id}/{user-id}")
     public ResponseEntity getUser(@PathVariable("profile-id") @Positive long profileId, // 방문하고자 하는 회원의 식별자
@@ -116,25 +110,22 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity getUsers(@RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
-                                   @RequestParam(name = "size", defaultValue = "10") @Positive int size){
-        Page<User> pageUsers = userService.findUsers(page, size);
+    public ResponseEntity getUsers(@PageableDefault(size = 1) Pageable pageable){
+        Page<User> pageUsers = userService.findUsers(pageable);
         List<User> users = pageUsers.getContent();
+        PageInfo pageInfo = new PageInfo(pageable.getPageNumber() + 1, pageUsers.getTotalPages());
 
-        return new ResponseEntity(userMapper.usersToUserByPagingDtos(users), HttpStatus.OK);
+        return new ResponseEntity(new MultiResponseDto<>(userMapper.usersToUserByPagingDtos(users), pageInfo), HttpStatus.OK);
     }
 
     @GetMapping("/search")
     public ResponseEntity getUsersByKeyword(@RequestParam(name = "keyword") String keyword,
-                                            @PageableDefault(size = 10, direction = Sort.Direction.DESC) Pageable pageable){
+                                            @PageableDefault(size = 1) Pageable pageable){
         Page<User> pageUsers = userService.findUsersByKeyword(keyword, pageable);
+        System.out.println("keyword: " + keyword);
         List<User> users = pageUsers.getContent();
+        PageInfo pageInfo = new PageInfo(pageable.getPageNumber() + 1, pageUsers.getTotalPages());
 
-        return new ResponseEntity<>(userMapper.usersToUserByPagingDtos(users), HttpStatus.OK);
-    }
-
-    @PostMapping("/login")
-    public void login(){
-        System.out.println("test");
+        return new ResponseEntity(new MultiResponseDto<>(userMapper.usersToUserByPagingDtos(users), pageInfo), HttpStatus.OK);
     }
 }
