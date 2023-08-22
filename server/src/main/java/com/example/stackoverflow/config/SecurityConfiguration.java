@@ -25,6 +25,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 public class SecurityConfiguration {
@@ -50,17 +51,9 @@ public class SecurityConfiguration {
                 .apply(new CustomFilterConfigurer())
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
-                        .antMatchers(HttpMethod.POST, "/user/post").permitAll()
                         .antMatchers("/h2/**").permitAll()
-                        .antMatchers("/mail").permitAll()
-                        .antMatchers(HttpMethod.GET, "/user/profile/**").permitAll()
-                        .antMatchers("/user/logout").permitAll() // 엔드포인트까지 연결 가능
-                        .antMatchers("/questions/**").permitAll()
-                        .antMatchers("/answers/**").permitAll()
-                        .antMatchers("/answer-comments/**").permitAll()
-                        .antMatchers("/question-comments/**").permitAll()
+                        .antMatchers("/questions/**", "/answers/**", "/answer-comments/**", "/question-comments/**", "/user/**").permitAll()
                         .anyRequest().authenticated());
-
         return http.build();
     }
 
@@ -75,10 +68,21 @@ public class SecurityConfiguration {
     CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration configuration = new CorsConfiguration();
         // 모든 출처에 대한 스크립트 기반 HTTP 통신 허용
-        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.setAllowedOrigins(Arrays.asList(
+                "http://localhost:8080",
+                "http://13.125.37.74",
+                "https://24ca-14-53-203-58.ngrok-free.app"));
         // HTTP 메서드에 대한 HTTP 통신 허용
         configuration.setAllowedMethods(Arrays.asList("POST", "GET", "PATCH", "DELETE"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setExposedHeaders(List.of(
+                "RefreshToken",
+                "AccessToken",
+                "userId",
+                "displayName",
+                "img"
+        ));
+        configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         // 모든 URL 에 앞에서 구성한 CORS 정책 적용

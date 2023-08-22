@@ -125,7 +125,7 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity getUsers(@RequestParam(name = "page", defaultValue = "0") @Positive int page,
+    public ResponseEntity getUsers(@RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
                                    @RequestParam(name = "size", defaultValue = "10") @Positive int size){
         Page<User> pageUsers = userService.findUsers(page, size);
         List<User> users = pageUsers.getContent();
