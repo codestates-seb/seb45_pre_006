@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useKeywordContext } from "../context/SearchKeywordContext";
 import { styled } from "styled-components";
-import axios from "axios";
+import useAxiosData from "../hooks/useAxiosData";
 
 import { BlueButton } from "../components/common/Button";
 import QuestionsList from "../components/home/QuestionsList";
@@ -79,33 +79,21 @@ const SearchHeadLine = styled.div`
 `;
 
 export default function Search() {
+  const axiosData = useAxiosData();
   const navigate = useNavigate()
   const { keyword } = useParams();
   const { keywordHandler } = useKeywordContext();
   const [questionsData, setQuestionsData] = useState([]);
 
-  // 백앤드에서 url로 키워드를 넣어서 보내면 데이터를 filter해서 보내준다고함 이부분은 추후에 삭제해야함.
-  const questionsFiltered = questionsData.filter((question)=>{
-    return question.question_title.toLowerCase().includes(keyword.toLowerCase())
-  })
-
   //GET : /questions/search?keyword={keyword} 
-  const url = `http://13.125.37.74:8080/questions/search?keyword=${keyword}`;
-  useEffect( ()=>{
-    axios.get(url,{
-      headers: {
-        'Content-Type': 'application/json',
-        'ngrok-skip-browser-warning': '69420',
-      },
-    })
-      .then((res)=>{console.log(res.data.data)
-        setQuestionsData(res.data.data)
-      })
-      .catch((Error)=>{console.log(Error)})
-      .then(()=>{
-      })
-      return keywordClear()
-  },[])
+  const endpoint = `/questions/search?keyword=${keyword}`;
+  useEffect(()=>{
+      const fetchData = async () =>{
+        const responseData = await axiosData("get", endpoint);
+        setQuestionsData(responseData.data)
+      }
+      fetchData();
+  },[ keyword ]);
 
   const keywordClear =()=>{
     keywordHandler(keyword);

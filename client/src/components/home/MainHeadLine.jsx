@@ -1,5 +1,6 @@
 import { styled } from "styled-components";
 import { useNavigate } from "react-router-dom";
+import useAxiosData from "../../hooks/useAxiosData";
 
 import { BlueButton } from "../common/Button";
 
@@ -81,6 +82,7 @@ export default function MainHeadLine(props) {
   const askBtnHandler = () => {
     askPage("/ask");
   };
+
   return (
     <MainHeadLineStyle>
       <div className="title">

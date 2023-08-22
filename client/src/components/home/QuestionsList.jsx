@@ -89,7 +89,6 @@ export const ListStyle = styled.ul `
 `;
 export default function QuestionsList(props) {
   const navigate = useNavigate()
-  console.log(props.questionsFiltered)
     return(
       <ListStyle>
         {props.questionsFiltered.map((question, idx)=>{
