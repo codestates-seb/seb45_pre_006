@@ -51,17 +51,9 @@ public class SecurityConfiguration {
                 .apply(new CustomFilterConfigurer())
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
-                        .antMatchers(HttpMethod.POST, "/user/post").permitAll()
                         .antMatchers("/h2/**").permitAll()
-                        .antMatchers("/mail").permitAll()
-                        .antMatchers(HttpMethod.GET, "/user/profile/**").permitAll()
-                        .antMatchers("/user/logout").permitAll() // 엔드포인트까지 연결 가능
-                        .antMatchers("/questions/**").permitAll()
-                        .antMatchers("/answers/**").permitAll()
-                        .antMatchers("/answer-comments/**").permitAll()
-                        .antMatchers("/question-comments/**").permitAll()
+                        .antMatchers("/questions/**", "/answers/**", "/answer-comments/**", "/question-comments/**", "/user/**").permitAll()
                         .anyRequest().authenticated());
-
         return http.build();
     }
 
@@ -86,6 +78,7 @@ public class SecurityConfiguration {
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setExposedHeaders(List.of(
                 "RefreshToken",
+                "AccessToken",
                 "userId",
                 "displayName",
                 "img"

@@ -103,12 +103,14 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         response.setHeader("displayName", user.getDisplayName());
         response.setHeader("img", user.getImg());
 
-        CookieGenerator cg = new CookieGenerator();
-        cg.setCookieMaxAge(30);
-        cg.setCookieName("AccessToken");
-        cg.addCookie(response, "Bearer" + accessToken);
+        response.setHeader("AccessToken", "Bearer" + accessToken);
         response.setHeader("RefreshToken", refreshToken);
 
+//        CookieGenerator cg = new CookieGenerator();
+//
+//        cg.setCookieMaxAge(30);
+//        cg.setCookieName("AccessToken");
+//        cg.addCookie(response, "Bearer" + accessToken);
         return response;
     }
 }
