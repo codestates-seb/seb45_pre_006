@@ -39,8 +39,9 @@ public class User extends Auditable {
     private String img;
 
     // 내가 작성한 QuestionList
+    /* user - question 매핑 */
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    List<Question> questionList = new ArrayList<>();
+    private List<Question> questionList = new ArrayList<>();
 
     public User(String email, String password, String displayName, List<String> roles, String img) {
         this.email = email;

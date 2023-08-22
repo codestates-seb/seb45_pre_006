@@ -63,11 +63,6 @@ public class UserController {
                                      @PathVariable("user-id") @Positive long userId){
         // 회원 탈퇴시 클라이언트에 저장되어 있는 쿠키 및 jwt 삭제를 위해 지속시간을 0으로만들어 쿠키 유효를 종료시킨다.
         userService.deleteUser(userId);
-        CookieGenerator cg = new CookieGenerator();
-        cg.setCookieMaxAge(0);
-        cg.setCookieName("AccessToken");
-        cg.addCookie(response, "");
-
         return new ResponseEntity(HttpStatus.OK);
     }
 
@@ -98,10 +93,6 @@ public class UserController {
     @PostMapping("/logout")
     public ResponseEntity updateUserPasswordStatusLogout(HttpServletResponse response){
         // 로그아웃 시 클라이언트에 저장되어 있는 쿠키 및 jwt 삭제를 위해 지속시간을 0으로만들어 쿠키 유효를 종료시킨다.
-        CookieGenerator cg = new CookieGenerator();
-        cg.setCookieMaxAge(0);
-        cg.setCookieName("AccessToken");
-        cg.addCookie(response, "");
 
         return new ResponseEntity(HttpStatus.OK);
     }
@@ -125,7 +116,7 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity getUsers(@RequestParam(name = "page", defaultValue = "0") @Positive int page,
+    public ResponseEntity getUsers(@RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
                                    @RequestParam(name = "size", defaultValue = "10") @Positive int size){
         Page<User> pageUsers = userService.findUsers(page, size);
         List<User> users = pageUsers.getContent();
