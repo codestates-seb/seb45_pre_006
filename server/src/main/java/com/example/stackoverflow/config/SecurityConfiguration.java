@@ -72,7 +72,7 @@ public class SecurityConfiguration {
                 "http://localhost:8080/",
                 "http://localhost:3000/",
                 "http://13.125.37.74/",
-                "https://4deb-14-53-203-58.ngrok-free.app/"));
+                "https://835b-14-53-203-58.ngrok-free.app/"));
                 // HTTP 메서드에 대한 HTTP 통신 허용
                 configuration.setAllowedMethods(Arrays.asList("POST", "GET", "PATCH", "DELETE"));
         configuration.setAllowedHeaders(Arrays.asList("*"));

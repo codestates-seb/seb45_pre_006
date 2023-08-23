@@ -20,3 +20,10 @@ jwt:
   key: ${JWT_SECRET_KEY}
   access-token-expiration-minutes: 1
   refresh-token-expiration-minutes: 2
+
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force-response : true
