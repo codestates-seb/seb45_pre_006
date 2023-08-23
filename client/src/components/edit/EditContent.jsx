@@ -102,11 +102,7 @@ export default function EditContent({ editorRef, post, question_id, answer_id, i
           };
 
       const response = await api.patch(url, requestData);
-
-      console.log("Post successful:", response);
-    } catch (error) {
-      console.error("Error posting:", error);
-    }
+    } catch (error) {}
     // 수정된 내용으로 리다이렉트 & 렌더링
     navigate(-1);
   };

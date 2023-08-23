@@ -62,7 +62,7 @@ export default function SiteLogin() {
   };
 
   const handleLoginSuccess = (res) => {
-    const { userid: userId, img, displayname: displayName } = res.headers;
+    let { userid: userId, img, displayname: displayName } = res.headers;
     userHandler({ userId, img, displayName });
     localStorage.setItem(
       "user",

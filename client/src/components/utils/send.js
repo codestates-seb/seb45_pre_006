@@ -1,6 +1,7 @@
 import axios from "axios";
-const api = axios.create({ baseURL: "http://13.125.37.74:8080/" });
-
+import { cloneElement } from "react";
+const api = axios.create();
+// { baseURL: "http://13.125.37.74:8080/" }
 api.interceptors.request.use((config) => {
   const refreshToken = JSON.parse(localStorage.getItem("refreshToken"));
   const accessToken = JSON.parse(localStorage.getItem("accessToken"));
@@ -22,11 +23,14 @@ api.interceptors.response.use(
       const refreshToken = JSON.stringify(res.headers.refreshtoken);
       localStorage.setItem("refreshToken", refreshToken);
     }
-    return res;
+    console.log("res", res);
+    return res; // 이 부분을 수정하여 정상적인 처리를 반환합니다.
   },
   function (err) {
+    console.log("err", err);
     if (err.response.data.message === "Time Out") {
       window.dispatchEvent(new Event("logoutEvent"));
+      return;
     }
     return Promise.reject(err);
   }

@@ -55,11 +55,9 @@ export default function Question() {
             }
             setIsLoading(false);
           }
-          observer.observe(target.current);
         }, 1000);
       } catch (error) {
         console.log(error);
-        throw error;
       }
     }
   };
