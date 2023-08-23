@@ -34,18 +34,30 @@ export default function AnswerAccepted({ data, question_userId }) {
   // 글 작성자일 경우에만 해당 통신이 가능하도록 구현해야함 **********
   const handleAccept = async () => {
     try {
-      const url = `answers/${data.answer_id}/${isAccepted ? "unaccept" : "accept"}`;
+      const url = `answers/${data.answer_id}/${
+        isAccepted ? "unaccept" : "accept"
+      }`;
 
       await api.post(url);
 
       setIsAccepted(!isAccepted);
     } catch (error) {
-      console.error("Error", isAccepted ? "unaccepting" : "accepting", "answer:", error);
+      console.error(
+        "Error",
+        isAccepted ? "unaccepting" : "accepting",
+        "answer:",
+        error
+      );
     }
   };
-  return user.userId !== "0" && question_userId.toString() === user.userId.toString() ? (
+  return user.userId !== "0" &&
+    question_userId.toString() === user.userId.toString() ? (
     <StyledAnswerAccepted onClick={handleAccept}>
-      {isAccepted ? <PiCheckFatFill className="accepted" /> : <PiCheckFatLight />}
+      {isAccepted ? (
+        <PiCheckFatFill className="accepted" />
+      ) : (
+        <PiCheckFatLight />
+      )}
     </StyledAnswerAccepted>
   ) : null;
 }

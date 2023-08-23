@@ -8,7 +8,7 @@ const StyleAnswerContainer = styled.div`
   padding: 0px 16px;
 `;
 
-export default function AnswerContainer({ postData }) {
+export default function AnswerContainer({ postData, setPostData, userData }) {
   // 필터상태 끌어올리기 => 실제 필터링 기능 구현을 위해 AnswerMain 으로 props 전달목적
   const filterOptions = [
     { value: "high", label: "Highest score (default)" },
@@ -57,8 +57,17 @@ export default function AnswerContainer({ postData }) {
         setSort={setSort}
         handleSelectChange={handleSelectChange}
       />
-      <AnswerMain postData={postData} sortedData={sortedData} />
-      <AnswerEditor postData={postData} />
+      <AnswerMain
+        postData={postData}
+        sortedData={sortedData}
+        setPostData={setPostData}
+        userData={userData}
+      />
+      <AnswerEditor
+        postData={postData}
+        setPostData={setPostData}
+        userData={userData}
+      />
     </StyleAnswerContainer>
   );
 }

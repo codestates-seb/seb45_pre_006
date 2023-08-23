@@ -7,11 +7,15 @@ const StyleQuestionContainer = styled.div`
   padding: 40px 16px;
 `;
 
-export default function QuestionContainer({ postData }) {
+export default function QuestionContainer({ postData, setPostData, userData }) {
   return (
     <StyleQuestionContainer>
-      <QuestionHeader postData={postData}></QuestionHeader>
-      <QuestionMain postData={postData}></QuestionMain>
+      <QuestionHeader postData={postData} />
+      <QuestionMain
+        postData={postData}
+        setPostData={setPostData}
+        userData={userData}
+      />
     </StyleQuestionContainer>
   );
 }

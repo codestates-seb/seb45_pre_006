@@ -5,7 +5,6 @@ import getWriteDate from "../../../utils/getWriteDate";
 import { useNavigate } from "react-router-dom";
 import { MdEdit } from "react-icons/md";
 import { IoTrash } from "react-icons/io5";
-import { useAuthContext } from "../../../../context/AuthContext";
 import api from "../../../utils/send";
 // questionComment 코드 중복 로직이 많음
 
@@ -75,18 +74,14 @@ const StyleAnswerComment = styled.div`
   }
 `;
 
-export default function AnswerComment({ data, answer_id }) {
+export default function AnswerComment({ data, answer_id, userData }) {
   // 상태 변수 추가
   const [showAllComments, setShowAllComments] = useState(false);
+  const [commentList, setCommentList] = useState(data.answerCommentList);
 
   // 댓글 수정 관련 상태
   const [showEditInput, setShowEditInput] = useState(false);
   const [editId, setEditId] = useState("");
-
-  let { user } = useAuthContext();
-  if (!user) {
-    user = { userId: "0" };
-  }
 
   const navigate = useNavigate();
 
@@ -99,31 +94,37 @@ export default function AnswerComment({ data, answer_id }) {
   const initialInputData = {
     comment: "",
   };
-  const [inputData, onInputChangeHandler, clearForm] = useForm(initialInputData);
+  const [inputData, onInputChangeHandler, clearForm] =
+    useForm(initialInputData);
 
   // 댓글 edit 부분
-  const [editInput, onEditInputChangeHandler, _] = useForm(initialInputData);
+  const [editInput, onEditInputChangeHandler] = useForm(initialInputData);
 
-  const handleEnterKeyPress = async (e) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
+  const handleEnterKeyPress = async () => {
+    try {
+      const url = "answer-comments";
+      const requestData = {
+        userId: userData.userId,
+        answer_id: answer_id,
+        answerComment_content: inputData.comment,
+      };
 
-      try {
-        const url = "answer-comments"; //
+      const responseData = await api
+        .post(url, requestData)
+        .then((res) => res.data);
 
-        const requestData = {
-          userId: user.userId,
-          answer_id: answer_id,
-          answerComment_content: inputData.comment,
-        };
+      const newComment = {
+        answerComment_id: responseData.answerComment_id,
+        userId: userData.userId,
+        displayName: userData.displayName,
+        answerComment_content: inputData.comment,
+        answerComment_createdAt: responseData.answerComment_createdAt,
+      };
 
-        const responseData = await api.post(url, requestData).then((res) => res.data);
-      } catch (error) {
-        console.error("Error posting:", error);
-      }
-
+      setCommentList([...commentList, newComment]);
       clearForm();
-      navigate(0);
+    } catch (error) {
+      console.error("Error posting:", error);
     }
   };
 
@@ -139,83 +140,124 @@ export default function AnswerComment({ data, answer_id }) {
       e.preventDefault();
 
       try {
-        const url = `answer-comments/${answerComment_id}`; // Assuming the endpoint is handled in the axiosData function
-
+        const url = `answer-comments/${answerComment_id}`;
         const requestData = {
-          userId: user.userId,
+          userId: userData.userId,
           answer_id: answer_id,
           answerComment_content: editInput.comment,
         };
 
-        await api.patch(url, requestData).then((res) => res.data);
-      } catch (error) {}
+        const responseData = await api
+          .patch(url, requestData)
+          .then((res) => res.data);
 
-      navigate(0);
+        const updatedCommentList = commentList.map((comment) =>
+          comment.answerComment_id === answerComment_id
+            ? { ...comment, answerComment_content: editInput.comment }
+            : comment
+        );
+
+        setCommentList(updatedCommentList);
+        setShowEditInput(false);
+        setEditId("");
+        // 인풋창 초기화
+        onEditInputChangeHandler({ target: { name: "comment", value: "" } });
+      } catch (error) {
+        console.error("Error posting:", error);
+      }
     }
   };
   const handleDelete = async (answerComment_id) => {
-    const shouldDelete = window.confirm("Are you sure you want to delete this comment?");
+    const shouldDelete = window.confirm(
+      "Are you sure you want to delete this comment?"
+    );
     if (shouldDelete) {
       try {
         const url = `answer-comments/${answerComment_id}`;
+        await api.delete(url);
 
-        const responseData = await api.delete(url);
+        const updatedCommentList = commentList.filter(
+          (comment) => comment.answerComment_id !== answerComment_id
+        );
 
+        setCommentList(updatedCommentList);
       } catch (error) {
+        console.error("Error posting:", error);
       }
-
-      navigate(0);
     }
   };
 
-  const postData = data.answerCommentList;
-
   return (
     <StyleAnswerComment>
-      {postData.map(
-        (data, idx) =>
-          // 5개까지만 표시
-          ((!showAllComments && idx < 5) || showAllComments) && (
-            <div key={idx} className="comentlist">
-              <span className="commentbody">{data.answerComment_content} -</span>
-              <span className="username" onClick={() => navigate(`/users/${data.userId}`)}>
-                {data.displayName}
-              </span>
-              <span className="createdat">{getWriteDate(data.answerComment_createdAt)}</span>
-              {user.userId.toString() === data.userId.toString() && (
-                <>
-                  <MdEdit className="icon" onClick={() => handleEdit(data.answerComment_id)} />
-                  <IoTrash className="icon" onClick={() => handleDelete(data.answerComment_id)} />
-                </>
-              )}
-              {showEditInput && editId === data.answerComment_id ? (
-                <input
-                  type="text"
-                  name="comment"
-                  value={editInput.comment}
-                  onChange={(e) => onEditInputChangeHandler(e)}
-                  onKeyDown={(e) => handleEditSubmit(e, data.answerComment_id)}
-                  placeholder="Edit your comment ➡ Enter"
-                  className="editcomment"
-                ></input>
-              ) : null}
+      {commentList
+        ? commentList.map(
+            (data, idx) =>
+              // 5개까지만 표시
+              ((!showAllComments && idx < 5) || showAllComments) && (
+                <div key={idx} className="comentlist">
+                  <span className="commentbody">
+                    {data.answerComment_content} -
+                  </span>
+                  <span
+                    className="username"
+                    onClick={() => navigate(`/users/${data.userId}`)}
+                  >
+                    {data.displayName}
+                  </span>
+                  <span className="createdat">
+                    {getWriteDate(data.answerComment_createdAt)}
+                  </span>
+                  {userData.userId.toString() === data.userId.toString() && (
+                    <>
+                      <MdEdit
+                        className="icon"
+                        onClick={() => handleEdit(data.answerComment_id)}
+                      />
+                      <IoTrash
+                        className="icon"
+                        onClick={() => handleDelete(data.answerComment_id)}
+                      />
+                    </>
+                  )}
+                  {showEditInput && editId === data.answerComment_id ? (
+                    <input
+                      type="text"
+                      name="comment"
+                      value={editInput.comment}
+                      onChange={(e) => onEditInputChangeHandler(e)}
+                      onKeyDown={(e) =>
+                        handleEditSubmit(e, data.answerComment_id)
+                      }
+                      placeholder="Edit your comment ➡ Enter"
+                      className="editcomment"
+                    ></input>
+                  ) : null}
+                </div>
+              )
+          )
+        : null}
+      {/* 5개 이상일경우 Show ~ more comments 렌더링 */}
+      {commentList
+        ? commentList.length > 5 &&
+          !showAllComments && (
+            <div className="showMoreButton" onClick={handleShowMoreComments}>
+              Show <span>{commentList.length - 5}</span> more comments
             </div>
           )
-      )}
-      {/* 5개 이상일경우 Show ~ more comments 렌더링 */}
-      {postData.length > 5 && !showAllComments && (
-        <div className="showMoreButton" onClick={handleShowMoreComments}>
-          Show <span>{postData.length - 5}</span> more comments
-        </div>
-      )}
+        : null}
 
-      {user.userId !== "0" && (
+      {userData.userId !== "0" && (
         <input
           type="text"
           name="comment"
           value={inputData.comment}
           onChange={(e) => onInputChangeHandler(e)}
-          onKeyDown={handleEnterKeyPress}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              handleEnterKeyPress();
+            }
+          }}
           placeholder="Add a comment"
           className="writecomment"
         />

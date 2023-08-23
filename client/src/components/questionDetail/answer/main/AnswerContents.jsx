@@ -53,13 +53,9 @@ const StyleAnswerContents = styled.div`
   }
 `;
 
-export default function AnswerContents({ data, idx }) {
+export default function AnswerContents({ data, idx, userData }) {
   // Share 버튼 클릭한 상태
   const [isClickedShare, setIsClickedShare] = useState(false);
-  let { user } = useAuthContext();
-  if (!user) {
-    user = { userId: "0" };
-  }
 
   const navigate = useNavigate();
 
@@ -99,7 +95,9 @@ export default function AnswerContents({ data, idx }) {
   // 질문 삭제 로직 **** 본인인경우에만 삭제 가능해야함
   const handleDelete = async () => {
     // 경고메세지
-    const shouldDelete = window.confirm("Are you sure you want to delete this answer?");
+    const shouldDelete = window.confirm(
+      "Are you sure you want to delete this answer?"
+    );
     if (shouldDelete) {
       try {
         const url = `answers/${data.answer_id}`;
@@ -133,7 +131,7 @@ export default function AnswerContents({ data, idx }) {
               <span>Share</span>
             </div>
           )}
-          {user.userId.toString() === data.userId.toString() && (
+          {userData.userId.toString() === data.userId.toString() && (
             <>
               <div className="edit" onClick={handleEdit}>
                 <span>Edit</span>
@@ -149,7 +147,10 @@ export default function AnswerContents({ data, idx }) {
             {isModified ? "modified " : "asked "}
             {getWriteDate(dateInfo)}
           </div>
-          <div className="useProfile" onClick={() => navigate(`/users/${data.userId}`)}>
+          <div
+            className="useProfile"
+            onClick={() => navigate(`/users/${data.userId}`)}
+          >
             <img src="/images/userImg.png" alt="userImg" />
             <div className="username">{data.displayName}</div>
           </div>

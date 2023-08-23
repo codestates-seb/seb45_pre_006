@@ -68,18 +68,28 @@ export default function PaginationControls({
     return pageNumbers;
   };
 
+  // totalPage가 1 이하거나 0인 경우 Next 버튼 렌더링하지 않음
+  const renderNextButton = () => {
+    if (totalPages > 1) {
+      return (
+        <button
+          className="next"
+          onClick={() => {
+            handlePageChange(currentPage + 1);
+            scrollToAnswersContainer();
+          }}
+        >
+          Next
+        </button>
+      );
+    }
+    return null;
+  };
+
   return (
     <StylePaginationControls id="container">
       {renderPageNumbers()}
-      <button
-        className="next"
-        onClick={() => {
-          handlePageChange(currentPage + 1);
-          scrollToAnswersContainer();
-        }}
-      >
-        Next
-      </button>
+      {renderNextButton()}
     </StylePaginationControls>
   );
 }

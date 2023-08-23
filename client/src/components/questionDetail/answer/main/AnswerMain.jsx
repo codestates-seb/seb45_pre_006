@@ -19,7 +19,12 @@ const StyleAnswerMain = styled.div`
   }
 `;
 
-export default function AnswerMain({ postData, sortedData }) {
+export default function AnswerMain({
+  postData,
+  sortedData,
+  setPostData,
+  userData,
+}) {
   const location = useLocation(); //
 
   // 페이지네이션을 위한 useState
@@ -69,9 +74,14 @@ export default function AnswerMain({ postData, sortedData }) {
                 question_userId={postData.userId}
               />
             </div>
-            <AnswerContents data={answerItem} idx={idx} />
+            <AnswerContents data={answerItem} idx={idx} userData={userData} />
           </div>
-          <AnswerComment data={answerItem} answer_id={answerItem.answer_id} />
+          <AnswerComment
+            data={answerItem}
+            answer_id={answerItem.answer_id}
+            setPostData={setPostData}
+            userData={userData}
+          />
         </div>
       ))}
       <PaginationControls

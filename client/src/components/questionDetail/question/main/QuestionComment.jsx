@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { styled } from "styled-components";
 import useForm from "../../../../hooks/useForm";
 import getWriteDate from "../../../utils/getWriteDate";
@@ -73,16 +73,16 @@ const StyleQuestionComment = styled.div`
   }
 `;
 
-export default function QuestionComment({ postData }) {
+export default function QuestionComment({ postData, setPostData, userData }) {
   // 상태 변수 추가
   const [showAllComments, setShowAllComments] = useState(false);
   // 댓글 수정 관련 상태
   const [showEditInput, setShowEditInput] = useState(false);
   const [editId, setEditId] = useState("");
-  let { user } = useAuthContext();
-  if (!user) {
-    user = { userId: "0" };
-  }
+  // let { user } = useAuthContext();
+  // if (!user) {
+  //   user = { userId: "0" };
+  // }
 
   // 주소 파라미터값 받기
   const { question_id } = useParams();
@@ -98,7 +98,8 @@ export default function QuestionComment({ postData }) {
   const initialInputData = {
     comment: "",
   };
-  const [inputData, onInputChangeHandler, clearForm] = useForm(initialInputData);
+  const [inputData, onInputChangeHandler, clearForm] =
+    useForm(initialInputData);
 
   // 댓글 edit 부분
   const [editInput, onEditInputChangeHandler] = useForm(initialInputData);
@@ -111,21 +112,33 @@ export default function QuestionComment({ postData }) {
       // 폼 제출시 로직을 구현해야함(완료) **** 작성자 유저id 추가로 넘겨줘야함
 
       const requestData = {
-        userId: user.userId,
+        userId: userData.userId,
         question_id: question_id,
         questionComment_content: inputData.comment,
       };
 
       try {
-        await api.post("question-comments", requestData);
+        const response = await api.post("question-comments", requestData);
+        const newComment = {
+          questionComment_id: response.data.questionComment_id,
+          userId: userData.userId,
+          displayName: userData.displayName,
+          questionComment_content: inputData.comment,
+          questionComment_createdAt: response.data.questionComment_createdAt,
+        };
+
+        setPostData({
+          ...postData,
+          questionCommentList: [...postData.questionCommentList, newComment],
+        });
         clearForm(); // 인풋값 초기화
-        navigate(0);
       } catch (error) {
         console.error("Error posting:", error);
       }
     }
   };
 
+  console.log(postData);
   // 댓글 수정 로직
   const handleEdit = async (questionComment_id) => {
     // 폼 제출시 로직을 구현해야함(완료) **** 작성자 유저id 추가로 넘겨줘야함
@@ -147,26 +160,61 @@ export default function QuestionComment({ postData }) {
         };
 
         const response = await api.patch(url, requestData); // Using custom Axios hook
+        const updatedCommentList = postData.questionCommentList.map(
+          (comment) => {
+            if (comment.questionComment_id === questionComment_id) {
+              return {
+                ...comment,
+                questionComment_content: editInput.comment,
+              };
+            }
+            return comment;
+          }
+        );
+
+        setPostData({
+          ...postData,
+          questionCommentList: updatedCommentList,
+        });
+
+        setShowEditInput(false);
+        setEditId("");
+        // 인풋창 초기화
+        onEditInputChangeHandler({ target: { name: "comment", value: "" } });
+        console.log("Patch successful:", response.data);
       } catch (error) {
         console.error("Error patching:", error);
       }
-      navigate(0);
     }
   };
   const handleDelete = async (questionComment_id, userId) => {
     // 폼 제출시 로직을 구현해야함(완료) **** 작성자 유저id 추가로 넘겨줘야함
     // 경고메세지
-    const shouldDelete = window.confirm("Are you sure you want to delete this comment?");
+    const shouldDelete = window.confirm(
+      "Are you sure you want to delete this comment?"
+    );
     if (shouldDelete) {
       try {
         const url = `question-comments/${questionComment_id}`; // Updated URL
 
         const response = await api.delete(url, { userId: userId });
-      } catch (error) {}
-      navigate(0);
+        const updatedCommentList = postData.questionCommentList.filter(
+          (comment) => {
+            return comment.questionComment_id !== questionComment_id;
+          }
+        );
+
+        setPostData({
+          ...postData,
+          questionCommentList: updatedCommentList,
+        });
+        console.log("Delete successful:", response.data);
+      } catch (error) {
+        console.error("Error deleting:", error);
+      }
     }
   };
-
+  console.log(postData);
   return (
     <StyleQuestionComment>
       {postData.questionCommentList.map(
@@ -174,21 +222,31 @@ export default function QuestionComment({ postData }) {
           // 5개까지만 표시
           ((!showAllComments && idx < 5) || showAllComments) && (
             <div key={idx} className="comentlist">
-              <span className="commentbody">{data.questionComment_content} - </span>
-              <span className="username" onClick={() => navigate(`/users/${data.userId}`)}>
-                {" "}
+              <span className="commentbody">
+                {data.questionComment_content} -{" "}
+              </span>
+              <span
+                className="username"
+                onClick={() => navigate(`/users/${data.userId}`)}
+              >
                 {data.displayName}
               </span>
-              <span className="createdat">{getWriteDate(data.questionComment_createdAt)}</span>
-              {user.userId.toString() === data.userId.toString() && (
+              <span className="createdat">
+                {getWriteDate(data.questionComment_createdAt)}
+              </span>
+              {userData.userId.toString() === data.userId.toString() && (
                 <>
                   <MdEdit
                     className="icon"
-                    onClick={() => handleEdit(data.questionComment_id, data.userId)}
+                    onClick={() =>
+                      handleEdit(data.questionComment_id, data.userId)
+                    }
                   />
                   <IoTrash
                     className="icon"
-                    onClick={() => handleDelete(data.questionComment_id, data.userId)}
+                    onClick={() =>
+                      handleDelete(data.questionComment_id, data.userId)
+                    }
                   />
                 </>
               )}
@@ -199,7 +257,9 @@ export default function QuestionComment({ postData }) {
                   name="comment"
                   value={editInput.comment}
                   onChange={(e) => onEditInputChangeHandler(e)}
-                  onKeyDown={(e) => handleEditSubmmit(e, data.questionComment_id)}
+                  onKeyDown={(e) =>
+                    handleEditSubmmit(e, data.questionComment_id)
+                  }
                   placeholder="Edit your comment ➡ Enter"
                   className="editcomment"
                 ></input>
@@ -211,11 +271,12 @@ export default function QuestionComment({ postData }) {
       {/* 5개 이상일경우 Show ~ more comments 렌더링 */}
       {postData.questionCommentList.length > 5 && !showAllComments && (
         <div className="showMoreButton" onClick={handleShowMoreComments}>
-          Show <span>{postData.questionCommentList.length - 5}</span> more comments
+          Show <span>{postData.questionCommentList.length - 5}</span> more
+          comments
         </div>
       )}
       {/* show more comment 누를시에만 댓글입력창 렌더링, 로그인 한경우만 댓글입력창 렌더링 */}
-      {user.userId !== "0" &&
+      {userData.userId !== "0" &&
         (showAllComments ||
           postData.questionCommentList.length <= 5 ||
           postData.questionCommentList.length >= 0) && (
