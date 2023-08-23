@@ -1,5 +1,7 @@
 import { styled } from "styled-components";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
+
+
 import MainHeadLine from "../components/home/MainHeadLine";
 import QuestionsList from "../components/home/QuestionsList";
 import Loading from "../components/common/Loading";
@@ -22,9 +24,10 @@ export default function Question() {
   const isFirstPageRendered = useRef(false);
   const target = useRef(null);
   const viewPort = useRef(null);
-  const questionsFiltered = questionsData.filter((question) => {
-    return togle ? question.question_answerCount > 0 : question;
-  });
+
+  const questionsFiltered = questionsData.filter((question)=>{ 
+    return togle ? question.question_answerCount > 0: question 
+  })
 
   const filterHandler = () => {
     setTogle(!togle);
@@ -42,7 +45,7 @@ export default function Question() {
         setTimeout(async () => {
           // endpoint의 페이지 변호변경의 위한 첫번째 메인 페이지 랜더링 유무
           if (isFirstPageRendered.current === false) {
-            endpoint = `/questions`;
+            endpoint = `questions`;
             const responseData = await api.get(endpoint).then((res) => res.data);
             setQuestionsData(responseData.data);
             isFirstPageRendered.current = true;
@@ -55,33 +58,34 @@ export default function Question() {
             }
             setIsLoading(false);
           }
-        }, 1000);
-      } catch (error) {}
+        },1000)
+        observer.observe(target.current); 
+    } catch (error) {
     }
-  };
-  useEffect(() => {
-    let observer;
-    if (target.current) {
-      observer = new IntersectionObserver(onIntersect, options);
-      observer.observe(target.current);
-    }
-    return () => {
-      if (observer && target.current) {
-        observer.unobserve(target.current);
-      }
-    };
-  }, [target.current]);
+  }
+}
+useEffect( () => {
+  let observer;
+  if (target.current ) {
+    observer = new IntersectionObserver(onIntersect, options);
+    observer.observe(target.current); 
+  }
+  return () => observer && observer.disconnect();
+}, [target]); 
 
-  return (
+return (
     <QuestionStyle>
-      <MainHeadLine
-        filterHandler={filterHandler}
+      <MainHeadLine 
+        filterHandler={filterHandler} 
         togle={togle}
-        questionsFiltered={questionsFiltered}
-      ></MainHeadLine>
-      <QuestionsList togle={togle} questionsFiltered={questionsFiltered}></QuestionsList>
-      <div className="infinite-scroll" ref={target} defer></div>
-      {isLoading ? <Loading></Loading> : null}
+        questionsFiltered={questionsFiltered}>
+      </MainHeadLine>
+      <QuestionsList 
+        togle={togle} 
+        questionsFiltered={questionsFiltered}>
+      </QuestionsList>
+      <div className="infinite-scroll" ref={target}></div>
+      {isLoading? <Loading></Loading>: null}
     </QuestionStyle>
-  );
+);
 }
