@@ -28,7 +28,7 @@ export default function QuentionWrite() {
     <WriteStyle>
       <div className="write-headline-container">
         <h1>Ask a public qeustion</h1>
-        <img src="/images/askImg.png" alt="AskSideImg" />
+        <img src="/images/AskImg.png" alt="AskSideImg" />
       </div>
       <WriteContainer></WriteContainer>
     </WriteStyle>
