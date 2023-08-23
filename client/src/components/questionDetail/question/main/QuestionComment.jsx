@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 import { styled } from "styled-components";
-import { usePostContext } from "../../../../context/PostContext";
 import useForm from "../../../../hooks/useForm";
 import getWriteDate from "../../../utils/getWriteDate";
-import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { MdEdit } from "react-icons/md";
 import { IoTrash } from "react-icons/io5";
-import useAxiosData from "../../../../hooks/useAxiosData";
+import api from "../../../utils/send";
 import { useAuthContext } from "../../../../context/AuthContext";
 
 const StyleQuestionComment = styled.div`
@@ -91,9 +89,6 @@ export default function QuestionComment({ postData }) {
 
   const navigate = useNavigate();
 
-  // axios 커스텀훅 사용
-  const axiosData = useAxiosData();
-
   // 댓글을 더 보여주기 위한 함수
   const handleShowMoreComments = () => {
     setShowAllComments(true);
@@ -103,11 +98,10 @@ export default function QuestionComment({ postData }) {
   const initialInputData = {
     comment: "",
   };
-  const [inputData, onInputChangeHandler, clearForm] =
-    useForm(initialInputData);
+  const [inputData, onInputChangeHandler, clearForm] = useForm(initialInputData);
 
   // 댓글 edit 부분
-  const [editInput, onEditInputChangeHandler, _] = useForm(initialInputData);
+  const [editInput, onEditInputChangeHandler] = useForm(initialInputData);
 
   // 댓글 작성 로직 axios훅 적용버전
   const handleEnterKeyPress = async (e) => {
@@ -123,8 +117,7 @@ export default function QuestionComment({ postData }) {
       };
 
       try {
-        await axiosData("post", "question-comments", requestData);
-        console.log("Form submitted:", inputData.comment);
+        await api.post("question-comments", requestData);
         clearForm(); // 인풋값 초기화
         navigate(0);
       } catch (error) {
@@ -153,9 +146,7 @@ export default function QuestionComment({ postData }) {
           questionComment_content: editInput.comment,
         };
 
-        const response = await axiosData("patch", url, requestData); // Using custom Axios hook
-
-        console.log("Patch successful:", response.data);
+        const response = await api.patch(url, requestData); // Using custom Axios hook
       } catch (error) {
         console.error("Error patching:", error);
       }
@@ -165,19 +156,13 @@ export default function QuestionComment({ postData }) {
   const handleDelete = async (questionComment_id, userId) => {
     // 폼 제출시 로직을 구현해야함(완료) **** 작성자 유저id 추가로 넘겨줘야함
     // 경고메세지
-    const shouldDelete = window.confirm(
-      "Are you sure you want to delete this comment?"
-    );
+    const shouldDelete = window.confirm("Are you sure you want to delete this comment?");
     if (shouldDelete) {
       try {
         const url = `question-comments/${questionComment_id}`; // Updated URL
 
-        const response = await axiosData("delete", url, { userId: userId });
-
-        console.log("Delete successful:", response.data);
-      } catch (error) {
-        console.error("Error deleting:", error);
-      }
+        const response = await api.delete(url, { userId: userId });
+      } catch (error) {}
       navigate(0);
     }
   };
@@ -189,32 +174,21 @@ export default function QuestionComment({ postData }) {
           // 5개까지만 표시
           ((!showAllComments && idx < 5) || showAllComments) && (
             <div key={idx} className="comentlist">
-              <span className="commentbody">
-                {data.questionComment_content} -{" "}
-              </span>
-              <span
-                className="username"
-                onClick={() => navigate(`/users/${data.userId}`)}
-              >
+              <span className="commentbody">{data.questionComment_content} - </span>
+              <span className="username" onClick={() => navigate(`/users/${data.userId}`)}>
                 {" "}
                 {data.displayName}
               </span>
-              <span className="createdat">
-                {getWriteDate(data.questionComment_createdAt)}
-              </span>
+              <span className="createdat">{getWriteDate(data.questionComment_createdAt)}</span>
               {user.userId.toString() === data.userId.toString() && (
                 <>
                   <MdEdit
                     className="icon"
-                    onClick={() =>
-                      handleEdit(data.questionComment_id, data.userId)
-                    }
+                    onClick={() => handleEdit(data.questionComment_id, data.userId)}
                   />
                   <IoTrash
                     className="icon"
-                    onClick={() =>
-                      handleDelete(data.questionComment_id, data.userId)
-                    }
+                    onClick={() => handleDelete(data.questionComment_id, data.userId)}
                   />
                 </>
               )}
@@ -225,9 +199,7 @@ export default function QuestionComment({ postData }) {
                   name="comment"
                   value={editInput.comment}
                   onChange={(e) => onEditInputChangeHandler(e)}
-                  onKeyDown={(e) =>
-                    handleEditSubmmit(e, data.questionComment_id)
-                  }
+                  onKeyDown={(e) => handleEditSubmmit(e, data.questionComment_id)}
                   placeholder="Edit your comment ➡ Enter"
                   className="editcomment"
                 ></input>
@@ -239,8 +211,7 @@ export default function QuestionComment({ postData }) {
       {/* 5개 이상일경우 Show ~ more comments 렌더링 */}
       {postData.questionCommentList.length > 5 && !showAllComments && (
         <div className="showMoreButton" onClick={handleShowMoreComments}>
-          Show <span>{postData.questionCommentList.length - 5}</span> more
-          comments
+          Show <span>{postData.questionCommentList.length - 5}</span> more comments
         </div>
       )}
       {/* show more comment 누를시에만 댓글입력창 렌더링, 로그인 한경우만 댓글입력창 렌더링 */}

@@ -1,13 +1,12 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { styled } from "styled-components";
 import { Editor } from "@toast-ui/editor";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import ContentGuide from "./ContentGuide";
 import { BlueButton } from "../common/Button";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import useAxiosData from "../../hooks/useAxiosData";
 import { useAuthContext } from "../../context/AuthContext";
+import api from "../utils/send";
 
 const Container = styled.div`
   display: flex;
@@ -53,7 +52,6 @@ export default function WriteContent({ isActive, editorRef, inputData }) {
     user = { userId: "0" };
   }
   const navigate = useNavigate();
-  const axiosData = useAxiosData();
 
   useEffect(() => {
     const editor = new Editor({
@@ -93,7 +91,7 @@ export default function WriteContent({ isActive, editorRef, inputData }) {
         question_content: markdownContent,
       };
 
-      const responseData = await axiosData("post", "questions", requestData);
+      const responseData = await api.post("questions", requestData).then((res) => res.data);
 
       //  글 작성시 해당 작성글로 리다이렉션
       navigate(`/questions/${responseData.question_id}`);
@@ -107,8 +105,7 @@ export default function WriteContent({ isActive, editorRef, inputData }) {
       <StyleWriteContent>
         <div className="title">What are the details of your problem?</div>
         <div className="discription">
-          Introduce the problem and expand on what you put in the title. Minimum
-          20 characters.
+          Introduce the problem and expand on what you put in the title. Minimum 20 characters.
         </div>
         <div id="editor"></div>
         <BlueButton onClick={handlePostClick}>Post</BlueButton>

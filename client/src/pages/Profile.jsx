@@ -36,8 +36,10 @@ export default function Profile() {
     async function fetchProfile() {
       setIsLoading(true);
       try {
-        const res = await api.get(`/user/profile/${profileId}/${user?.userId || 0}`);
-        const { admin, response } = res.data;
+        const res = await api
+          .get(`/user/profile/${profileId}/${user?.userId || 0}`)
+          .then((res) => res.data);
+        const { admin, response } = res;
         setUserProfile({ isAdmin: admin, ...response, img: response.img || "/images/userImg.png" });
       } catch (e) {}
       setIsLoading(false);

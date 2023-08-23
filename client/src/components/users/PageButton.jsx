@@ -5,8 +5,7 @@ import { WhiteButton } from "../common/Button";
 const StylePageButton = styled.div`
   display: flex;
   gap: 5px;
-  bottom: 24px;
-  right: 24px;
+
   width: 100%;
   justify-content: flex-end;
   margin: 20px 0;

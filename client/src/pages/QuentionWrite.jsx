@@ -19,8 +19,6 @@ const WriteStyle = styled.div`
     font-weight: bold;
   }
   .write-headline-container > img {
-    width: 700px;
-    height: 110px;
     margin: 20px 0;
   }
 `;
@@ -30,7 +28,7 @@ export default function QuentionWrite() {
     <WriteStyle>
       <div className="write-headline-container">
         <h1>Ask a public qeustion</h1>
-        <img src="/images/AskImg.png" alt="AskSideImg" />
+        <img src="/images/askImg.png" alt="AskSideImg" />
       </div>
       <WriteContainer></WriteContainer>
     </WriteStyle>

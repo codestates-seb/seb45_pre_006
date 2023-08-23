@@ -32,8 +32,8 @@ export default function Users() {
     const url = keyword ? `/user/search?page=${page}&keyword=${keyword}` : `/user?page=${page}`;
 
     try {
-      const response = await api.get(url);
-      const { pageInfo, data } = response.data;
+      const response = await api.get(url).then((res) => res.data);
+      const { pageInfo, data } = response;
       handleListSetting(data, pageInfo.page, pageInfo.totalPages);
     } catch (error) {}
 
@@ -74,7 +74,7 @@ export default function Users() {
         isLoading={isLoading}
         setSearchInput={setSearchInput}
       />
-      {userList.length ? (
+      {!!userList.length && (
         <>
           <UserList userList={userList} />
           <PageButton
@@ -83,9 +83,8 @@ export default function Users() {
             pageHandler={pageHandler}
           />
         </>
-      ) : (
-        <UserNotFound />
       )}
+      {!userList.length && !isLoading && <UserNotFound />}
     </StyleUsers>
   );
 }
