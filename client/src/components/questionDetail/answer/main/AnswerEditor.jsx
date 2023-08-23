@@ -44,12 +44,9 @@ export default function AnswerEditor({ postData }) {
 
       const responseData = await api.post(url, requestData);
 
-      console.log("Post successful:", responseData);
     } catch (error) {
-      console.error("Error posting:", error);
     }
 
-    console.log("Form submitted:", content);
 
     navigate(0);
   };

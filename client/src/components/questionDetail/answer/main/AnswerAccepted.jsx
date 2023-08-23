@@ -43,7 +43,6 @@ export default function AnswerAccepted({ data, question_userId }) {
       console.error("Error", isAccepted ? "unaccepting" : "accepting", "answer:", error);
     }
   };
-
   return user.userId !== "0" && question_userId.toString() === user.userId.toString() ? (
     <StyledAnswerAccepted onClick={handleAccept}>
       {isAccepted ? <PiCheckFatFill className="accepted" /> : <PiCheckFatLight />}

@@ -1,7 +1,6 @@
 import axios from "axios";
-import { cloneElement } from "react";
-const api = axios.create();
-// { baseURL: "http://13.125.37.74:8080/" }
+const api = axios.create({ baseURL: "http://13.125.37.74:8080/" });
+
 api.interceptors.request.use((config) => {
   const refreshToken = JSON.parse(localStorage.getItem("refreshToken"));
   const accessToken = JSON.parse(localStorage.getItem("accessToken"));
@@ -24,7 +23,7 @@ api.interceptors.response.use(
       localStorage.setItem("refreshToken", refreshToken);
     }
     console.log("res", res);
-    return res; // 이 부분을 수정하여 정상적인 처리를 반환합니다.
+    return res; 
   },
   function (err) {
     console.log("err", err);

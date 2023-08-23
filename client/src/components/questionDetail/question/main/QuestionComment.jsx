@@ -118,7 +118,6 @@ export default function QuestionComment({ postData }) {
 
       try {
         await api.post("question-comments", requestData);
-        console.log("Form submitted:", inputData.comment);
         clearForm(); // 인풋값 초기화
         navigate(0);
       } catch (error) {
@@ -148,8 +147,6 @@ export default function QuestionComment({ postData }) {
         };
 
         const response = await api.patch(url, requestData); // Using custom Axios hook
-
-        console.log("Patch successful:", response.data);
       } catch (error) {
         console.error("Error patching:", error);
       }
@@ -165,11 +162,7 @@ export default function QuestionComment({ postData }) {
         const url = `question-comments/${questionComment_id}`; // Updated URL
 
         const response = await api.delete(url, { userId: userId });
-
-        console.log("Delete successful:", response.data);
-      } catch (error) {
-        console.error("Error deleting:", error);
-      }
+      } catch (error) {}
       navigate(0);
     }
   };

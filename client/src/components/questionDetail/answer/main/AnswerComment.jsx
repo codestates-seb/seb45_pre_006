@@ -161,9 +161,7 @@ export default function AnswerComment({ data, answer_id }) {
 
         const responseData = await api.delete(url);
 
-        console.log("Delete successful:", responseData);
       } catch (error) {
-        console.error("Error posting:", error);
       }
 
       navigate(0);

@@ -56,9 +56,7 @@ export default function Question() {
             setIsLoading(false);
           }
         }, 1000);
-      } catch (error) {
-        console.log(error);
-      }
+      } catch (error) {}
     }
   };
   useEffect(() => {
