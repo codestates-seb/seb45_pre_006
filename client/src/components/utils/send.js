@@ -22,11 +22,14 @@ api.interceptors.response.use(
       const refreshToken = JSON.stringify(res.headers.refreshtoken);
       localStorage.setItem("refreshToken", refreshToken);
     }
-    return res;
+    console.log("res", res);
+    return res; 
   },
   function (err) {
+    console.log("err", err);
     if (err.response.data.message === "Time Out") {
       window.dispatchEvent(new Event("logoutEvent"));
+      return;
     }
     return Promise.reject(err);
   }

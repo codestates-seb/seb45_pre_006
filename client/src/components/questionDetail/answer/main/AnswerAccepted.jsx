@@ -50,7 +50,6 @@ export default function AnswerAccepted({ data, question_userId }) {
       );
     }
   };
-
   return user.userId !== "0" &&
     question_userId.toString() === user.userId.toString() ? (
     <StyledAnswerAccepted onClick={handleAccept}>

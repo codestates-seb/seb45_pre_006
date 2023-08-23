@@ -109,6 +109,10 @@ export default function AnswerComment({ data, answer_id, userData }) {
         answerComment_content: inputData.comment,
       };
 
+        const responseData = await api.post(url, requestData).then((res) => res.data);
+      } catch (error) {
+        console.error("Error posting:", error);
+      }
       const responseData = await api
         .post(url, requestData)
         .then((res) => res.data);
@@ -121,7 +125,7 @@ export default function AnswerComment({ data, answer_id, userData }) {
         answerComment_createdAt: responseData.answerComment_createdAt,
       };
 
-      setCommentList([...commentList, newComment]);
+      console.log("Form submitted:", inputData.comment);
       clearForm();
     } catch (error) {
       console.error("Error posting:", error);
@@ -147,24 +151,14 @@ export default function AnswerComment({ data, answer_id, userData }) {
           answerComment_content: editInput.comment,
         };
 
-        const responseData = await api
-          .patch(url, requestData)
-          .then((res) => res.data);
+        const responseData = await api.patch(url, requestData).then((res) => res.data);
 
-        const updatedCommentList = commentList.map((comment) =>
-          comment.answerComment_id === answerComment_id
-            ? { ...comment, answerComment_content: editInput.comment }
-            : comment
-        );
-
-        setCommentList(updatedCommentList);
-        setShowEditInput(false);
-        setEditId("");
-        // 인풋창 초기화
-        onEditInputChangeHandler({ target: { name: "comment", value: "" } });
+        console.log("Post successful:", responseData);
       } catch (error) {
         console.error("Error posting:", error);
       }
+
+      navigate(0);
     }
   };
   const handleDelete = async (answerComment_id) => {
@@ -180,9 +174,8 @@ export default function AnswerComment({ data, answer_id, userData }) {
           (comment) => comment.answerComment_id !== answerComment_id
         );
 
-        setCommentList(updatedCommentList);
+        console.log("Delete successful:", responseData);
       } catch (error) {
-        console.error("Error posting:", error);
       }
     }
   };

@@ -56,11 +56,11 @@ export default function AnswerEditor({ postData, setPostData, userData }) {
       });
       setContent("");
       window.scrollTo({ top: 400, behavior: "smooth" });
-    } catch (error) {
-      console.error("Error posting:", error);
-    }
+    } catch (error) {}
 
     console.log("Form submitted:", content);
+
+    navigate(0);
   };
   useEffect(() => {
     const editor = new Editor({

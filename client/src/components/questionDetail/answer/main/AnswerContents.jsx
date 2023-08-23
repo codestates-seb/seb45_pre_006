@@ -114,7 +114,6 @@ export default function AnswerContents({ data, idx, userData }) {
     data.answer_createdAt === data.answer_modifiedAt
       ? data.answer_createdAt
       : data.answer_modifiedAt;
-  console.log(data);
   return (
     <StyleAnswerContents>
       <div className="content">

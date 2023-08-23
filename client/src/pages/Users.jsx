@@ -74,7 +74,7 @@ export default function Users() {
         isLoading={isLoading}
         setSearchInput={setSearchInput}
       />
-      {userList.length ? (
+      {!!userList.length && (
         <>
           <UserList userList={userList} />
           <PageButton
@@ -83,9 +83,8 @@ export default function Users() {
             pageHandler={pageHandler}
           />
         </>
-      ) : (
-        <UserNotFound />
       )}
+      {!userList.length && !isLoading && <UserNotFound />}
     </StyleUsers>
   );
 }
