@@ -1,0 +1,153 @@
+{ "questions":[
+    {
+        "question_id": 1,
+        "question_title": "Context",
+        "question_content": "All consumers that are descendants of a Provider will re-render whenever the Provider’s value prop changes. The propagation from Provider to its descendant consumers (including .contextType and useContext) is not subject to the shouldComponentUpdate method, so the consumer is updated even when an ancestor component skips an update.",
+        "question_viewcount": 128,
+        "created_at": "2023-08-10T10:00:00",
+        "updated_at": "2023-08-10T12:30:00",
+        "user_name": "user123",
+        "question_answercount": 56
+    },
+    {
+        "question_id": 2,
+        "question_title": "Context",
+        "question_content": "StrictMode is a tool for highlighting potential problems in an application. Like Fragment,",
+        "question_viewcount": 128,
+        "created_at": "2023-08-10T10:00:00",
+        "updated_at": "2023-08-10T12:30:00",
+        "user_name": "user123",
+        "question_answercount": 45
+    },
+    {
+        "question_id": 3,
+        "question_title": "Context",
+        "question_content": "In the above example, strict mode checks will not be run against the Header and Footer components. However, ComponentOne and ComponentTwo, as well as all of their descendants, will have the checks.",
+        "question_viewcount": 128,
+        "created_at": "2023-08-10T10:00:00",
+        "updated_at": "2023-08-10T12:30:00",
+        "user_name": "user123",
+        "question_answercount": 25
+    },
+    {
+        "question_id": 4,
+        "question_title": "Context",
+        "question_content": "As explained in this blog post, certain legacy lifecycle methods are unsafe for use in async React applications. ",
+        "question_viewcount": 128,
+        "created_at": "2023-08-10T10:00:00",
+        "updated_at": "2023-08-10T12:30:00",
+        "user_name": "user123",
+        "question_answercount": 10
+    },
+    {
+        "question_id": 5,
+        "question_title": "Context",
+        "question_content": "Previously, React provided two ways for managing refs: the legacy string ref API and the callback API. Although the string ref API was the more convenient of the two, it had several downsides and so our official recommendation was to use the callback form instead.",
+        "question_viewcount": 128,
+        "created_at": "2023-08-10T10:00:00",
+        "updated_at": "2023-08-10T12:30:00",
+        "user_name": "user123",
+        "question_answercount": 2
+    },
+    {
+        "question_id": 6,
+        "question_title": "Context",
+        "question_content": "Since object refs were largely added as a replacement for string refs, strict mode now warns about usage of string refs.",
+        "question_viewcount": 128,
+        "created_at": "2023-08-10T10:00:00",
+        "updated_at": "2023-08-10T12:30:00",
+        "user_name": "user123",
+        "question_answercount": 8
+    },
+    {
+        "question_id": 7,
+        "question_title": "Context",
+        "question_content": "findDOMNode can also be used on class components but this was breaking abstraction levels by allowing a parent to demand that certain children were rendered.",
+        "question_viewcount": 128,
+        "created_at": "2023-08-10T10:00:00",
+        "updated_at": "2023-08-10T12:30:00",
+        "user_name": "user123",
+        "question_answercount": 19
+    },
+    {
+        "question_id": 8,
+        "question_title": "Context",
+        "question_content": "You can instead make this explicit by passing a ref to your custom component and pass that along to the DOM using ref forwarding.",
+        "question_viewcount": 128,
+        "created_at": "2023-08-10T10:00:00",
+        "updated_at": "2023-08-10T12:30:00",
+        "user_name": "user123",
+        "question_answercount": 27
+    },
+    {
+        "question_id": 9,
+        "question_title": "Context",
+        "question_content": "The commit phase is usually very fast, but rendering can be slow. For this reason, the upcoming concurrent mode (which is not enabled by default yet) breaks the rendering work into pieces, pausing and resuming the work to avoid blocking the browser. ",
+        "question_viewcount": 128,
+        "created_at": "2023-08-10T10:00:00",
+        "updated_at": "2023-08-10T12:30:00",
+        "user_name": "user123",
+        "question_answercount": 23
+    },
+    {
+        "question_id": 10,
+        "question_title": "Context",
+        "question_content": "Because the above methods might be called more than once, it’s important that they do not contain side-effects. ",
+        "question_viewcount": 128,
+        "created_at": "2023-08-10T10:00:00",
+        "updated_at": "2023-08-10T12:30:00",
+        "user_name": "user123",
+        "question_answercount": 37
+    },
+    {
+        "question_id": 11,
+        "question_title": "Context",
+        "question_content": "Strict mode can’t automatically detect side effects for you, but it can help you spot them by making them a little more deterministic.",
+        "question_viewcount": 128,
+        "created_at": "2023-08-10T10:00:00",
+        "updated_at": "2023-08-10T12:30:00",
+        "user_name": "user123",
+        "question_answercount": 3
+    },
+    {
+        "question_id": 12,
+        "question_title": "Context",
+        "question_content": "By intentionally double-invoking methods like the component constructor, strict mode makes patterns like this easier to spot.",
+        "question_viewcount": 128,
+        "created_at": "2023-08-10T10:00:00",
+        "updated_at": "2023-08-10T12:30:00",
+        "user_name": "user123",
+        "question_answercount": 31
+    },
+    {
+        "question_id": 13,
+        "question_title": "Context",
+        "question_content": "In the future, we’d like to add a feature that allows React to add and remove sections of the UI while preserving state. ",
+        "question_viewcount": 128,
+        "created_at": "2023-08-10T10:00:00",
+        "updated_at": "2023-08-10T12:30:00",
+        "user_name": "user123",
+        "question_answercount": 7
+    },
+    {
+        "question_id": 14,
+        "question_title": "Context",
+        "question_content": "This feature will give React better performance out-of-the-box, but requires components to be resilient to effects being mounted and destroyed multiple times. ",
+        "question_viewcount": 128,
+        "created_at": "2023-08-10T10:00:00",
+        "updated_at": "2023-08-10T12:30:00",
+        "user_name": "user123",
+        "question_answercount": 19
+    },
+    {
+        "question_id": 15,
+        "question_title": "Context",
+        "question_content": "React 18 introduces a new development-only check to Strict Mode. This new check will automatically unmount and remount every component, whenever a component mounts for the first time, restoring the previous state on the second mount.",
+        "question_viewcount": 128,
+        "created_at": "2023-08-10T10:00:00",
+        "updated_at": "2023-08-10T12:30:00",
+        "user_name": "user123",
+        "question_answercount": 7
+    }
+] 
+}

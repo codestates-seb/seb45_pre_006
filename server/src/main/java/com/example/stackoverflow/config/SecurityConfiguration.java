@@ -71,8 +71,8 @@ public class SecurityConfiguration {
         configuration.setAllowedOrigins(Arrays.asList(
                 "http://localhost:8080/",
                 "http://localhost:3000/",
-                "http://13.125.37.74/",
-                "https://835b-14-53-203-58.ngrok-free.app/"));
+                "https://stack-overflow-bay.vercel.app/",
+                "http://13.125.37.74/"));
                 // HTTP 메서드에 대한 HTTP 통신 허용
                 configuration.setAllowedMethods(Arrays.asList("POST", "GET", "PATCH", "DELETE"));
         configuration.setAllowedHeaders(Arrays.asList("*"));

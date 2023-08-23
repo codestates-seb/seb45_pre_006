@@ -43,8 +43,9 @@ public class Question {
 
     @PrePersist
     public void prePersist() {
-        question_createdAt = LocalDateTime.now();
-        question_modifiedAt = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now();
+        question_createdAt = now;
+        question_modifiedAt = now;
     }
 
     @OneToMany(mappedBy = "question", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
