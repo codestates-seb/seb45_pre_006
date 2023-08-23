@@ -81,7 +81,6 @@ export default function Vote({ data }) {
 
   return (
     <StyleAnswerVote>
-      {console.log(voted)}
       <button onClick={handleUpvote}>
         <AiOutlineCaretUp className="icon" />
       </button>

@@ -118,13 +118,10 @@ export default function AnswerComment({ data, answer_id }) {
         };
 
         const responseData = await api.post(url, requestData).then((res) => res.data);
-
-        console.log("Post successful:", responseData);
       } catch (error) {
         console.error("Error posting:", error);
       }
 
-      console.log("Form submitted:", inputData.comment);
       clearForm();
       navigate(0);
     }
@@ -150,12 +147,8 @@ export default function AnswerComment({ data, answer_id }) {
           answerComment_content: editInput.comment,
         };
 
-        const responseData = await api.patch(url, requestData).then((res) => res.data);
-
-        console.log("Post successful:", responseData);
-      } catch (error) {
-        console.error("Error posting:", error);
-      }
+        await api.patch(url, requestData).then((res) => res.data);
+      } catch (error) {}
 
       navigate(0);
     }
@@ -168,9 +161,7 @@ export default function AnswerComment({ data, answer_id }) {
 
         const responseData = await api.delete(url);
 
-        console.log("Delete successful:", responseData);
       } catch (error) {
-        console.error("Error posting:", error);
       }
 
       navigate(0);
