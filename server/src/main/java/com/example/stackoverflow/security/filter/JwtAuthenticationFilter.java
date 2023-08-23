@@ -4,6 +4,7 @@ import com.example.stackoverflow.dto.LoginDTO;
 import com.example.stackoverflow.security.jwt.JwtTokenizer;
 import com.example.stackoverflow.user.entity.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.JsonObject;
 import lombok.Builder;
 import lombok.SneakyThrows;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,6 +18,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -91,26 +94,25 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         return token;
     }
 
-    private HttpServletResponse setResponse(User user, HttpServletResponse response){
+    private HttpServletResponse setResponse(User user, HttpServletResponse response) throws IOException {
         String accessToken = delegateAccessToken(user);
         String refreshToken = delegateRefreshToken(user);
 
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        JsonObject jsonResponse = new JsonObject();
         // 로그인 과정에서 엔드포인트에 도달하는 대신 사용자 정보를 토큰과 더불어 헤더에 추가
         // 사용자의 민감한 정보가 아니기 때문에 헤더에 담는다.
         // header 는 value 가 String 이므로 response 단위로 묶지 못한다.
-        response.setHeader("userId", String.valueOf(user.getUserId()));
+        jsonResponse.addProperty("userId", String.valueOf(user.getUserId()));
         // ★ 한글 인코딩 문제 발생 ★
-        response.setHeader("displayName", user.getDisplayName());
-        response.setHeader("img", user.getImg());
+        jsonResponse.addProperty("displayName", user.getDisplayName());
+        jsonResponse.addProperty("img", user.getImg());
 
         response.setHeader("AccessToken", "Bearer" + accessToken);
         response.setHeader("RefreshToken", refreshToken);
 
-//        CookieGenerator cg = new CookieGenerator();
-//
-//        cg.setCookieMaxAge(30);
-//        cg.setCookieName("AccessToken");
-//        cg.addCookie(response, "Bearer" + accessToken);
+        response.getWriter().write(jsonResponse.toString());
         return response;
     }
 }
