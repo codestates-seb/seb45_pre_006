@@ -7,6 +7,7 @@ import { BlueButton } from "../common/Button";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../context/AuthContext";
 import api from "../utils/send";
+
 const StyleSiteLogin = styled.form`
   width: 288px;
   background-color: var(--white);
@@ -61,7 +62,7 @@ export default function SiteLogin() {
   };
 
   const handleLoginSuccess = (res) => {
-    const { userid: userId, img, displayname: displayName } = res.headers;
+    const { displayName, userId, img } = res.data;
     userHandler({ userId, img, displayName });
     localStorage.setItem(
       "user",

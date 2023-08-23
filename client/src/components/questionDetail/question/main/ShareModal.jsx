@@ -11,8 +11,7 @@ const StyleShareModal = styled.div`
   width: 320px;
   height: 90px;
   transform: translateY(10px);
-  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
-    rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
   text-align: left;
   display: flex;
   flex-direction: column;
@@ -88,7 +87,6 @@ export default function ShareModal({ data }) {
 
   return (
     <StyleShareModal onClick={(e) => e.stopPropagation()}>
-      {console.log(data.answer_id)}
       <div className="title">
         <div className="main">Share a link to this question</div>
         <div className="sub" onClick={handleCopyLink}>

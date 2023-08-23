@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { styled } from "styled-components";
 import { AiOutlineCaretUp, AiOutlineCaretDown } from "react-icons/ai";
-import useAxiosData from "../../../../hooks/useAxiosData";
+import api from "../../../utils/send";
 
 const StyleAnswerVote = styled.div`
   display: flex;
@@ -39,7 +39,6 @@ const StyleAnswerVote = styled.div`
 export default function Vote({ data }) {
   const [voted, setVoted] = useState(false);
   const [voteCount, setVoteCount] = useState(data.answer_recommendation);
-  const axiosData = useAxiosData();
 
   // 추천 중복 방지 로직이 필요할것같음*********
   // 예를들어 서버의 답변 정보에서 추천을 한사람의 user_id 정보를 저장하는등********
@@ -54,7 +53,7 @@ export default function Vote({ data }) {
     try {
       const url = `answers/${data.answer_id}/recommend`;
 
-      await axiosData("post", url);
+      await api.post(url);
 
       setVoted(!voted);
       setVoteCount(voteCount + 1);
@@ -71,7 +70,7 @@ export default function Vote({ data }) {
     try {
       const url = `answers/${data.answer_id}/unrecommend`;
 
-      await axiosData("post", url);
+      await api.post(url);
 
       setVoted(!voted);
       setVoteCount(voteCount - 1);
@@ -82,7 +81,6 @@ export default function Vote({ data }) {
 
   return (
     <StyleAnswerVote>
-      {console.log(voted)}
       <button onClick={handleUpvote}>
         <AiOutlineCaretUp className="icon" />
       </button>

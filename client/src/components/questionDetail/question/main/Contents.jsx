@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
 import ShareModal from "./ShareModal";
 import { styled } from "styled-components";
-import { usePostContext } from "../../../../context/PostContext";
 import getWriteDate from "../../../utils/getWriteDate";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
-import useAxiosData from "../../../../hooks/useAxiosData";
+import api from "../../../utils/send";
 import { useAuthContext } from "../../../../context/AuthContext";
 
 const StyleContents = styled.div`
@@ -67,9 +65,7 @@ export default function Contents({ postData }) {
   if (!user) {
     user = { userId: "0" };
   }
-
   const navigate = useNavigate();
-  const axiosData = useAxiosData();
 
   const toggleShare = (e) => {
     e.stopPropagation();
@@ -98,47 +94,33 @@ export default function Contents({ postData }) {
   // edit 누를시 페이지전환
   const handleEdit = () => {
     // 로그인 -> 본인이 쓴글일때 조건을 확인해서 넣어줘야함. !!!!!!!!!!********
-    if (true) {
-      // 데이터도 같이 넘겨줌
-      navigate(`/questions/${postData.question_id}/edit`, {
-        state: postData,
-      });
-    } else {
-      alert("권한이 없습니다.");
-    }
+    // 데이터도 같이 넘겨줌
+    navigate(`/questions/${postData.question_id}/edit`, {
+      state: postData,
+    });
   };
 
   // 질문 삭제 로직 **** 본인인경우에만 삭제 가능해야함
   const handleDelete = async () => {
     // 경고메세지
-    const shouldDelete = window.confirm(
-      "Are you sure you want to delete this question?"
-    );
+    const shouldDelete = window.confirm("Are you sure you want to delete this question?");
     if (user.userId === postData.userId) {
       if (shouldDelete) {
         try {
           const url = `questions/${postData.question_id}`;
-          await axiosData("delete", url);
+          await api.delete(url);
           navigate(-2); // 홈으로 이동 '/'하면 오류
         } catch (error) {
-          console.error(
-            "An error occurred while deleting the question:",
-            error
-          );
+          console.error("An error occurred while deleting the question:", error);
         }
       }
     } else {
       alert("삭제 권한이 없습니다.");
     }
   };
-
   // 수정된지 여부를 판단하고 알맞는 날자데이터를 뿌려주는 로직 **** 서버 버그 수정해야함(질문상세들어가면 수정시간이 변경되는버그)
-  const isModified =
-    postData.question_createdAt !== postData.question_modifiedAt;
-  const dateInfo = !isModified
-    ? postData.question_createdAt
-    : postData.question_modifiedAt;
-  console.log(postData);
+  const isModified = postData.question_createdAt !== postData.question_modifiedAt;
+  const dateInfo = !isModified ? postData.question_createdAt : postData.question_modifiedAt;
   return (
     <StyleContents>
       <div className="content">
@@ -167,10 +149,7 @@ export default function Contents({ postData }) {
             {getWriteDate(dateInfo)}
           </div>
 
-          <div
-            className="useProfile"
-            onClick={() => navigate(`/users/${postData.userId}`)}
-          >
+          <div className="useProfile" onClick={() => navigate(`/users/${postData.userId}`)}>
             <img src="/images/userImg.png" alt="userImg" />
             <div className="username">{postData.displayName}</div> {/******/}
           </div>

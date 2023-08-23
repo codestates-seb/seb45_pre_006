@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheetContext, styled } from "styled-components";
+import { styled } from "styled-components";
 import { BlueButton } from "../../../common/Button";
 import { Editor } from "@toast-ui/editor";
 import "@toast-ui/editor/dist/toastui-editor.css";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import useAxiosData from "../../../../hooks/useAxiosData";
 import { useAuthContext } from "../../../../context/AuthContext";
+import api from "../../../utils/send";
 
 const StyleAnswerEditor = styled.div`
   margin-bottom: 10px;
@@ -31,7 +30,6 @@ export default function AnswerEditor({ postData }) {
     user = { userId: "0" };
   }
 
-  const axiosData = useAxiosData();
   const navigate = useNavigate();
 
   const handlePost = async () => {
@@ -44,14 +42,11 @@ export default function AnswerEditor({ postData }) {
         answer_content: content,
       };
 
-      const responseData = await axiosData("post", url, requestData);
+      const responseData = await api.post(url, requestData);
 
-      console.log("Post successful:", responseData);
     } catch (error) {
-      console.error("Error posting:", error);
     }
 
-    console.log("Form submitted:", content);
 
     navigate(0);
   };
@@ -62,9 +57,7 @@ export default function AnswerEditor({ postData }) {
       el: document.querySelector("#editor"),
       initialEditType: user.userId === "0" ? "wysiwyg" : "markdown", // 비로그인회원인경우 preview 모드로
       initialValue:
-        user.userId === "0"
-          ? `### **Only logged-in users can post answers.**`
-          : content,
+        user.userId === "0" ? `### **Only logged-in users can post answers.**` : content,
       events: {
         change: () => {
           setContent(editor.getMarkdown());

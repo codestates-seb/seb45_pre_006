@@ -2,13 +2,11 @@ import React, { useState } from "react";
 import { styled } from "styled-components";
 import useForm from "../../../../hooks/useForm";
 import getWriteDate from "../../../utils/getWriteDate";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { MdEdit } from "react-icons/md";
 import { IoTrash } from "react-icons/io5";
 import { useAuthContext } from "../../../../context/AuthContext";
-import useAxiosData from "../../../../hooks/useAxiosData";
-
+import api from "../../../utils/send";
 // questionComment 코드 중복 로직이 많음
 
 const StyleAnswerComment = styled.div`
@@ -91,7 +89,6 @@ export default function AnswerComment({ data, answer_id }) {
   }
 
   const navigate = useNavigate();
-  const axiosData = useAxiosData();
 
   // 댓글을 더 보여주기 위한 함수
   const handleShowMoreComments = () => {
@@ -102,8 +99,7 @@ export default function AnswerComment({ data, answer_id }) {
   const initialInputData = {
     comment: "",
   };
-  const [inputData, onInputChangeHandler, clearForm] =
-    useForm(initialInputData);
+  const [inputData, onInputChangeHandler, clearForm] = useForm(initialInputData);
 
   // 댓글 edit 부분
   const [editInput, onEditInputChangeHandler, _] = useForm(initialInputData);
@@ -121,14 +117,11 @@ export default function AnswerComment({ data, answer_id }) {
           answerComment_content: inputData.comment,
         };
 
-        const responseData = await axiosData("post", url, requestData);
-
-        console.log("Post successful:", responseData);
+        const responseData = await api.post(url, requestData).then((res) => res.data);
       } catch (error) {
         console.error("Error posting:", error);
       }
 
-      console.log("Form submitted:", inputData.comment);
       clearForm();
       navigate(0);
     }
@@ -154,29 +147,21 @@ export default function AnswerComment({ data, answer_id }) {
           answerComment_content: editInput.comment,
         };
 
-        const responseData = await axiosData("patch", url, requestData);
-
-        console.log("Post successful:", responseData);
-      } catch (error) {
-        console.error("Error posting:", error);
-      }
+        await api.patch(url, requestData).then((res) => res.data);
+      } catch (error) {}
 
       navigate(0);
     }
   };
   const handleDelete = async (answerComment_id) => {
-    const shouldDelete = window.confirm(
-      "Are you sure you want to delete this comment?"
-    );
+    const shouldDelete = window.confirm("Are you sure you want to delete this comment?");
     if (shouldDelete) {
       try {
         const url = `answer-comments/${answerComment_id}`;
 
-        const responseData = await axiosData("delete", url);
+        const responseData = await api.delete(url);
 
-        console.log("Delete successful:", responseData);
       } catch (error) {
-        console.error("Error posting:", error);
       }
 
       navigate(0);
@@ -192,28 +177,15 @@ export default function AnswerComment({ data, answer_id }) {
           // 5개까지만 표시
           ((!showAllComments && idx < 5) || showAllComments) && (
             <div key={idx} className="comentlist">
-              <span className="commentbody">
-                {data.answerComment_content} -
-              </span>
-              <span
-                className="username"
-                onClick={() => navigate(`/users/${data.userId}`)}
-              >
+              <span className="commentbody">{data.answerComment_content} -</span>
+              <span className="username" onClick={() => navigate(`/users/${data.userId}`)}>
                 {data.displayName}
               </span>
-              <span className="createdat">
-                {getWriteDate(data.answerComment_createdAt)}
-              </span>
+              <span className="createdat">{getWriteDate(data.answerComment_createdAt)}</span>
               {user.userId.toString() === data.userId.toString() && (
                 <>
-                  <MdEdit
-                    className="icon"
-                    onClick={() => handleEdit(data.answerComment_id)}
-                  />
-                  <IoTrash
-                    className="icon"
-                    onClick={() => handleDelete(data.answerComment_id)}
-                  />
+                  <MdEdit className="icon" onClick={() => handleEdit(data.answerComment_id)} />
+                  <IoTrash className="icon" onClick={() => handleDelete(data.answerComment_id)} />
                 </>
               )}
               {showEditInput && editId === data.answerComment_id ? (

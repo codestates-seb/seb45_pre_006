@@ -15,10 +15,11 @@ import Header from "./components/header/Header";
 import { SearchKeywordProvider } from "./context/SearchKeywordContext";
 import Edit from "./pages/Edit";
 import ProtectedRoute from "./pages/ProtectedRoute";
+import { useEffect } from "react";
+import scrollToTop from "./components/utils/scrollToTop";
 
 const StyleApp = styled.div`
-  background-color: ${(props) =>
-    props.$background ? "var(--app-back-color)" : ""};
+  background-color: ${(props) => (props.$background ? "var(--app-back-color)" : "")};
   .center {
     width: var(--inner);
     margin: 0 auto;
@@ -33,9 +34,10 @@ const sidebarPaths = ["profile", "users", "search", "questions", "answers", ""];
 const footerPaths = ["profile", "users", "search", "questions", "ask", ""];
 function App() {
   const path = useLocation().pathname.split("/")[1];
+  const toTopPath = useLocation().pathname;
   const isSidebar = sidebarPaths.includes(path);
   const isFooter = footerPaths.includes(path);
-
+  useEffect(scrollToTop, [toTopPath]);
   return (
     <StyleApp $background={!isSidebar}>
       <SearchKeywordProvider>
@@ -47,10 +49,7 @@ function App() {
             <Route path={"/users"} element={<Users />} />
             <Route path={"/search/:keyword"} element={<Search />} />
             <Route path="/users/:profileId/*" element={<Profile />} />
-            <Route
-              path={"/questions/:question_id"}
-              element={<QuestionDetail />}
-            />
+            <Route path={"/questions/:question_id"} element={<QuestionDetail />} />
             <Route
               path={"/questions/:question_id/edit"}
               element={
