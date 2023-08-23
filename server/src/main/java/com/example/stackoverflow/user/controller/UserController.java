@@ -111,7 +111,7 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity getUsers(@PageableDefault(size = 1) Pageable pageable){
+    public ResponseEntity getUsers(@PageableDefault(size = 36) Pageable pageable){
         Page<User> pageUsers = userService.findUsers(pageable);
         List<User> users = pageUsers.getContent();
         PageInfo pageInfo = new PageInfo(pageable.getPageNumber() + 1, pageUsers.getTotalPages());
@@ -121,7 +121,7 @@ public class UserController {
 
     @GetMapping("/search")
     public ResponseEntity getUsersByKeyword(@RequestParam(name = "keyword") String keyword,
-                                            @PageableDefault(size = 1) Pageable pageable){
+                                            @PageableDefault(size = 36) Pageable pageable){
         Page<User> pageUsers = userService.findUsersByKeyword(keyword, pageable);
         System.out.println("keyword: " + keyword);
         List<User> users = pageUsers.getContent();

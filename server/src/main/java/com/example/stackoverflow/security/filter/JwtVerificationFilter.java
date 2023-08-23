@@ -13,6 +13,7 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwt;
 import io.jsonwebtoken.security.SignatureException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -36,6 +37,7 @@ import java.util.List;
 import java.util.Map;
 
 // request 당 한 번 실행되는 SecurityFilter
+@Slf4j
 public class JwtVerificationFilter extends OncePerRequestFilter {
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
@@ -61,12 +63,10 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException{
-        System.out.println("확인1");
         if(request.getRequestURI().startsWith("/h2")) return true;
         if(request.getRequestURI().startsWith("/user/logout")) return true;
         String accessToken = request.getHeader("AccessToken");
         String refreshToken = request.getHeader("RefreshToken");
-        System.out.println("확인2");
         // 로그아웃 상태에서의 요청
         if(accessToken == null && refreshToken == null){
             // 회원가입 신청은 로그아웃 상태에서 정상적인 요청으로 올 수 있는 유일한 POST 방식이다.
@@ -77,23 +77,9 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
             // GET 요청은 토큰 없이도 가능하므로 필터 실행 x
             return true;
         }
-        System.out.println("확인3");
-        // 로그인 상태에서의 요청
-        // 여기로 왔다는 뜻은 refreshToken 이 존재하므로 로그인 상태에서의 요청이다.
-        // accessToken 이 비었다면 refreshToken 검증을 위해 false
-        // accessToken 이 존재한다면 알맞는 형식의 토큰인지 검증해서 잘못되었다면 true, 맞다면 false
         return accessToken == null || !accessToken.startsWith("Bearer");
     }
 
-//    private Map<String, Object> verifyJws(HttpServletRequest request, HttpServletResponse response){
-//        // refreshToken 검증 및 accessToken 재발급
-//        String authorization = verifyJwsAndDelegateNewToken(request, response);
-//        String jws = authorization.replace("Bearer", "");
-//        String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
-//
-//        // JWT 에서 Claims 파싱이 가능하다는 점에서 서명 검증에 성공
-//        return jwtTokenizer.getClaims(jws, base64EncodedSecretKey).getBody();
-//    }
 
     private void setAuthenticationToContext(Map<String, Object> claims){
         String email = (String) claims.get("email");
@@ -136,14 +122,11 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
         // refreshToken 은 문제 없음.
         // accessToken 검증
         try{
-            System.out.println("RefreshToken 검증 성공");
             jwtTokenizer.verifySignature(accessToken, base64EncodedSecretKey);
-            System.out.println("AccessToken 검증 성공");
         }catch (SignatureException se) {
             throw new JwtException(ExceptionCode.BAD_TOKEN);
         } catch (ExpiredJwtException ee) {
             // 시간 만료시 재발급 후 헤더 갱신
-            System.out.println("시간 만료");
             regenerateToken(claims, response);
         } catch (Exception e) {
             throw new JwtException(ExceptionCode.BAD_ACCESS);
@@ -157,6 +140,5 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
         Date expiration = jwtTokenizer.getTokenExpiration(jwtTokenizer.getAccessTokenExpirationMinutes());
         String newAccessToken = "Bearer" + jwtTokenizer.generateToken(claims, subject, expiration, base64EncodedSecretKey);
         response.setHeader("AccessToken", newAccessToken);
-        System.out.println("재발급 성공");
     }
 }
