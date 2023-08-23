@@ -42,7 +42,7 @@ export default function QuestionDetail() {
       setUserData(user);
     }
   }, [user]);
-  console.log(postData);
+
   // 여기에 로딩처리 한번에하기
   if (!postData) {
     return <Loading />;

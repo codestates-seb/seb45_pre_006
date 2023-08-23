@@ -160,7 +160,27 @@ export default function QuestionComment({ postData, setPostData, userData }) {
         };
 
         const response = await api.patch(url, requestData); // Using custom Axios hook
+        const updatedCommentList = postData.questionCommentList.map(
+          (comment) => {
+            if (comment.questionComment_id === questionComment_id) {
+              return {
+                ...comment,
+                questionComment_content: editInput.comment,
+              };
+            }
+            return comment;
+          }
+        );
 
+        setPostData({
+          ...postData,
+          questionCommentList: updatedCommentList,
+        });
+
+        setShowEditInput(false);
+        setEditId("");
+        // 인풋창 초기화
+        onEditInputChangeHandler({ target: { name: "comment", value: "" } });
         console.log("Patch successful:", response.data);
       } catch (error) {
         console.error("Error patching:", error);
@@ -178,15 +198,23 @@ export default function QuestionComment({ postData, setPostData, userData }) {
         const url = `question-comments/${questionComment_id}`; // Updated URL
 
         const response = await api.delete(url, { userId: userId });
+        const updatedCommentList = postData.questionCommentList.filter(
+          (comment) => {
+            return comment.questionComment_id !== questionComment_id;
+          }
+        );
 
+        setPostData({
+          ...postData,
+          questionCommentList: updatedCommentList,
+        });
         console.log("Delete successful:", response.data);
       } catch (error) {
         console.error("Error deleting:", error);
       }
-      navigate(0);
     }
   };
-
+  console.log(postData);
   return (
     <StyleQuestionComment>
       {postData.questionCommentList.map(

@@ -43,7 +43,7 @@ export default function AnswerEditor({ postData, setPostData, userData }) {
 
       const newAnswer = {
         answer_id: responseData.data.answer_id,
-        userId: userData.userId,
+        userId: Number(userData.userId),
         answer_content: content,
         displayName: userData.displayName,
         answer_createdAt: responseData.data.answer_createdAt,
@@ -59,8 +59,6 @@ export default function AnswerEditor({ postData, setPostData, userData }) {
     } catch (error) {}
 
     console.log("Form submitted:", content);
-
-    navigate(0);
   };
   useEffect(() => {
     const editor = new Editor({
